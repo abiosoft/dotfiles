@@ -685,3 +685,5 @@ colorscheme tomorrow-night
 
 let g:go_auto_type_info = 1
 
+set shell=/bin/zsh
+
