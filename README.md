@@ -93,6 +93,12 @@ nnoremap <C-p> :FZF<CR>
 let g:go_auto_type_info = 1
 ```
 
+### Code commenting
+
+```viml
+Plug 'scrooloose/nerdcommenter'
+```
+
 ### Replace vim
 
 ```sh

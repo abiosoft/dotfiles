@@ -114,6 +114,8 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
+" code comment
+Plug 'scrooloose/nerdcommenter'
 
 "*****************************************************************************
 "*****************************************************************************
