@@ -114,4 +114,8 @@ Plug 'scrooloose/nerdcommenter'
 ```sh
 alias vim=nvim
 ```
+Make `sudo` use nvim as well.
+```sh
+alias sudo='sudo '
+```
 
