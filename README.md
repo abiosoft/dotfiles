@@ -2,6 +2,16 @@ dotfiles
 ========
 My ZSH and Neovim configuration.
 
+## Screenshots
+
+### Dark theme
+
+![Dark theme](https://github.com/abiosoft/dotfiles/blob/master/dark.png)
+
+### Light theme
+
+![Light theme](https://github.com/abiosoft/dotfiles/blob/master/light.png)
+
 ## ZSH
 
 Install custom theme based on pure zsh theme.
