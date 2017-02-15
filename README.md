@@ -30,7 +30,7 @@ cp init.vim ~/.config/nvim/init.vim
 
 ### Tomorrow Night color
 
-Install
+Install. Replace `tomorrow` with `tomorrow-night`, if you prefer the light theme.
 ```sh
 mkdir -p ~/.config/nvim/colors
 cp tomorrow-night.vim ~/.config/nvim/colors
