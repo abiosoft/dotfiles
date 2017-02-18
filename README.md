@@ -106,7 +106,7 @@ let g:go_auto_type_info = 1
 ### Code commenting
 
 ```viml
-Plug 'scrooloose/nerdcommenter'
+noremap <leader>cc :Commentary<cr>
 ```
 
 ### Replace vim

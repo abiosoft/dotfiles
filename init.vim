@@ -114,9 +114,6 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-" code comment
-Plug 'scrooloose/nerdcommenter'
-
 "*****************************************************************************
 "*****************************************************************************
 
@@ -688,4 +685,7 @@ colorscheme tomorrow-night
 let g:go_auto_type_info = 1
 
 set shell=/bin/zsh
+
+" commentary
+noremap <leader>cc :Commentary<cr>
 
