@@ -108,6 +108,10 @@ Configure
 ```viml
 let g:go_auto_type_info = 1
 let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode
+
+set completeopt+=noinsert
+set completeopt+=noselect
+set completeopt-=preview
 ```
 
 ### Code commenting

@@ -692,3 +692,10 @@ set shell=/bin/zsh
 " commentary
 noremap <leader>cc :Commentary<cr>
 
+" neocomplete like
+set completeopt+=noinsert
+" deoplete.nvim recommend
+set completeopt+=noselect
+set completeopt-=preview
+
+
