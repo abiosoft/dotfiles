@@ -99,8 +99,15 @@ nnoremap <C-p> :FZF<CR>
 
 ### Go
 
+Install autocomplete
+```viml
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+```
+
+Configure
 ```viml
 let g:go_auto_type_info = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode
 ```
 
 ### Code commenting

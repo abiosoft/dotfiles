@@ -111,6 +111,9 @@ Plug 'ecomba/vim-ruby-refactoring'
 " autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
+" autocomplete Go
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+
 " file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
@@ -678,7 +681,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-
+let g:deoplete#sources#go#gocode_binary = '/Users/abiola/gocodes/bin/gocode'
 
 colorscheme tomorrow-night
 
