@@ -268,7 +268,7 @@ let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
-noremap <F3> :NERDTreeToggle<CR>
+noremap <leader>o :NERDTreeToggle<CR>
 
 " grep.vim
 nnoremap <silent> <leader>f :Rgrep<CR>
@@ -682,10 +682,19 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = '/Users/abiola/gocodes/bin/gocode'
+let g:deoplete#ignore_sources = {} 
+let g:deoplete#ignore_sources._ = ['buffer', 'member', 'file', 'neosnippet', 'around']
+
+let g:deoplete#sources#go#align_class = 1
+let g:deoplete#sources#go#package_dot = 1
+let g:deoplete#sources#go#pointer = 1
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 colorscheme tomorrow-night
 
 let g:go_auto_type_info = 1
+
+set updatetime=100
 
 set shell=/bin/zsh
 
@@ -697,5 +706,10 @@ set completeopt+=noinsert
 " deoplete.nvim recommend
 set completeopt+=noselect
 set completeopt-=preview
+
+" show hidden files in NERDTree
+let NERDTreeShowHidden=1
+
+imap jj <Esc>
 
 
