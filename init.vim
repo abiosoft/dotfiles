@@ -268,7 +268,7 @@ let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
-noremap <leader>o :NERDTreeToggle<CR>
+noremap <leader>O :NERDTreeToggle<CR>
 
 " grep.vim
 nnoremap <silent> <leader>f :Rgrep<CR>
@@ -682,7 +682,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = '/Users/abiola/gocodes/bin/gocode'
-let g:deoplete#ignore_sources = {} 
+let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['buffer', 'member', 'file', 'neosnippet', 'around']
 
 let g:deoplete#sources#go#align_class = 1
@@ -711,5 +711,8 @@ set completeopt-=preview
 let NERDTreeShowHidden=1
 
 imap jj <Esc>
+
+" save read-only files
+cmap w!! w !sudo tee % >/dev/null
 
 
