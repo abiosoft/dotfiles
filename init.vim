@@ -550,7 +550,7 @@ let g:javascript_enable_domhtmlcss = 1
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript map gd :TernDef<cr>
 autocmd Filetype javascript map <leader>r :TernRefs<cr>
-autocmd Filetype javascript map <leader>es :silent !js-beautify -s 2 -r %:p > /dev/null <cr>
+autocmd Filetype javascript map <leader>es :silent !es-beautifier %:p > /dev/null <cr>
 
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = [
