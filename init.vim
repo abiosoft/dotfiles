@@ -703,7 +703,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = '/Users/abiola/gocodes/bin/gocode'
+let g:deoplete#sources#go#gocode_binary = '/Users/abiola/go/bin/gocode'
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['buffer', 'member', 'file', 'neosnippet', 'around']
 
@@ -736,5 +736,8 @@ imap jj <Esc>
 
 " save read-only files
 cmap w!! w !sudo tee % >/dev/null
+
+" disable mouse
+set mouse=""
 
 
