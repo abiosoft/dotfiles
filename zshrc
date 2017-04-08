@@ -10,3 +10,5 @@ export EDITOR="$VISUAL"
 # nvim
 alias vim=nvim
 sudo='sudo '
+export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
