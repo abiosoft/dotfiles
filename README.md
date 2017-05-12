@@ -29,7 +29,7 @@ ZSH_THEME="abiola"
 ### Install
 
 ```sh
-brew install neovim
+brew install neovim/neovim/neovim
 ```
 
 ### Neovim config
