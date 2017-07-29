@@ -1,6 +1,6 @@
 dotfiles
 ========
-My ZSH and Neovim configuration.
+zsh, tmux and neovim configurations.
 
 ## Screenshots
 
@@ -22,6 +22,12 @@ cp abiola.zsh-theme ~/.oh-my-zsh/themes
 Configure
 ```sh
 ZSH_THEME="abiola"
+```
+
+## Tmux
+
+```sh
+cp tmux.conf ~/.tmux.conf
 ```
 
 ## Neovim
