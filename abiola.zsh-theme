@@ -52,9 +52,9 @@ git_dirty() {
 repo_information() {
     git_info="%F{white}${vcs_info_msg_0_%%/.} %F{white}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_3_%f"
     info=`echo $git_info`
-    if [ "$info" = "%F{white} %F{white} %f" ]; then
+    if [ "$vcs_info_msg_1_" = "" ]; then
         echo "%~"
-    else 
+    else
         echo "${info}%~"
     fi
 }
