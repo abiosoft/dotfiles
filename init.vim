@@ -124,6 +124,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 
+" language client
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+
+" dart
+Plug 'dart-lang/dart-vim-plugin'
+let g:LanguageClient_serverCommands = {
+ \ 'dart': ['dart_language_server'],
+ \ }
+
 "*****************************************************************************
 "*****************************************************************************
 
@@ -574,7 +585,8 @@ augroup vimrc-javascript
 augroup END
 
 " css
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS ts=2 sw=2 expandtab
+
 
 
 " php
@@ -702,8 +714,8 @@ endif
 
 
 " python 3
-let g:python2_host_prog = '/usr/local/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python2_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
@@ -747,11 +759,13 @@ set mouse=""
 " rust
 let g:rustfmt_autosave = 1
 set hidden
-let g:racer_cmd = "/Users/abiola/.cargo/bin/racer"
+let g:racer_cmd = "/home/abiola/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
 au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap gs <Plug>(rust-def-split)
 au FileType rust nmap gx <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
-
+" dart
+let dart_html_in_string=v:true
+let dart_style_guide = 2
