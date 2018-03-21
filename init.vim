@@ -775,3 +775,6 @@ let dart_html_in_string=v:true
 let dart_style_guide = 2
 autocmd BufWritePost *.dart :DartFmt
 
+" fix quickfix height
+autocmd FileType qf 3wincmd_
+
