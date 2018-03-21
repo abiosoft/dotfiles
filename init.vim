@@ -122,17 +122,24 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " rust
 Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
 
 " language client
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
 
 " dart
 Plug 'dart-lang/dart-vim-plugin'
 let g:LanguageClient_serverCommands = {
- \ 'dart': ['dart_language_server'],
+\ 'dart': ['dart_language_server'],
+ \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
  \ }
 
 "*****************************************************************************
@@ -507,7 +514,7 @@ let g:go_list_type = "quickfix"
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go','dart'] }
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -681,6 +688,8 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
+let g:airline_powerline_fonts = 1
+
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -759,13 +768,10 @@ set mouse=""
 " rust
 let g:rustfmt_autosave = 1
 set hidden
-let g:racer_cmd = "/home/abiola/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
+autocmd BufReadPost *.rs setlocal filetype=rust
 
 " dart
 let dart_html_in_string=v:true
 let dart_style_guide = 2
+autocmd BufWritePost *.dart :DartFmt
+
