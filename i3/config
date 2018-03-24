@@ -183,4 +183,6 @@ bindsym $mod+x exec LC_ALL=en_US.UTF-8 i3lock -c 333333
 # suspend
 bindsym $mod+Shift+x exec LC_ALL=en_US.UTF-8 i3lock -c 333333 && systemctl suspend
 
+# new empty workspace
+bindsym $mod+c exec --no-startup-id sh ~/.config/i3/workspace.sh
 
