@@ -197,10 +197,14 @@ bindsym $mod+c exec --no-startup-id sh ~/.config/i3/workspace.sh
 # move container to new empty workspace
 bindsym $mod+Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh
 
-
+# colors
 client.focused #696969 #393939 #d9d9d9
 client.focused_inactive #393939 #393939 #d9d9d9
 client.unfocused #090909 #191919 #888888 #292d2e
 client.urgent #2f343a #900000 #ffffff #900000
 
+# brightness keys
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
