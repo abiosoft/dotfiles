@@ -16,7 +16,7 @@ zsh, tmux and neovim configurations.
 
 Install custom theme based on pure zsh theme.
 ```sh
-cp abiola.zsh-theme ~/.oh-my-zsh/themes
+cp zsh/abiola.zsh-theme ~/.oh-my-zsh/themes
 ```
 
 Configure
@@ -27,7 +27,7 @@ ZSH_THEME="abiola"
 ## Tmux
 
 ```sh
-cp tmux.conf ~/.tmux.conf
+cp tmux/tmux.conf ~/.tmux.conf
 ```
 
 ## Neovim
@@ -41,7 +41,7 @@ brew install neovim/neovim/neovim
 ### Neovim config
 
 ```sh
-cp init.vim ~/.config/nvim/init.vim
+cp neovim/init.vim ~/.config/nvim/init.vim
 ```
 
 ### Tomorrow Night color
@@ -49,7 +49,7 @@ cp init.vim ~/.config/nvim/init.vim
 Install. Replace `tomorrow` with `tomorrow-night`, if you prefer the light theme.
 ```sh
 mkdir -p ~/.config/nvim/colors
-cp tomorrow-night.vim ~/.config/nvim/colors
+cp neovim/tomorrow-night.vim ~/.config/nvim/colors
 ```
 
 Configure
