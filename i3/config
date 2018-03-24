@@ -164,6 +164,14 @@ bar {
         position top
         tray_output primary
         status_command i3status
+
+        colors {
+            focused_workspace #595959 #595959 #c9c9c9
+            inactive_workspace #393939 #393939 #888888
+            active_workspace #2d2d2d #2d2d2d #999999
+            urgent_workspace #2f343a #900000 #ffffff
+        }
+
 }
 
 # network manager applet
@@ -188,4 +196,10 @@ bindsym $mod+c exec --no-startup-id sh ~/.config/i3/workspace.sh
 
 # move container to new empty workspace
 bindsym $mod+Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh
+
+
+client.focused #595959 #595959 #c9c9c9 #2d2d2d
+client.focused_inactive #393939 #393939 #888888 #292d2e
+client.unfocused #2d2d2d #2d2d2d #999999 #292d2e
+client.urgent #2f343a #900000 #ffffff #900000
 
