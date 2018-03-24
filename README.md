@@ -1,6 +1,6 @@
 dotfiles
 ========
-zsh, tmux and neovim configurations.
+zsh, tmux, neovim and i3 configurations.
 
 ## Screenshots
 
