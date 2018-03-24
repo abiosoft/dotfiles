@@ -126,7 +126,7 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Control+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -185,4 +185,7 @@ bindsym $mod+Shift+x exec LC_ALL=en_US.UTF-8 i3lock -c 333333 && systemctl suspe
 
 # new empty workspace
 bindsym $mod+c exec --no-startup-id sh ~/.config/i3/workspace.sh
+
+# move container to new empty workspace
+bindsym $mod+Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh
 
