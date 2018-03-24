@@ -177,3 +177,10 @@ bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound vo
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
 
+# lock screen
+bindsym $mod+x exec LC_ALL=en_US.UTF-8 i3lock -c 333333
+
+# suspend
+bindsym $mod+Shift+x exec LC_ALL=en_US.UTF-8 i3lock -c 333333 && systemctl suspend
+
+
