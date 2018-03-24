@@ -41,6 +41,7 @@ bindsym $mod+Shift+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 bindsym $mod+d exec --no-startup-id LC_ALL=en_US.UTF-8 i3-dmenu-desktop
+bindsym Control+space exec --no-startup-id LC_ALL=en_US.UTF-8 i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -107,6 +108,10 @@ bindsym $mod+0 workspace 10
 # switch to next workspace
 bindsym $mod+n workspace next_on_output
 bindsym $mod+p workspace prev_on_output
+
+# switch workspace to display
+bindsym $mod+Control+h move workspace to output left
+bindsym $mod+Control+l move workspace to output right
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
