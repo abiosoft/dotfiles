@@ -182,6 +182,9 @@ exec --no-startup-id nm-applet
 # volume icons
 exec --no-startup-id volumeicon
 
+# bluetooth applet
+exec --no-startup-id blueman-applet
+
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
