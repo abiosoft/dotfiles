@@ -111,6 +111,8 @@ bindsym $mod+p workspace prev_on_output
 
 # switch workspace to display
 bindsym $mod+Control+h move workspace to output left
+bindsym $mod+Control+j move workspace to output down
+bindsym $mod+Control+k move workspace to output up
 bindsym $mod+Control+l move workspace to output right
 
 # move focused container to workspace
