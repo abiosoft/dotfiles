@@ -728,7 +728,7 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = '/Users/abiola/go/bin/gocode'
+let g:deoplete#sources#go#gocode_binary = '/home/abiola/go/bin/gocode'
 let g:deoplete#ignore_sources = {}
 let g:deoplete#ignore_sources._ = ['buffer', 'member', 'file', 'neosnippet', 'around']
 
