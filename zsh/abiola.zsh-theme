@@ -50,7 +50,7 @@ git_dirty() {
 # Display information about the current repository
 #
 repo_information() {
-    git_info="%F{white}${vcs_info_msg_0_%%/.} %F{white}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_3_%f"
+    git_info="%F{$(color)}${vcs_info_msg_0_%%/.} %F{$(color)}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_3_%f"
     info=`echo $git_info`
     if [ "$vcs_info_msg_1_" = "" ]; then
         echo "%~"
@@ -86,11 +86,20 @@ cprp() {
     cprompt
 }
 
+# gnome builder terminal hack
+color() {
+    if [ -z "$INSIDE_GNOME_BUILDER" ]; then
+        echo "white"
+    else
+        echo "black"
+    fi
+}
+
 # Define prompts
 #
-PROMPT="%(?.%F{white}.%F{red})❯%f " # Display a red prompt char on failure
+PROMPT="%(?.%F{$(color)}.%F{red})❯%f " # Display a red prompt char on failure
 #PROMPT="`cprp`❯ " # Display a red prompt char on failure
-RPROMPT="%F{white}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
+RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
 
 # ------------------------------------------------------------------------------
 #
