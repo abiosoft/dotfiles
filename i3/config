@@ -9,7 +9,8 @@ set $alt Mod1
 set $terminal urxvt
 
 # background set. urxvt is dump is correct background color is missing from start.
-exec --no-startup-id feh --bg-fill --scaled ~/Pictures/wallpaper.png
+exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper.png
+exec --no-startup-id xrdb ~/.Xresources
 
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
