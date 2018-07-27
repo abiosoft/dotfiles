@@ -27,8 +27,9 @@ bindsym $mod+y border normal
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font xft:Dejavu Sans Mono 10
+# font xft:Dejavu Sans Mono 10
 # font xft:Product Sans 10
+font xft:SF Mono 10
 # font xft:URWGothic-Book 11
 
 # Use Mouse+$mod to drag floating windows
@@ -42,7 +43,7 @@ bindsym $mod+Shift+q kill
 
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
-bindsym $mod+d exec --no-startup-id launchar 
+bindsym $mod+d exec --no-startup-id launchar
 bindsym Ctrl+space exec --no-startup-id launchar
 
 # launch categorized menu
@@ -207,6 +208,9 @@ bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 # Make all window floating by default except terminal, firefox, chrome
 for_window [class="[.]*"] floating enable
 for_window [class="(?i)Gnome-terminal"] floating disable
+for_window [class="(?i)Google-chrome"] floating disable
+for_window [class="(?i)Firefox"] floating disable
+for_window [window_role="pop-up"] floating enable
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus

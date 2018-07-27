@@ -20,7 +20,7 @@ order += "cpu_usage"
 order += "tztime local"
 
 wireless _first_ {
-        format_up = " (%quality at %essid) %ip"
+        format_up = " %quality %essid %ip"
         format_down = ""
 }
 
@@ -35,7 +35,7 @@ battery all {
 }
 
 tztime local {
-        format = "%a %d-%m-%Y %I:%M"
+        format = "%a %d-%m-%Y %I:%M%p"
 }
 
 disk "/" {
@@ -47,8 +47,8 @@ cpu_usage {
 }
 
 volume master {
-   format = "♪: %volume"
-   format_muted = "♪: muted (%volume)"
+   format = "♪ %volume"
+   format_muted = "♪ muted (%volume)"
    device = "pulse"
    mixer = "Master"
    mixer_idx = 0
