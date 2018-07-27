@@ -461,14 +461,17 @@ mode "tmux-key" {
 	bindsym Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh; mode "default"
 	bindsym q kill; mode "default"
 
-	# movement
+	# focus window
 	bindsym h focus left; mode "default"
 	bindsym j focus down; mode "default"
 	bindsym k focus up; mode "default"
 	bindsym l focus right; mode "default"
 	bindsym z fullscreen toggle; mode "default"
-
-
+	# move focused window
+	bindsym Shift+h move left; mode "default"
+	bindsym Shift+j move down; mode "default"
+	bindsym Shift+k move up; mode "default"
+	bindsym Shift+l move right; mode "default"
 }
 
 
