@@ -57,4 +57,4 @@ URxvt.scrollBar:    false
 URxvt.letterSpace:  -1
 URxvt.transparent:  true
 URxvt.shading:      20
-
+URxvt.perl-ext-common: selection-to-clipboard
