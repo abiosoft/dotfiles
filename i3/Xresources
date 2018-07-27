@@ -51,10 +51,10 @@
 
 
 ! Terminal - rxvt-unicode
+URxvt.font:         xft:SFMono Nerd Font:antialias=true:hinting=slight:size=11
+URxvt.boldFont:     xft:SFMono Nerd Font:antialias=true:hinting=slight:size=11
+URxvt.scrollBar:    false
+URxvt.letterSpace:  -1
+URxvt.transparent:  true
+URxvt.shading:      20
 
-URxvt.font:     xft:SF Mono:antialias=true:hinting=slight:size=11
-URxvt.boldFont:  xft:SF Mono:antialias=true:hinting=slight:size=11
-URxvt.scrollBar: false
-URxvt.letterSpace: -1
-URxvt.transparent:   true
-URxvt.shading:       20
