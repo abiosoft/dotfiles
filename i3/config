@@ -6,7 +6,7 @@ set $mod Mod4
 set $alt Mod1
 # set $mod Control+Mod1
 
-set $terminal gnome-terminal
+set $terminal urxvt
 
 
 
@@ -36,7 +36,7 @@ font xft:SF Mono 10
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec $terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -207,7 +207,9 @@ bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 
 # Make all window floating by default except terminal, firefox, chrome
 for_window [class="[.]*"] floating enable
+for_window [class="(?i)URxvt"] floating disable
 for_window [class="(?i)Gnome-terminal"] floating disable
+for_window [class="(?i)Gnome-builder"] floating disable
 for_window [class="(?i)Google-chrome"] floating disable
 for_window [class="(?i)Firefox"] floating disable
 for_window [window_role="pop-up"] floating enable
