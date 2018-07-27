@@ -11,7 +11,7 @@ general {
         interval = 5
 }
 
-order += "ipv6"
+order += "volume master"
 order += "disk /"
 order += "wireless _first_"
 order += "ethernet _first_"
@@ -45,3 +45,12 @@ disk "/" {
 cpu_usage {
     format = " %usage"
 }
+
+volume master {
+   format = "♪: %volume"
+   format_muted = "♪: muted (%volume)"
+   device = "pulse"
+   mixer = "Master"
+   mixer_idx = 0
+}
+
