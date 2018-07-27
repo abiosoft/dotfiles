@@ -143,14 +143,6 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
-#navigate workspaces next / previous
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
-
-# switch to next workspace
-bindsym $mod+n workspace next_on_output
-bindsym $mod+p workspace prev_on_output
-
 # switch workspace to display
 bindsym $mod+Ctrl+h move workspace to output left
 bindsym $mod+Control+j move workspace to output down
@@ -206,37 +198,9 @@ bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 # assign [class="Pcmanfm"] $ws3
 # assign [class="Skype"] $ws5
 
-# Open specific applications in floating mode
-for_window [title="alsamixer"] floating enable border pixel 1
-for_window [class="Calamares"] floating enable border normal
-for_window [class="Clipgrab"] floating enable
-for_window [title="File Transfer*"] floating enable
-for_window [class="Galculator"] floating enable border pixel 1
-for_window [class="GParted"] floating enable border normal
-for_window [title="i3_help"] floating enable sticky enable border normal
-for_window [class="Lightdm-settings"] floating enable
-for_window [class="Lxappearance"] floating enable sticky enable border normal
-for_window [class="Manjaro-hello"] floating enable
-for_window [class="Manjaro Settings Manager"] floating enable border normal
-for_window [title="MuseScore: Play Panel"] floating enable
-for_window [class="Nitrogen"] floating enable sticky enable border normal
-for_window [class="Oblogout"] fullscreen enable
-for_window [class="octopi"] floating enable
-for_window [title="About Pale Moon"] floating enable
-for_window [class="Pamac-manager"] floating enable
-for_window [class="pamac-updater"] floating enable
-for_window [class="Pavucontrol"] floating enable
-for_window [class="qt5ct"] floating enable sticky enable border normal
-for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
-for_window [class="Simple-scan"] floating enable border normal
-for_window [class="(?i)System-config-printer.py"] floating enable border normal
-for_window [class="Skype"] floating enable border normal
-for_window [class="Thus"] floating enable border normal
-for_window [class="Timeset-gui"] floating enable border normal
-for_window [class="(?i)virtualbox"] floating enable border normal
-for_window [class="Xfburn"] floating enable
-for_window [class="Thunar"] floating enable
-for_window [class="Arandr"] floating enable
+# Make all window floating by default except terminal, firefox, chrome
+for_window [class="[.]*"] floating enable
+for_window [class="(?i)Gnome-terminal"] floating disable
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -252,15 +216,13 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
-set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym u exec --no-startup-id i3exit switch_user, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym l exec --no-startup-id i3lock -c '#222222', mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff, mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
@@ -296,19 +258,13 @@ bindsym $mod+9 exec --no-startup-id blurlock
 
 # Autostart applications
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id nitrogen --restore; sleep 1; compton -b
-#exec --no-startup-id manjaro-hello
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pamac-tray
 exec --no-startup-id clipit
 # exec --no-startup-id blueman-applet
 # exec_always --no-startup-id sbxkb
-exec --no-startup-id start_conky_maia
-# exec --no-startup-id start_conky_green
-exec --no-startup-id xautolock -time 10 -locker blurlock
-exec_always --no-startup-id ff-theme-util
-exec_always --no-startup-id fix_xcursor
+exec --no-startup-id xautolock -time 10 -locker i3lock
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
@@ -440,13 +396,6 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
-# new empty workspace
-bindsym $mod+c exec --no-startup-id sh ~/.config/i3/workspace.sh
-
-# move container to new empty workspace
-bindsym $mod+Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh
-
-
 # use ctrl-b as with tmux. 
 # since ideally I should use tmux or i3, not both.
 bindsym Ctrl+b mode "tmux-key" 
@@ -460,6 +409,8 @@ mode "tmux-key" {
 	bindsym c exec --no-startup-id sh ~/.config/i3/workspace.sh; mode "default"
 	bindsym Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh; mode "default"
 	bindsym q kill; mode "default"
+	bindsym space floating toggle; mode "default"
+	bindsym Escape; mode "default"
 
 	# focus window
 	bindsym h focus left; mode "default"
@@ -472,6 +423,9 @@ mode "tmux-key" {
 	bindsym Shift+j move down; mode "default"
 	bindsym Shift+k move up; mode "default"
 	bindsym Shift+l move right; mode "default"
+
+	# quit
+	bindsym 0 mode "$mode_system"
 }
 
 
