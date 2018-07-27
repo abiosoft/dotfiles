@@ -211,6 +211,7 @@ for_window [class="(?i)URxvt"] floating disable
 for_window [class="(?i)Gnome-terminal"] floating disable
 for_window [class="(?i)Gnome-builder"] floating disable
 for_window [class="(?i)Google-chrome"] floating disable
+for_window [window_role="browser-window"] floating disable
 for_window [class="(?i)Firefox"] floating disable
 for_window [window_role="pop-up"] floating enable
 
