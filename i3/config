@@ -454,9 +454,12 @@ mode "tmux-key" {
 	# workspaces
 	bindsym n workspace next_on_output; mode "default"
 	bindsym p workspace prev_on_output; mode "default"
+	bindsym Return split h; exec $terminal; mode "default"
 	bindsym Shift+5 split h; exec $terminal; mode "default"
 	bindsym Shift+6 split v; exec $terminal; mode "default"
 	bindsym c exec --no-startup-id sh ~/.config/i3/workspace.sh; mode "default"
+	bindsym Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh; mode "default"
+	bindsym q kill; mode "default"
 
 	# movement
 	bindsym h focus left; mode "default"
