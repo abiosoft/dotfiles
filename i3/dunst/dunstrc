@@ -1,7 +1,7 @@
 [global]
-    font = "Droid Sans 8"
+    font = "Source Code Pro 10"
     allow_markup = yes
-    format = "<b>%s</b>\n%b"
+    format = "<b>%a</b>\n\n%s\n%b"
     sort = yes
     indicate_hidden = yes
     alignment = center
@@ -22,8 +22,8 @@
     separator_color = "#585858"
     startup_notification = false
     # https://github.com/knopwob/dunst/issues/26#issuecomment-36159395
-    #icon_position = left
-    #icon_folders = /usr/share/icons/elementary/actions/16/
+    icon_position = left
+    max_icon_size = 32
 
 [frame]
     width = 1
