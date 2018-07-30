@@ -65,8 +65,8 @@ bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up
 bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 set $sink `pactl list short sinks | grep RUNNING | cut -f1`
-bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume $sink  +10%; notify-send 'volume up'"
-bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume $sink  -10%; notify-send 'volume down'"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume $sink  +5%; notify-send 'volume up'"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume $sink  -5%; notify-send 'volume down'"
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $sink toggle
 # Pulse Audio controls
 
