@@ -1,14 +1,35 @@
 # ZSH
+export ZSH="/home/abiola/.oh-my-zsh"
+
 ZSH_THEME="abiola"
 CASE_SENSITIVE="true"
 
-export GOPATH="$HOME/gocodes"
-export PATH="$PATH:/usr/local/go/bin:$HOME/gocodes/bin"
+plugins=(
+  git
+  command-not-found
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# personal scripts
+export PATH="$PATH:$HOME/bin"
+
+# aliases
+alias vim='nvim'
+alias flathub='flatpak install flathub'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
+# git commit editor
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-# nvim
-alias vim=nvim
-sudo='sudo '
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+# GO
+export PATH="$PATH:$HOME/go/bin"
+
+# NPM
+# create a ~/.npmrc with
+#   prefix=/home/abiola/.npm-packages
+NPM_PACKAGES="$HOME/.npm-packages"
+PATH="$NPM_PACKAGES/bin:$PATH"
 
