@@ -12,3 +12,9 @@ sudo cp -R org.manjaro.desktop.maiaPanel /usr/share/plasma/layout-templates/
 echo disabling launcher meta key...
 kwriteconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta ""
 
+echo installing kscreen for screen settings persistence..
+which pacman > /dev/null
+if [ $? -eq 0 ]; then
+    sudo pacman -Sy --noconfirm kscreen
+fi
+
