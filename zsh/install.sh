@@ -7,7 +7,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo installing oh-my-zsh...
-sh oh-mh-zsh.sh
+sh oh-my-zsh.sh
 if [ $? -ne 0 ]; then
     exit 1
 fi
