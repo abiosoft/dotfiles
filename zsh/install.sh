@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo installing zsh...
-sudo pacman -Sy --noconfirm zsh
+sudo pacman -Sy --noconfirm zsh python-pkginfo
 if [ $? -ne 0 ]; then
     exit 1
 fi
