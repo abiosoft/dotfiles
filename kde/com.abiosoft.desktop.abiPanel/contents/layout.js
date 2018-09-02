@@ -38,6 +38,14 @@ panel.addWidget("org.kde.plasma.pager")
 var icontask = panel.addWidget("org.kde.plasma.icontasks")
 icontask.writeConfig("showOnlyCurrentScreen", true)
 icontask.writeConfig("middleClickAction", 4)
+icontask.writeConfig("launchers", [
+  "file:///usr/share/applications/org.kde.dolphin.desktop",
+  "file:///usr/share/applications/google-chrome.desktop",
+  "file:///usr/share/applications/firefox.desktop",
+  "file:///usr/share/applications/org.kde.konsole.desktop",
+  "file:///usr/share/applications/org.kde.kate.desktop",
+  "file:///usr/share/applications/visual-studio-code.desktop",
+])
 
 panel.addWidget("org.kde.plasma.showdesktop")
 panel.addWidget("org.kde.plasma.trash")
