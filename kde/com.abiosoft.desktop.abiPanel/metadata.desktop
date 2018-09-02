@@ -1,0 +1,16 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Abi Panel
+Type=Service
+ServiceTypes=Plasma/LayoutTemplate
+X-Plasma-Shell=plasmashell
+X-Plasma-ContainmentCategories=panel
+X-KDE-PluginInfo-Author=Abiola Ibrahim
+X-KDE-PluginInfo-Email=abiola89@gmail.com
+X-KDE-PluginInfo-Name=com.abiosoft.desktop.abiPanel
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://abio.la/
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true

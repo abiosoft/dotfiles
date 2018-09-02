@@ -36,8 +36,14 @@ kickoff.writeConfig("global", "Alt+F1")
 panel.addWidget("org.kde.plasma.pager")
 
 var icontask = panel.addWidget("org.kde.plasma.icontasks")
+icontask.writeConfig("showOnlyCurrentScreen", true)
+icontask.writeConfig("middleClickAction", 4)
 
+panel.addWidget("org.kde.plasma.showdesktop")
 panel.addWidget("org.kde.plasma.trash")
 panel.addWidget("org.kde.plasma.systemtray")
-panel.addWidget("org.kde.plasma.digitalclock")
+
+var clock = panel.addWidget("org.kde.plasma.digitalclock")
+clock.writeConfig("showDate", true)
+clock.writeConfig("use24hFormat", false)
 
