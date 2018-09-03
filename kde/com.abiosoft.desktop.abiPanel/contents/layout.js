@@ -33,7 +33,6 @@ kickoff.writeConfig("global", "Alt+F1")
 
 //panel.addWidget("org.kde.plasma.showActivityManager")
 
-panel.addWidget("org.kde.plasma.pager")
 
 var icontask = panel.addWidget("org.kde.plasma.icontasks")
 icontask.writeConfig("showOnlyCurrentScreen", true)
@@ -47,6 +46,7 @@ icontask.writeConfig("launchers", [
   "file:///usr/share/applications/visual-studio-code.desktop",
 ])
 
+panel.addWidget("org.kde.plasma.pager")
 panel.addWidget("org.kde.plasma.showdesktop")
 panel.addWidget("org.kde.plasma.trash")
 panel.addWidget("org.kde.plasma.systemtray")
