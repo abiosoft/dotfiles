@@ -24,7 +24,16 @@ echo setting up for $distro with $desktop...
 
 for dir in ${dirs[@]}; do
     echo setting up $dir...
-    sh -c "cd $dir && ( ( [ -f deps-$distro.sh ] && ./deps-$distro.sh ) || echo no deps ) && ./install.sh"
+    sh <<EOF
+    cd $dir
+    if [ -f deps-$distro.sh ]; then
+        ./deps-$distro.sh
+    else
+        echo no deps for $dir
+    fi
+
+    echo [ $? -eq 0 ] && ./install.sh
+EOF
 
     if [ $? -ne 0 ]; then
         exit 1
