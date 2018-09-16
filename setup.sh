@@ -32,7 +32,7 @@ for dir in ${dirs[@]}; do
         echo no deps for $dir
     fi
 
-    echo [ $? -eq 0 ] && ./install.sh
+    [ $? -eq 0 ] && ./install.sh
 EOF
 
     if [ $? -ne 0 ]; then
