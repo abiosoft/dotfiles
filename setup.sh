@@ -8,16 +8,16 @@ dirs=(
     "zsh"
 )
 
-dirs+=( $desktop )
 
 if [ -z "$distro" ]; then
-    echo distro not specified
+    echo distro not specified, required.
     exit 1
 fi
 
 if [ -z "$desktop" ]; then
-    echo desktop not specified
-    exit 1
+    echo desktop not specified, omitting desktop
+else
+    dirs+=( $desktop )
 fi
 
 echo setting up for $distro with $desktop...
