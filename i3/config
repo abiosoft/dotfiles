@@ -211,10 +211,16 @@ for_window [class="(?i)Gnome-terminal"] floating disable
 for_window [class="(?i)xfce4-terminal"] floating disable
 for_window [class="(?i)mate-terminal"] floating disable
 for_window [class="(?i)Gnome-builder"] floating disable
-for_window [class="(?i)Google-chrome"] floating disable
-for_window [window_role="browser-window"] floating disable
-for_window [class="(?i)Firefox"] floating disable
+# for_window [class="(?i)Google-chrome"] floating disable
+# for_window [window_role="browser-window"] floating disable
+# for_window [class="(?i)Firefox"] floating disable
+for_window [window_role="About"] floating enable
 for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
