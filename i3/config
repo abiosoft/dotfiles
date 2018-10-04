@@ -6,7 +6,7 @@ set $mod Mod4
 set $alt Mod1
 # set $mod Control+Mod1
 
-set $terminal xfce4-terminal
+set $terminal mate-terminal
 
 # background set. urxvt is dumb. correct background color is missing from start.
 exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper.png
@@ -209,6 +209,7 @@ for_window [class="[.]*"] floating enable
 for_window [class="(?i)URxvt"] floating disable
 for_window [class="(?i)Gnome-terminal"] floating disable
 for_window [class="(?i)xfce4-terminal"] floating disable
+for_window [class="(?i)mate-terminal"] floating disable
 for_window [class="(?i)Gnome-builder"] floating disable
 for_window [class="(?i)Google-chrome"] floating disable
 for_window [window_role="browser-window"] floating disable
