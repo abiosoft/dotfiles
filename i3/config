@@ -44,8 +44,8 @@ bindsym $mod+Shift+q kill
 
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
-bindsym $mod+d exec --no-startup-id launchar
-bindsym Ctrl+space exec --no-startup-id launchar
+bindsym $mod+d exec --no-startup-id rofi -show-icons -mode combi -combi-modi drun,window
+bindsym Ctrl+space exec --no-startup-id rofi -show-icons -mode combi -combi-modi drun,window
 
 
 ################################################################################################

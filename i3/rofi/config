@@ -1,0 +1,2 @@
+rofi.theme=~/.local/share/rofi/themes/tomorrow-night.rasi
+rofi.modi=window,drun,combi
