@@ -16,9 +16,9 @@ EOF
 workspace(){
     ID="$1"
     WKL="create new workspace"
-    WK=$(printf "$WKL\n$(wmctrl -d | awk -F' ' '{ print $NF}')" | rofi -dmenu -p "move to workspace" -location 2 -yoffset 25 -width 400)
+    WK=$(printf "$WKL\n$(wmctrl -d | awk -F' ' '{ print $NF}')" | rofi -dmenu -p "move to workspace" -location 3 -yoffset 25 -width 400 -i)
     if [ $? -eq 0 ]; then
-        if [ "$WK" != "$WKL" ]; then 
+        if [ "$WK" != "$WKL" ]; then
             ID="$WK"
         fi
     else
@@ -34,10 +34,9 @@ move(){
 }
 
 if [ "$1" = "rofi" ]; then
-    MOVE=$(printf "$OPTIONS" | rofi -dmenu -p "move window" -location 2 -yoffset 25 -width 400) 
-   
+    MOVE=$(printf "$OPTIONS" | rofi -dmenu -p "move window" -location 3 -yoffset 25 -width 400 -i)
     if [ $? -eq 0 ]; then
-        if [ "$MOVE" == "move to workspace" ]; then 
+        if [ "$MOVE" == "move to workspace" ]; then
             workspace "$ID"
         elif [ "$MOVE" = "$SEP" ]; then
             exit 0

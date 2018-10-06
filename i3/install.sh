@@ -33,4 +33,4 @@ dconf write /org/mate/desktop/session/required-components-list "['windowmanager'
 
 echo setting up i3blocks...
 git clone https://github.com/vivien/i3blocks-contrib $HOME/.config/i3blocks
-cp i3blocks/config $HOME/.config/i3blocks/config
+cp i3blocks/config* $HOME/.config/i3blocks/

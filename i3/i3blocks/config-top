@@ -1,0 +1,81 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
+command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
+separator_block_width=15
+markup=pango
+
+[click_apps]
+full_text= 
+command=i3-msg exec "rofi -show drun -show-icons -location 1 -yoffset 25" > /dev/null
+
+[click_files]
+full_text= 
+command=i3-msg exec 'bash -c "caja $HOME"' > /dev/null
+
+[click_terminal]
+full_text=  
+command=mate-terminal
+
+[click_new_workspace]
+full_text=  
+command=sh $HOME/.config/i3/workspace.sh > /dev/null
+
+[click_windows]
+full_text= 
+command=i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 25" > /dev/null
+
+[title]
+command=bash $HOME/.config/i3/windowtitle.sh
+interval=2
+separator=false
+separator_block_width=0
+align=center
+min_width=1590
+
+[click_toggle_float]
+full_text=  
+command=i3-msg floating toggle > /dev/null
+separator=false
+separator_block_width=0
+#
+
+[click_move_workspace]
+full_text=  
+command=bash ~/.config/i3/move2workspace.sh rofi > /dev/null
+separator=false
+separator_block_width=0
+
+[click_close]
+full_text=  
+command=bash ~/.config/i3/closewindow.sh > /dev/null
+
+[powerbutton]
+full_text=  
+command=bash $HOME/.config/i3/leave.sh
+
+

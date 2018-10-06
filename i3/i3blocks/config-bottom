@@ -29,66 +29,6 @@ command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
 separator_block_width=15
 markup=pango
 
-[click_apps]
-full_text= 
-command=i3-msg exec "rofi -show drun -show-icons -location 2 -yoffset 25" > /dev/null
-
-[click_files]
-full_text= 
-command=bash -c "caja $HOME" > /dev/null
-
-[click_terminal]
-full_text=  
-command=mate-terminal
-
-[click_new_workspace]
-full_text=  
-command=sh $HOME/.config/i3/workspace.sh > /dev/null
-
-[click_windows]
-full_text= 
-command=rofi -show window -show-icons -location 2 -yoffset 25
-
-[separator_title]
-command=echo -n ' '
-interval=once
-separator=false
-
-[title_icon]
-full_text=  
-separator=false
-separator_block_width=0
-
-[title]
-command=bash $HOME/.config/i3/windowtitle.sh
-interval=2
-separator=false
-separator_block_width=0
-
-[click_close]
-full_text=  
-command=i3-msg kill > /dev/null
-# separator=false
-# separator_block_width=0
-
-[click_toggle_float]
-full_text=  
-command=i3-msg floating toggle > /dev/null
-separator=false
-separator_block_width=0
-#
-
-[click_move_workspace]
-full_text=  
-command=bash ~/.config/i3/move2workspace.sh rofi > /dev/null
-separator=false
-separator_block_width=0
-
-[separator_notify]
-command=echo -n '  '
-interval=once
-
-
 # Volume indicator
 #
 # The first parameter sets the step (and units to display)

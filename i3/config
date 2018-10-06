@@ -319,18 +319,18 @@ set_from_resource $term_color15    color15
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
 	i3bar_command i3bar
-	status_command sh -c "LC_ALL=en_US.UTF-8 i3blocks"
-	# status_command sh -c "LC_ALL=en_US.UTF-8 i3status"
+	status_command sh -c "LC_ALL=en_US.UTF-8 i3blocks -c $HOME/dotfiles/i3/i3blocks/config-top"
 	position top
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
-	tray_output primary
+	tray_output none
 #	tray_output eDP1
 
 #	bindsym button4 nop
 #	bindsym button5 nop
-#   font xft:URWGothic-Book 11
-	strip_workspace_numbers yes
+  # font xft:Awesome 15
+  # font xft:URWGothic-Book 11
+	# strip_workspace_numbers yes
 
     colors {
         background #283339
@@ -345,6 +345,30 @@ bar {
         urgent_workspace   #16a085 #FDF6E3 #E5201D
     }
 }
+
+# Start i3bar to display a workspace bar (plus the system information i3status if available)
+bar {
+	i3bar_command i3bar
+	status_command sh -c "LC_ALL=en_US.UTF-8 i3blocks -c $HOME/dotfiles/i3/i3blocks/config-bottom"
+	# status_command sh -c "LC_ALL=en_US.UTF-8 i3status"
+	position bottom
+
+## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
+	tray_output primary
+#	tray_output eDP1
+
+#	bindsym button4 nop
+#	bindsym button5 nop
+#   font xft:URWGothic-Book 11
+	strip_workspace_numbers yes
+
+    colors {
+        background #283339
+        statusline #F9FAF9
+        separator  #454947
+    }
+}
+
 
 # hide/unhide i3status bar
 bindsym $mod+m bar mode toggle
