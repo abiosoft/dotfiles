@@ -4,10 +4,10 @@ ID=$(($(i3-msg -t get_workspaces | tr , '\n' | grep '"num":' | cut -d : -f 2 | s
 SEP="------"
 
 OPTIONS=$(cat <<EOF
-left
-right
-up
-down
+  left 
+  right
+  up
+  down
 $SEP
 move to workspace
 EOF
@@ -41,6 +41,7 @@ if [ "$1" = "rofi" ]; then
         elif [ "$MOVE" = "$SEP" ]; then
             exit 0
         else
+            MOVE=$(echo "$MOVE" | awk -F' ' '{ $1=""; print $0 }')
             i3-msg move "$MOVE"
         fi
     else
