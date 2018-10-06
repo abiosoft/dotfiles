@@ -240,17 +240,20 @@ click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30"
 [module/window-float]
 type = custom/script
 exec = echo "  "
+exec-if = xdotool getactivewindow getwindowname
 click-left = i3-msg floating toggle > /dev/null
 
 
 [module/window-move]
 type = custom/script
 exec = echo "  "
+exec-if = xdotool getactivewindow getwindowname
 click-left = bash ~/.config/i3/move2workspace.sh rofi > /dev/null
 
 [module/window-close]
 type = custom/script
 exec = echo "  "
+exec-if = xdotool getactivewindow getwindowname
 click-left = i3-msg kill > /dev/null
 
 [module/space]
