@@ -30,7 +30,7 @@ bindsym $mod+y border normal
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # font xft:Dejavu Sans Mono 10
-font xft:SF Pro Display 10
+font pango:SFMono Nerd Font 11
 # font xft:URWGothic-Book 11
 
 # Use Mouse+$mod to drag floating windows
@@ -44,8 +44,8 @@ bindsym $mod+Shift+q kill
 
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
-bindsym $mod+d exec --no-startup-id "rofi -show-icons -show combi -combi-modi drun,window"
-bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show combi -combi-modi drun,window"
+bindsym $mod+d exec --no-startup-id "rofi -show-icons -show drun"
+bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show drun"
 
 
 ################################################################################################
