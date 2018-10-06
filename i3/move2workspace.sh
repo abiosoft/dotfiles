@@ -43,7 +43,7 @@ if [ "$1" = "rofi" ]; then
         elif [ "$MOVE" = "$SEP" ]; then
             exit 0
         else
-            echo i3-msg move "$MOVE"
+            i3-msg move "$MOVE"
         fi
     else
         exit 0
