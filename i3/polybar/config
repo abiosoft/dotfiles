@@ -57,7 +57,7 @@ font-0 = SFMono Nerd Font:pixelsize=11;1
 
 modules-left = space search space files space terminal space newws space windows space space i3
 modules-center = xwindow  space space space window-float window-move window-close
-modules-right = space space xkeyboard space memory space cpu space wlan space eth space date space space powermenu
+modules-right = xkeyboard space memory space cpu space wlan space eth space date space space powermenu
 
 tray-position = right
 tray-padding = 1
@@ -234,7 +234,7 @@ click-left = bash $HOME/.config/i3/workspace.sh > /dev/null &
 
 [module/windows]
 type = custom/script
-exec = echo "  "
+exec = echo "  "
 click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30" > /dev/null
 
 [module/window-float]

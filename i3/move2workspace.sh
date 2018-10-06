@@ -6,8 +6,8 @@ SEP="------"
 OPTIONS=$(cat <<EOF
 left
 right
-top
-bottom
+up
+down
 $SEP
 move to workspace
 EOF
