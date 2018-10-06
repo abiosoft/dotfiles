@@ -2,12 +2,15 @@
 
 ID=$(($(i3-msg -t get_workspaces | tr , '\n' | grep '"num":' | cut -d : -f 2 | sort -rn | head -1) + 1))
 
-if [ $1 = "rofi" ]; then
-    WK=$(wmctrl -d | awk -F' ' '{ print $NF}' | rofi -dmenu -p workspace -mesg "select workspace to move to, or leave blank for new")
-    if [ $? -eq 0]; then
-        if [ ! -z "$WK" ] then 
+if [ "$1" = "rofi" ]; then
+    WKL="create new workspace"
+    WK=$(printf "$WKL\n$(wmctrl -d | awk -F' ' '{ print $NF}')" | rofi -dmenu -p workspace)
+    if [ $? -eq 0 ]; then
+        if [ "$WK" != "$WKL" ]; then 
             ID="$WK"
         fi
+    else
+        exit 0
     fi
 fi
 
