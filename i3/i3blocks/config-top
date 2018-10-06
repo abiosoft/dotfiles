@@ -65,7 +65,7 @@ separator_block_width=0
 #
 
 [click_move_workspace]
-full_text=  
+full_text= ⟷ 
 command=bash ~/.config/i3/move2workspace.sh rofi > /dev/null
 separator=false
 separator_block_width=0
