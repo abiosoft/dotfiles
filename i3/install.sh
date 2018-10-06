@@ -31,6 +31,7 @@ dconf write /org/mate/desktop/background/show-desktop-icons "false"
 # remove panels from components
 dconf write /org/mate/desktop/session/required-components-list "['windowmanager', 'filemanager', 'dock']"
 
-echo setting up i3blocks...
-git clone https://github.com/vivien/i3blocks-contrib $HOME/.config/i3blocks
-cp i3blocks/config* $HOME/.config/i3blocks/
+echo setting up polybar ...
+mkdir -p $HOME/.config/polybar
+cp polybar/* $HOME/.config/polybar
+

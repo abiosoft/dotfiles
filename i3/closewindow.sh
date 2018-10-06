@@ -9,7 +9,7 @@ No
 EOF
 )
 
-A=$(printf "$OPTIONS" | rofi -dmenu -p close -location 3 -mesg "$MESSAGE" -yoffset 25 -lines 3 -width 400 -i)
+A=$(printf "$OPTIONS" | rofi -dmenu -p close -location 2 -mesg "$MESSAGE" -yoffset 30 -lines 3 -width 400 -i)
 if [ $? -ne 0]; then
     exit 0
 fi

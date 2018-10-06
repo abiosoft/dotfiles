@@ -1,0 +1,297 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+background = #222
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[bar/example]
+monitor = ${env:MONITOR}
+width = 100%
+height = 27
+;offset-x = 1%
+;offset-y = 1%
+; radius = 6.0
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 4
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 0
+module-margin-right = 0
+
+font-0 = SFMono Nerd Font:pixelsize=11;1
+; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+; font-2 = siji:pixelsize=10;1
+
+modules-left = space search space files space terminal space newws space windows space space i3
+modules-center = xwindow  space space space window-float window-move window-close
+modules-right = space space xkeyboard space memory space cpu space wlan space eth space date space space powermenu
+
+tray-position = right
+tray-padding = 1
+;tray-transparent = true
+;tray-background = #0063ff
+
+;wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:50:...%
+
+
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = "KB "
+format-prefix-foreground = ${colors.foreground-alt}
+
+label-layout = %layout%
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline = ${colors.primary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+label-unfocused-underline = ${colors.foreground-alt}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+; Separator in between workspaces
+; label-separator = |
+
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "CPU "
+format-prefix-foreground = ${colors.foreground-alt}
+label = %percentage:2%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "MEM "
+format-prefix-foreground = ${colors.foreground-alt}
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = net1
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/eth]
+type = internal/network
+interface = eno1
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %I:%M%p
+time-alt = %I:%M:%S%p
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+
+label = %date% %time%
+
+[module/search]
+type = custom/script
+exec = echo "  "
+click-left = rofi -show drun -show-icons -location 1 -yoffset 30 &
+
+[module/files]
+type = custom/script
+exec = echo "  "
+click-left = i3-msg exec 'bash -c "caja $HOME"' > /dev/null &
+
+[module/terminal]
+type = custom/script
+exec = echo "  "
+click-left = mate-terminal &
+
+[module/newws]
+type = custom/script
+exec = echo "  "
+click-left = bash $HOME/.config/i3/workspace.sh > /dev/null &
+
+[module/windows]
+type = custom/script
+exec = echo "  "
+click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30" > /dev/null
+
+[module/window-float]
+type = custom/script
+exec = echo "  "
+click-left = i3-msg floating toggle > /dev/null
+
+
+[module/window-move]
+type = custom/script
+exec = echo "  "
+click-left = bash ~/.config/i3/move2workspace.sh rofi > /dev/null
+
+[module/window-close]
+type = custom/script
+exec = echo "  "
+click-left = i3-msg kill > /dev/null
+
+[module/space]
+type = custom/script
+exec = echo " "
+
+[module/separator]
+type = custom/script
+exec = echo "|"
+
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open =  
+label-open-foreground = ${colors.foreground}
+label-close = cancel
+label-close-foreground = ${colors.foreground}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = lock screen
+menu-0-0-exec = xdotool key ctrl+alt+l
+menu-0-1 = logout
+menu-0-1-exec = mate-session-save --logout-dialog
+menu-0-2 = shut down
+menu-0-2-exec = mate-session-save --shutdown-dialog
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+;
