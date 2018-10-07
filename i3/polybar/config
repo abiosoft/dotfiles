@@ -72,19 +72,17 @@ tray-padding = 1
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
 
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
 
 cursor-click = pointer
-cursor-scroll = ns-resize
+# cursor-scroll = pointer
 
 [module/xwindow]
 type = custom/script
 label = %output:0:50:...%
 exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh
 tail = true
-scroll-up = MONITOR=$MONITOR bash $HOME/.config/i3/cycleworkspace.sh up
-scroll-down = MONITOR=$MONITOR bash $HOME/.config/i3/cycleworkspace.sh down
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -295,5 +293,3 @@ screenchange-reload = true
 [global/wm]
 margin-top = 5
 margin-bottom = 5
-
-;
