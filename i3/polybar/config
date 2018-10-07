@@ -83,6 +83,8 @@ type = custom/script
 label = %output:0:50:...%
 exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh
 tail = true
+scroll-up = MONITOR=$MONITOR bash $HOME/.config/i3/cycleworkspace.sh up
+scroll-down = MONITOR=$MONITOR bash $HOME/.config/i3/cycleworkspace.sh down
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -220,19 +222,17 @@ click-left = rofi -show drun -show-icons -location 1 -yoffset 30 &
 [module/files]
 type = custom/script
 exec = echo "  "
-click-left = i3-msg exec 'bash -c "caja $HOME"' > /dev/null &
+click-left = i3-msg focus output $MONITOR && i3-msg exec 'bash -c "caja $HOME"' > /dev/null
 
 [module/terminal]
 type = custom/script
 exec = echo "  "
-click-left = mate-terminal &
+click-left = i3-msg focus output $MONITOR && mate-terminal > /dev/null
 
 [module/newws]
 type = custom/script
-click-left = bash $HOME/.config/i3/workspace.sh > /dev/null &
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
-tail = true
-format-prefix=" "
+click-left = i3-msg focus output $MONITOR && bash $HOME/.config/i3/workspace.sh > /dev/null
+exec = echo "  "
 
 [module/windows]
 type = custom/script
