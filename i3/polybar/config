@@ -59,7 +59,7 @@ modules-left = space search space files space terminal space windows space space
 modules-center = xwindow  space space space window-float window-move window-close
 modules-right = xkeyboard space memory space cpu space wlan space eth space date space space powermenu
 
-tray-position = right
+tray-position = ${env:PRIMARY}
 tray-padding = 1
 ;tray-transparent = true
 ;tray-background = #0063ff

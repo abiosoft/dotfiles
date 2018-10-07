@@ -6,5 +6,10 @@ killall -q polybar
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 for m in $(polybar --list-monitors | cut -d":" -f1); do
-    MONITOR=$m polybar --reload example &
+    PRIMARY=$(xrandr | grep primary | awk -F' ' '{print $1}')
+    POS=""
+    if [ "$m" = "$PRIMARY" ]; then
+        POS="right"
+    fi
+    PRIMARY=$POS MONITOR=$m polybar --reload example &
 done
