@@ -44,8 +44,8 @@ bindsym $mod+Shift+q kill
 
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
-bindsym $mod+d exec --no-startup-id "rofi -show-icons -show drun"
-bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show drun"
+bindsym $mod+d exec --no-startup-id "rofi -show-icons -show drun -position 1 -yoffset=30"
+bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show drun -position 1 -yoffset=30"
 
 
 ################################################################################################
