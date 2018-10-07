@@ -79,10 +79,10 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 [module/xwindow]
-type = internal/xwindow
-label = %title:0:50:...%
-
-
+type = custom/script
+label = %output:0:50:...%
+exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh
+tail = true
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -229,8 +229,10 @@ click-left = mate-terminal &
 
 [module/newws]
 type = custom/script
-exec = echo "  "
 click-left = bash $HOME/.config/i3/workspace.sh > /dev/null &
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+tail = true
+format-prefix=" "
 
 [module/windows]
 type = custom/script
@@ -239,31 +241,28 @@ click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30"
 
 [module/window-float]
 type = custom/script
-exec = echo "  "
-exec-if = xdotool getactivewindow getwindowname
 click-left = i3-msg floating toggle > /dev/null
-
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+tail = true
+format-prefix="  "
 
 [module/window-move]
 type = custom/script
-exec = echo "  "
-exec-if = xdotool getactivewindow getwindowname
 click-left = bash ~/.config/i3/move2workspace.sh rofi > /dev/null
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+tail = true
+format-prefix="  "
 
 [module/window-close]
 type = custom/script
-exec = echo "  "
-exec-if = xdotool getactivewindow getwindowname
 click-left = i3-msg kill > /dev/null
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+tail = true
+format-prefix="  "
 
 [module/space]
 type = custom/script
 exec = echo " "
-
-[module/separator]
-type = custom/script
-exec = echo "|"
-
 
 [module/powermenu]
 type = custom/menu

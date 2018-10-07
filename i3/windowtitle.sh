@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
-id=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')
-name=$(xdotool getactivewindow getwindowname)
-app=$(wmctrl -l -x | grep ${id:2} | awk -F' ' '{print $3}' | awk -F'.' ' {print $2} ')
 
-[ "$name" = "" ] && echo "no open window" && exit
+# MONITOR, PRINT
 
-name="$app - $name"
-
-echo ${name:0:100}
+xprop -spy -root _NET_ACTIVE_WINDOW | while read; do
+    NAME=$(xdotool getactivewindow getwindowname 2> /dev/null)
+    [ $? -ne 0 ] && NAME=""
+    bash $HOME/.config/i3/activemonitor.sh $MONITOR
+    if [ $? -eq 0 ] && [ "$NAME" != "" ]; then
+        if [ "$PRINT" = "" ]; then
+            echo $NAME
+        else
+            echo $PRINT
+        fi
+    else
+        echo ""
+    fi
+done
