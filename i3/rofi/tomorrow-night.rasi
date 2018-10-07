@@ -15,7 +15,7 @@
     background:                  rgba ( 29, 31, 33, 100 % );
     background-color:            rgba ( 29, 31, 33, 0 % );
     separatorcolor:              @foreground;
-    border-color:                @foreground;
+    border-color:                @background;
     selected-normal-foreground:  @lightbg;
     selected-normal-background:  @lightfg;
     selected-active-foreground:  @background;
@@ -102,10 +102,10 @@ element alternate.active {
     text-color:       @alternate-active-foreground;
 }
 scrollbar {
-    width:            4px ;
+    width:            0px ;
     border:           0;
     handle-color:     @normal-foreground;
-    handle-width:     8px ;
+    handle-width:     2px ;
     padding:          0;
 }
 sidebar {
