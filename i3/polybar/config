@@ -56,7 +56,7 @@ font-0 = SFMono Nerd Font:pixelsize=12;1
 ; font-2 = siji:pixelsize=10;1
 
 modules-left = space search space files space terminal space windows space space i3 space newws
-modules-center = xwindow  space space space window-float window-move window-close
+modules-center = window-display window-move window-float space space xwindow window-close 
 modules-right = xkeyboard space memory space cpu space wlan space eth space date space space powermenu
 
 tray-position = ${env:PRIMARY}
@@ -246,8 +246,15 @@ format-prefix="  "
 
 [module/window-move]
 type = custom/script
-click-left = bash ~/.config/i3/move2workspace.sh rofi > /dev/null
+click-left = bash $HOME/.config/i3/movewindow.sh window
 exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+tail = true
+format-prefix="  "
+
+[module/window-display]
+type = custom/script
+click-left = bash $HOME/.config/i3/movewindow.sh display
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
 tail = true
 format-prefix="  "
 
