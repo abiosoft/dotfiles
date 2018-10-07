@@ -205,7 +205,7 @@ bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 # assign [class="Skype"] $ws5
 
 # Make all window floating by default except terminal, firefox, chrome
-for_window [class="[.]*"] floating enable
+# for_window [class="[.]*"] floating enable
 for_window [class="(?i)URxvt"] floating disable
 for_window [class="(?i)Gnome-terminal"] floating disable
 for_window [class="(?i)xfce4-terminal"] floating disable
