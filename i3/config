@@ -441,3 +441,4 @@ bindsym --whole-window Ctrl+button3 kill
 
 # polybar
 exec_always --no-startup-id bash $HOME/.config/polybar/launch.sh
+

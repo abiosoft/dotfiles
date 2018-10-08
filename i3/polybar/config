@@ -52,6 +52,7 @@ module-margin-left = 0
 module-margin-right = 0
 
 font-0 = SFMono Nerd Font:pixelsize=12;1
+font-1 = SF Pro Display:pixelsize=12;1
 ; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 ; font-2 = siji:pixelsize=10;1
 
@@ -79,9 +80,12 @@ cursor-click = pointer
 # cursor-scroll = pointer
 
 [module/xwindow]
+; type = internal/xwindow
+; label = %{T2} %title%
+; label-maxlen = 100
 type = custom/script
-label = %output:0:50:...%
-exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh
+label = %{T2} %output:0:100:...%
+exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
 
 [module/xkeyboard]
@@ -240,28 +244,28 @@ click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30"
 [module/window-float]
 type = custom/script
 click-left = i3-msg floating toggle > /dev/null
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
 format-prefix="  "
 
 [module/window-move]
 type = custom/script
 click-left = bash $HOME/.config/i3/movewindow.sh window
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
 format-prefix="  "
 
 [module/window-display]
 type = custom/script
 click-left = bash $HOME/.config/i3/movewindow.sh display
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
 format-prefix="  "
 
 [module/window-close]
 type = custom/script
 click-left = i3-msg kill > /dev/null
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh
+exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
 format-prefix="  "
 
