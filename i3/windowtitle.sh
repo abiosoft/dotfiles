@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-# MONITOR, PRINT
+# This is used with polybar to print current window title
+# echo current active window title or an empty line if there is none
+# Also, only prints title when the window is on the display output that matches $MONITOR
+# to improve user experience of having wrong window title on a display.
 
 killpid(){
     kill -9 $1 > /dev/null
@@ -9,55 +12,55 @@ killpid(){
 
 print_title(){
     NAME=$(xdotool getactivewindow getwindowname)
-    [ $? -ne 0 ] && NAME=""
+    [ $? -ne 0 ] && NAME="" # ensuring name is not a whitespaced string
     bash $HOME/.config/i3/activemonitor.sh $MONITOR
     if [ $? -eq 0 ] && [ "$NAME" != "" ]; then
-        if [ "$PRINT" = "" ]; then
-            echo $NAME
-        else
-            echo $PRINT
-        fi
+        echo $NAME
     else
         echo ""
     fi
 }
 
 watch_win(){
-    # watch window
-    while read line; do
-        echo $1 $2
-        print_title
-    done &< <(tail --pid $1 -f $2 &)
-}
-
-watch_active(){
     PID=""
     tempfile=""
 
     while read line; do
-        # only window title needs monitoring
-        # others can return here
-        [ ! -z "$PRINT" ] && print_title && continue
-
         # active window has changed
         # kill current window monitor
+        # we get an error on first iteration, not an issue
         killpid $PID $tmpfile || true
 
+        # clear trap, process killed
+        # this is to play it safe, there is a rare chance the terminated
+        # pid is reassigned and wrong process could be terminated.
+        trap -
+
+        # clear any existing title
+        # hack to clear title in case the only active window is closed
+        echo ""
+
+        # get active window ID
         ID=$(echo $line | awk -F' ' '{ print $NF }')
 
-        # wait 5 secs if no active window befor checking again
+        # wait 5 secs if no active window before checking again
         [ -z "$ID" ] && sleep 5 && continue
 
 
-        # don't wait for it.
+        # monitor window using ID
+        # to be able to get pid of window monitor process,
+        # start in background and direct output to a file
+        # tail the log file instead
         tmpfile=$(mktemp)
         xprop -spy -id $ID _NET_WM_NAME 2> /dev/null > $tmpfile &
         PID=$!
-        trap "killpid $PID $tmpfile" INT EXIT ERROR
         tail --pid $PID -f $tmpfile | while read line; do print_title; done &
+
+        # in case of the last iteration that hasn't killed the loop
+        trap "killpid $PID $tmpfile" INT EXIT ERROR
 
     done < <(xprop -spy -root _NET_ACTIVE_WINDOW)
 }
 
-watch_active
+watch_win
 

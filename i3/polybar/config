@@ -34,7 +34,7 @@ height = 27
 ;offset-x = 1%
 ;offset-y = 1%
 ; radius = 6.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -48,7 +48,7 @@ border-color = #00000000
 padding-left = 0
 padding-right = 2
 
-module-margin-left = 0
+module-margin-left = 1
 module-margin-right = 0
 
 font-0 = SFMono Nerd Font:pixelsize=12;1
@@ -56,9 +56,9 @@ font-1 = SF Pro Display:pixelsize=12;1
 ; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 ; font-2 = siji:pixelsize=10;1
 
-modules-left = space search space files space terminal space windows space space i3 space newws
-modules-center = window-display window-move window-float space space xwindow window-close 
-modules-right = xkeyboard space memory space cpu space wlan space eth space date space space powermenu
+modules-left = search files terminal windows i3 newws
+modules-center = xwindow
+modules-right = xkeyboard memory cpu wlan eth date powermenu
 
 tray-position = ${env:PRIMARY}
 tray-padding = 1
@@ -80,13 +80,10 @@ cursor-click = pointer
 # cursor-scroll = pointer
 
 [module/xwindow]
-; type = internal/xwindow
-; label = %{T2} %title%
-; label-maxlen = 100
 type = custom/script
-label = %{T2} %output:0:100:...%
 exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
 tail = true
+label = %{A1:bash $HOME/.config/i3/movewindow.sh display:}  %{A}%{A1:bash $HOME/.config/i3/movewindow.sh window:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:i3-msg kill:}  %{A}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -238,36 +235,8 @@ exec = echo "  "
 
 [module/windows]
 type = custom/script
-exec = echo "  "
+exec = echo "  "
 click-left = i3-msg exec "rofi -show window -show-icons -location 1 -yoffset 30" > /dev/null
-
-[module/window-float]
-type = custom/script
-click-left = i3-msg floating toggle > /dev/null
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
-tail = true
-format-prefix="  "
-
-[module/window-move]
-type = custom/script
-click-left = bash $HOME/.config/i3/movewindow.sh window
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
-tail = true
-format-prefix="  "
-
-[module/window-display]
-type = custom/script
-click-left = bash $HOME/.config/i3/movewindow.sh display
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
-tail = true
-format-prefix="  "
-
-[module/window-close]
-type = custom/script
-click-left = i3-msg kill > /dev/null
-exec = MONITOR=$MONITOR PRINT="  " bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
-tail = true
-format-prefix="  "
 
 [module/space]
 type = custom/script
@@ -304,3 +273,4 @@ screenchange-reload = true
 [global/wm]
 margin-top = 5
 margin-bottom = 5
+
