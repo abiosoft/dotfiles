@@ -410,18 +410,19 @@ mode "tmux-key" {
         bindsym 0 mode "$mode_system"
 }
 
-mode "Move Window. arrow key: within visible workspaces. shift+arrow key: across all workspaces" {
+mode "Move Window. left right up down: across visible workspaces. shift+left right: across all workspaces. shift+up: new workspace" {
         bindsym Left move left;
         bindsym Down move down;
         bindsym Up move up;
         bindsym Right move right;
         bindsym Shift+Left move container to workspace prev_on_output; workspace prev_on_output;
         bindsym Shift+Right move container to workspace next_on_output; workspace next_on_output;
+        bindsym Shift+Up exec --no-startup-id sh ~/.config/i3/move2workspace.sh;
         bindsym Escape mode "default";
         bindsym Return mode "default";
 }
 
-mode "Move to Monitor. arrow key: move window. shift+arrow key: move workspace" {
+mode "Move to Monitor. left right up down: move window. shift+left right up down: move workspace" {
         bindsym Left move container to output left;
         bindsym Down move container to output down;
         bindsym Up move container to output up;
