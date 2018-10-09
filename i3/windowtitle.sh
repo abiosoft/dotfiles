@@ -11,11 +11,16 @@ killpid(){
 }
 
 print_title(){
+    # get current monitor width to deduce max char length for title.
+    # assuming 20px per char which works fine.
+    WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
+    SIZE=$((WIDTH / 20))
+
     NAME=$(xdotool getactivewindow getwindowname)
     [ $? -ne 0 ] && NAME="" # ensuring name is not a whitespaced string
     bash $HOME/.config/i3/activemonitor.sh $MONITOR
     if [ $? -eq 0 ] && [ "$NAME" != "" ]; then
-        echo $NAME
+        echo ${NAME:0:$SIZE}
     else
         echo ""
     fi
