@@ -5,6 +5,8 @@
 # Also, only prints title when the window is on the display output that matches $MONITOR
 # to improve user experience of having wrong window title on a display.
 
+WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
+
 killpid(){
     kill -9 $1 > /dev/null
     rm $2 > /dev/null
@@ -12,11 +14,10 @@ killpid(){
 
 print_title(){
     # get current monitor width to deduce max char length for title.
-    # assuming 30px per char which is too conservative.
-    WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
+    # assuming 30px per char which is very conservative.
     SIZE=$((WIDTH / 30))
 
-    NAME=$(xdotool getactivewindow getwindowname)
+    NAME=$(echo $1 | awk -F' = ' '{$1=""; print $0}')
     [ $? -ne 0 ] && NAME="" # ensuring name is not a whitespaced string
     bash $HOME/.config/i3/activemonitor.sh $MONITOR
     if [ $? -eq 0 ] && [ "$NAME" != "" ]; then
@@ -59,7 +60,7 @@ watch_win(){
         tmpfile=$(mktemp)
         xprop -spy -id $ID _NET_WM_NAME 2> /dev/null > $tmpfile &
         PID=$!
-        tail --pid $PID -f $tmpfile | while read line; do print_title; done &
+        tail --pid $PID -f $tmpfile | while read line; do print_title "$line"; done &
 
         # in case of the last iteration that hasn't killed the loop
         trap "killpid $PID $tmpfile" INT EXIT ERROR
