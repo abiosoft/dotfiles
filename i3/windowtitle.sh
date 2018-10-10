@@ -12,9 +12,9 @@ killpid(){
 
 print_title(){
     # get current monitor width to deduce max char length for title.
-    # assuming 20px per char which works fine.
+    # assuming 30px per char which is too conservative.
     WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
-    SIZE=$((WIDTH / 20))
+    SIZE=$((WIDTH / 30))
 
     NAME=$(xdotool getactivewindow getwindowname)
     [ $? -ne 0 ] && NAME="" # ensuring name is not a whitespaced string

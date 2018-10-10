@@ -410,7 +410,9 @@ mode "tmux-key" {
         bindsym 0 mode "$mode_system"
 }
 
-mode "Move Window. left right up down: across visible workspaces. shift+left right: across all workspaces. shift+up: new workspace" {
+set $move_window move window:     other workspaces: Shift   new workspace: Shift  cancel: Esc
+bindsym $mod+Ctrl+Shift+m mode " $move_window "
+mode " $move_window " {
         bindsym Left move left;
         bindsym Down move down;
         bindsym Up move up;
@@ -422,7 +424,9 @@ mode "Move Window. left right up down: across visible workspaces. shift+left rig
         bindsym Return mode "default";
 }
 
-mode "Move to Monitor. left right up down: move window. shift+left right up down: move workspace" {
+set $move_display move window to display:     move workspace to display: Shift     cancel: Esc
+bindsym $mod+Ctrl+Shift+n mode " $move_display "
+mode " $move_display " {
         bindsym Left move container to output left;
         bindsym Down move container to output down;
         bindsym Up move container to output up;
