@@ -5,6 +5,13 @@
 # Also, only prints title when the window is on the display output that matches $MONITOR
 # to improve user experience of having wrong window title on a display.
 
+tail_log(){
+    tail -f $1 --pid $$ | while read line; do
+        line=$(echo $line | grep $2)
+        echo ${line#$2};
+    done
+}
+
 WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
 
 killpid(){
@@ -17,14 +24,11 @@ print_title(){
     # assuming 30px per char which is very conservative.
     SIZE=$((WIDTH / 30))
 
+    MONITOR="$2"
     NAME=$(echo $1 | awk -F' = ' '{$1=""; print $0}')
+    NAME=${NAME:2:-1}
     [ $? -ne 0 ] && NAME="" # ensuring name is not a whitespaced string
-    bash $HOME/.config/i3/activemonitor.sh $MONITOR
-    if [ $? -eq 0 ] && [ "$NAME" != "" ]; then
-        echo ${NAME:0:$SIZE}
-    else
-        echo ""
-    fi
+    echo $MONITOR ${NAME:0:$SIZE}
 }
 
 watch_win(){
@@ -42,9 +46,10 @@ watch_win(){
         # pid is reassigned and wrong process could be terminated.
         trap -
 
+        MONITOR=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).output' | cut -d"\"" -f2)
         # clear any existing title
         # hack to clear title in case the only active window is closed
-        echo ""
+        echo $MONITOR
 
         # get active window ID
         ID=$(echo $line | awk -F' ' '{ print $NF }')
@@ -60,13 +65,18 @@ watch_win(){
         tmpfile=$(mktemp)
         xprop -spy -id $ID _NET_WM_NAME 2> /dev/null > $tmpfile &
         PID=$!
-        tail --pid $PID -f $tmpfile | while read line; do print_title "$line"; done &
+        tail --pid $PID -f $tmpfile | while read line; do print_title "$line" $MONITOR; done &
 
         # in case of the last iteration that hasn't killed the loop
-        trap "killpid $PID $tmpfile" INT EXIT ERROR
+        trap "killpid $PID $tmpfile" INT EXIT
 
     done < <(xprop -spy -root _NET_ACTIVE_WINDOW)
 }
 
-watch_win
+if [ "$1" = "watch" ]; then
+    watch_win
+    exit
+fi
+
+tail_log $1 $2
 

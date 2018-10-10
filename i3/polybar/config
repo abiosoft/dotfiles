@@ -82,9 +82,9 @@ cursor-click = pointer
 
 [module/xwindow]
 type = custom/script
-exec = MONITOR=$MONITOR bash $HOME/.config/i3/windowtitle.sh 2> /dev/null
+exec = bash $HOME/.config/i3/windowtitle.sh $TITLEFILE $MONITOR
 tail = true
-label = %{A1:xdotool key super+ctrl+N:}  %{A}%{A1:xdotool key super+ctrl+M:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:i3-msg kill:}  %{A}%{T1}      %{T-}
+label = %{A1:xdotool key super+ctrl+N:}  %{A}%{A1:xdotool key super+ctrl+M:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:1000:...% %{T-}%{A1:i3-msg kill:}  %{A}%{T1}      %{T-}
 
 [module/xkeyboard]
 type = internal/xkeyboard
