@@ -8,7 +8,16 @@
 tail_log(){
     tail -f $1 --pid $$ | while read line; do
         line=$(echo $line | grep $2)
-        echo ${line#$2};
+        if [ "$3" != "count" ]; then 
+            echo ${line#$2}
+        else
+            [ "$line" != "" ] && COUNT=$(python3 $HOME/.config/i3/window.py --window-count)
+            if [ "$COUNT" == "0" ]; then
+                echo " "
+            else
+                echo $COUNT
+            fi
+        fi
     done
 }
 
@@ -44,7 +53,7 @@ watch_win(){
         # clear trap, process killed
         # this is to play it safe, there is a rare chance the terminated
         # pid is reassigned and wrong process could be terminated.
-        trap -
+        trap - INT EXIT
 
         MONITOR=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).output' | cut -d"\"" -f2)
         # clear any existing title
@@ -78,5 +87,5 @@ if [ "$1" = "watch" ]; then
     exit
 fi
 
-tail_log $1 $2
+tail_log $1 $2 $3
 

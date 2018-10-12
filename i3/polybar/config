@@ -84,7 +84,7 @@ cursor-click = pointer
 type = custom/script
 exec = bash $HOME/.config/i3/windowtitle.sh $TITLEFILE $MONITOR
 tail = true
-label = %{A1:xdotool key super+ctrl+N:}  %{A}%{A1:xdotool key super+ctrl+M:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:1000:...% %{T-}%{A1:i3-msg kill:}  %{A}%{T1}      %{T-}
+label = %{A1:xdotool key super+ctrl+N:}  %{A}%{A1:xdotool key super+ctrl+M:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:1000:...% %{T-}%{A1:python3 $HOME/.config/i3/window.py --close-window:}  %{A}%{T1}      %{T-}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -144,6 +144,7 @@ label-visible-padding = ${self.label-focused-padding}
 label-urgent = ${self.label-focused}
 label-urgent-background = ${colors.alert}
 label-urgent-padding = ${self.label-mode-padding}
+label-urgent-underline = ${self.label-focused-underline}
 
 ; Separator in between workspaces
 ; label-separator = |
@@ -211,24 +212,24 @@ date-alt = " %Y-%m-%d"
 time = %I:%M%p
 time-alt = %I:%M:%S%p
 
-format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
+;format-prefix =
+;format-prefix-foreground = ${colors.foreground-alt}
 
 label = %date% %time%
 
 [module/search]
-type = custom/script
-exec = echo "  "
+type = custom/text
+content = "  "
 click-left = rofi -show drun -show-icons -location 1 -yoffset 30 &
 
 [module/files]
-type = custom/script
-exec = echo "  "
+type = custom/text
+content = "  "
 click-left = i3-msg focus output $MONITOR && i3-msg exec 'bash -c "caja $HOME"' > /dev/null
 
 [module/terminal]
-type = custom/script
-exec = echo "  "
+type = custom/text
+content = "  "
 click-left = i3-msg focus output $MONITOR && mate-terminal > /dev/null
 
 [module/newws]
@@ -238,12 +239,15 @@ exec = echo "  "
 
 [module/windows]
 type = custom/script
-exec = echo "  "
-click-left = bash $HOME/.config/i3/switchwindow.sh &
+label = "  %output% "
+click-left = i3-msg focus output $MONITOR && python3 $HOME/.config/i3/window.py --window-switcher-current
+click-right = i3-msg focus output $MONITOR && python3 $HOME/.config/i3/window.py --window-switcher
+exec = bash $HOME/.config/i3/windowtitle.sh $TITLEFILE $MONITOR count
+tail = true
 
 [module/space]
-type = custom/script
-exec = echo " "
+type = custom/text
+content = " "
 
 [module/powermenu]
 type = custom/menu

@@ -63,7 +63,7 @@ bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show drun -location 1
 # Screen brightness controls
 # bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
-# 
+#
 # set $sink `pactl list short sinks | grep RUNNING | cut -f1`
 # bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume $sink  +5%; notify-send 'volume up'"
 # bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume $sink  -5%; notify-send 'volume down'"
@@ -71,20 +71,20 @@ bindsym Ctrl+space exec --no-startup-id "rofi -show-icons -show drun -location 1
 # Pulse Audio controls
 
 # Start Applications
-bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
-bindsym $mod+F2 exec palemoon
-bindsym $mod+F3 exec pcmanfm
-# bindsym $mod+F3 exec ranger
-bindsym $mod+Shift+F3 exec gksu pcmanfm
-bindsym $mod+F5 exec terminal -e 'mocp'
-bindsym $mod+t exec --no-startup-id pkill compton
-bindsym $mod+Ctrl+t exec --no-startup-id compton -b
-bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
-bindsym Print exec --no-startup-id i3-scrot
-bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
-bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
-# bindsym $mod+ exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
-bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+# bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
+# bindsym $mod+F2 exec palemoon
+# bindsym $mod+F3 exec pcmanfm
+# # bindsym $mod+F3 exec ranger
+# bindsym $mod+Shift+F3 exec gksu pcmanfm
+# bindsym $mod+F5 exec terminal -e 'mocp'
+# bindsym $mod+t exec --no-startup-id pkill compton
+# bindsym $mod+Ctrl+t exec --no-startup-id compton -b
+# bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+# bindsym Print exec --no-startup-id i3-scrot
+# bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
+# bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
+# # bindsym $mod+ exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
+# bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
 focus_follows_mouse no
 
@@ -317,7 +317,7 @@ set_from_resource $term_color14    color14
 set_from_resource $term_color15    color15
 
 # hide/unhide i3status bar
-bindsym $mod+m bar mode toggle
+# bindsym $mod+m bar mode toggle
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
@@ -444,5 +444,5 @@ bindsym --whole-window Ctrl+button2 floating toggle
 bindsym --whole-window Ctrl+button3 kill
 
 # polybar
-exec_always --no-startup-id bash $HOME/.config/polybar/launch.sh
+exec_always $HOME/.config/polybar/launch.sh
 

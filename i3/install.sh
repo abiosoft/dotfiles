@@ -7,7 +7,7 @@ cp gtk-settings.ini $HOME/.config/gtk-3.0/settings.ini
 
 echo setting up i3...
 mkdir -p $HOME/.config/i3
-cp config *.sh $HOME/.config/i3
+cp config *.sh *.py $HOME/.config/i3
 cp wallpaper.png $HOME/Pictures/wallpaper.png
 cp Xresources $HOME/.Xresources
 
