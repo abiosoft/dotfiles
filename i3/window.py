@@ -26,6 +26,16 @@ def parse_cli():
                                action="store_true",
                                help="show window switcher for current workspace",
                                )
+    command_group.add_argument("--move-window",
+                               dest="move_window",
+                               action="store_true",
+                               help="move active window to other position or workspace",
+                               )
+    command_group.add_argument("--move-display",
+                               dest="move_display",
+                               action="store_true",
+                               help="move window or workspace to display",
+                               )
 
     args = parser.parse_args()
 
@@ -42,6 +52,10 @@ def parse_cli():
         show_window_switcher(current_workspace=False)
     elif args.window_switcher_current:
         show_window_switcher()
+    elif args.move_window:
+        move_window()
+    elif args.move_display:
+        move_display()
     else:
         parser.print_usage()
 
@@ -78,6 +92,92 @@ def get_windows(workspace: str = None) -> list:
         window.title = title
         windows.append(window)
     return windows
+
+
+def move_window():
+    # i3 enable mode
+    cmd = subprocess.run(["i3-msg",
+                          "mode",
+                          "move_window"])
+    if cmd.returncode is not 0:
+        print("error enabling i3 mode for window window movement", file=sys.stderr)
+        return
+    msg = """
+    Click on any window to activate and use the following keys to move window.
+
+    Arrow Keys    
+        Move window within visible workspaces.    
+
+    Shift+Left , Shift+Right   
+        Move window to other workspaces on current display.
+
+    Shift+Up 
+        Move window to new workspace on current display.
+    """
+
+    # show info dialog
+    args = yad_args("Move Window",
+                    msg,
+                    "--no-focus",
+                    "--button=gtk-cancel:0",
+                    "--fixed",
+                    )
+    if subprocess.run(args).returncode is not 0:
+        print("error showing info dialog", file=sys.stderr)
+
+    # i3 disable mode
+    subprocess.run(["i3-msg", "mode", "default"])
+
+
+def move_display():
+    # i3 enable mode
+    cmd = subprocess.run(["i3-msg",
+                          "mode",
+                          "move_display"])
+    if cmd.returncode is not 0:
+        print("error enabling i3 mode for window movement", file=sys.stderr)
+        return
+    msg = """
+    Click on any window to activate and use the following keys to move window.
+
+    Arrow Keys    
+        Move window to display.    
+
+    Shift+Left , Shift+Right , Shift+Up , Shift+Down 
+        Move workspace to display.
+
+    """
+
+    # show info dialog
+    args = yad_args("Move Window",
+                    msg,
+                    "--no-focus",
+                    "--button=gtk-cancel:0",
+                    "--fixed",
+                    )
+    if subprocess.run(args).returncode is not 0:
+        print("error showing info dialog", file=sys.stderr)
+
+    # i3 disable mode
+    subprocess.run(["i3-msg", "mode", "default"])
+
+
+def yad_args(title: str, message: str, *extra_args)->list:
+    args = [
+        "yad",
+        "--text={}".format(message),
+        "--skip-taskbar",
+        "--splash",
+        "--on-top",
+        "--title={}".format(title),
+        "--buttons-layout=center",
+        "--center",
+        "--sticky",
+    ]
+    for arg in extra_args:
+        args.append(arg)
+
+    return args
 
 
 def get_workspace() -> str:
@@ -176,14 +276,16 @@ def get_window_count(workspace: str = None) -> int:
 
 
 def show_window_switcher(current_workspace: bool = True):
-    count = 0
-    if current_workspace:
-        count = get_window_count()
-        if count > 10: count = 10
-        if count is 0: return
     """
     switch window using rofi
     """
+    count = 0
+    if current_workspace:
+        count = get_window_count()
+        if count > 10:
+            count = 10
+        if count is 0:
+            return
     args = [
         "rofi",
         "-show-icons",

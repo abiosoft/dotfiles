@@ -410,9 +410,7 @@ mode "tmux-key" {
         bindsym 0 mode "$mode_system"
 }
 
-set $move_window move window:     other workspaces: Shift   new workspace: Shift  cancel: Esc
-bindsym $mod+Ctrl+Shift+m mode " $move_window "
-mode " $move_window " {
+mode "move_window" {
         bindsym Left move left;
         bindsym Down move down;
         bindsym Up move up;
@@ -424,9 +422,7 @@ mode " $move_window " {
         bindsym Return mode "default";
 }
 
-set $move_display move window to display:     move workspace to display: Shift     cancel: Esc
-bindsym $mod+Ctrl+Shift+n mode " $move_display "
-mode " $move_display " {
+mode "move_display" {
         bindsym Left move container to output left;
         bindsym Down move container to output down;
         bindsym Up move container to output up;
