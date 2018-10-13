@@ -21,7 +21,8 @@ tail_log(){
     done
 }
 
-WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
+WIDTH=1368
+# WIDTH=$(polybar --list-monitors | grep $MONITOR | awk -F': ' '{ print $2 }' | awk -F'x' '{print $1}')
 
 killpid(){
     kill -9 $1 > /dev/null

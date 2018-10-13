@@ -34,3 +34,6 @@ mkdir -p build && cd build/
 make
 sudo make install
 EOF
+
+echo installing bgrun...
+git clone https://github.com/abiosoft/bgrun && sh -c "cd bgrun && ./install.sh"

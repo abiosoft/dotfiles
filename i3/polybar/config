@@ -84,7 +84,7 @@ cursor-click = pointer
 type = custom/script
 exec = bash $HOME/.config/i3/windowtitle.sh $TITLEFILE $MONITOR
 tail = true
-label = %{A1:python3 $HOME/.config/i3/window.py --move-display:}  %{A}%{A1:python3 $HOME/.config/i3/window.py --move-window:}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:python3 $HOME/.config/i3/window.py --close-window:}  %{A}%{T1}      %{T-}
+label = %{A1:bgrun -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-display':}  %{A}%{A1:bgrun -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-window':}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:python3 $HOME/.config/i3/window.py --close-window:}  %{A}%{T1}      %{T-}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -221,22 +221,22 @@ label = %date% %time%
 [module/search]
 type = custom/text
 content = "  "
-click-left = rofi -show drun -show-icons -location 1 -yoffset 30 &
+click-left = rofi -show drun -show-icons -location 1 -yoffset 30 -me-select-entry "" -me-accept-entry MousePrimary
 
 [module/files]
 type = custom/text
 content = "  "
-click-left = i3-msg focus output $MONITOR && i3-msg exec 'bash -c "caja $HOME"' > /dev/null
+click-left = bgrun -c 'DISPLAY=:0 caja'
 
 [module/terminal]
 type = custom/text
 content = "  "
-click-left = i3-msg focus output $MONITOR && mate-terminal > /dev/null
+click-left = bgrun -c 'DISPLAY=:0 mate-terminal'
 
 [module/newws]
-type = custom/script
-click-left = i3-msg focus output $MONITOR && bash $HOME/.config/i3/workspace.sh > /dev/null
-exec = echo "  "
+type = custom/text
+click-left = i3-msg focus output $MONITOR && bash $HOME/.config/i3/workspace.sh
+content = "  "
 
 [module/windows]
 type = custom/script
@@ -253,7 +253,7 @@ content = " "
 [module/powermenu]
 type = custom/menu
 
-expand-right = true
+; expand-right = true
 
 format-spacing = 1
 
@@ -264,11 +264,11 @@ label-close-foreground = ${colors.foreground}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
-menu-0-0 = lock screen
+menu-0-0 = lock
 menu-0-0-exec = xdotool key ctrl+alt+l
 menu-0-1 = logout
 menu-0-1-exec = mate-session-save --logout-dialog
-menu-0-2 = shut down
+menu-0-2 = shutdown
 menu-0-2-exec = mate-session-save --shutdown-dialog
 
 [settings]
