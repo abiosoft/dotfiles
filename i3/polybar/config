@@ -84,7 +84,7 @@ cursor-click = pointer
 type = custom/script
 exec = bash $HOME/.config/i3/windowtitle.sh $TITLEFILE $MONITOR
 tail = true
-label = %{A1:bgrun -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-display':}  %{A}%{A1:bgrun -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-window':}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:python3 $HOME/.config/i3/window.py --close-window:}  %{A}%{T1}      %{T-}
+label = %{A1:bgrun sh -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-display':}  %{A}%{A1:bgrun sh -c 'DISPLAY=\:0 python3 $HOME/.config/i3/window.py --move-window':}  %{A}%{A1:i3-msg floating toggle:}  %{A}%{T2} %output:0:100:...% %{T-}%{A1:python3 $HOME/.config/i3/window.py --close-window:}  %{A}%{T1}      %{T-}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -226,12 +226,12 @@ click-left = rofi -show drun -show-icons -location 1 -yoffset 30 -me-select-entr
 [module/files]
 type = custom/text
 content = "  "
-click-left = bgrun -c 'DISPLAY=:0 caja'
+click-left = bgrun sh -c 'DISPLAY=:0 caja'
 
 [module/terminal]
 type = custom/text
 content = "  "
-click-left = bgrun -c 'DISPLAY=:0 mate-terminal'
+click-left = bgrun sh -c 'DISPLAY=:0 mate-terminal'
 
 [module/newws]
 type = custom/text

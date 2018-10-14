@@ -440,5 +440,5 @@ bindsym --whole-window Ctrl+button2 floating toggle
 bindsym --whole-window Ctrl+button3 kill
 
 # polybar
-exec_always bgrun -c 'DISPLAY=:0 $HOME/.config/polybar/launch.sh'
+exec_always bgrun sh -c 'DISPLAY=:0 $HOME/.config/polybar/launch.sh'
 
