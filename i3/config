@@ -435,10 +435,16 @@ mode "move_display" {
         bindsym Return mode "default";
 }
 
+bar {
+    tray_output primary
+    position top
+    status_command sh -c "LC_ALL=en_US.UTF-8 i3status"
+}
+
 # window actions with mouse
 bindsym --whole-window Ctrl+button2 floating toggle
 bindsym --whole-window Ctrl+button3 kill
 
 # polybar
-exec_always bgrun sh -c 'DISPLAY=:0 $HOME/.config/polybar/launch.sh'
+# exec_always bgrun sh -c 'DISPLAY=:0 $HOME/.config/polybar/launch.sh'
 
