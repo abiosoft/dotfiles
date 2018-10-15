@@ -31,11 +31,11 @@ ethernet _first_ {
 }
 
 battery all {
-        format = "  %status %percentage %remaining"
+        format = " %status %percentage %remaining"
 }
 
 tztime local {
-        format = "%a %d-%m-%Y %I:%M%p"
+        format = "%a %d-%m-%Y %I:%M%p "
 }
 
 disk "/" {
