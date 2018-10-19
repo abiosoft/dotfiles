@@ -436,6 +436,7 @@ mode "move_display" {
 }
 
 bar {
+    i3bar_command i3bar -t
     tray_output primary
     position top
     status_command sh -c "LC_ALL=en_US.UTF-8 i3status"
