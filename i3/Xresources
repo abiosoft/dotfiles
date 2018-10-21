@@ -53,10 +53,10 @@
 
 
 ! Terminal - rxvt-unicode
-URxvt.font:         xft:SFMono Nerd Font:antialias=true:hinting=slight:size=11
-URxvt.boldFont:     xft:SFMono Nerd Font:antialias=true:hinting=slight:size=11
+URxvt.font:         xft:Source Code Pro For Powerline:antialias=true:hinting=full:size=11
+URxvt.boldFont:     xft:Source Code Pro For Powerline:antialias=true:hinting=full:size=11
 URxvt.scrollBar:    false
-URxvt.letterSpace:  -1
+URxvt.letterSpace:  0
 URxvt.transparent:  true
 URxvt.shading:      20
 URxvt.perl-ext-common: selection-to-clipboard

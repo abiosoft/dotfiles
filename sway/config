@@ -26,6 +26,7 @@ set $menu rofi -modi "drun,workspaces:python3 $HOME/dotfiles/sway/windows.py" -s
 font pango:Source Code Pro For Powerline 12
 # font xft:URWGothic-Book 11
 
+new_window pixel 2
 
 ### Output configuration
 #
@@ -223,8 +224,7 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M %p'; do sleep 1; done
-
+    status_command $HOME/.config/sway/status.sh
     colors {
         statusline #ffffff
         background #323232

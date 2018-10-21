@@ -97,7 +97,7 @@ color() {
 
 # Define prompts
 #
-PROMPT="%(?.%F{$(color)}.%F{red})❯%f " # Display a red prompt char on failure
+PROMPT="%(?.%F{$(color)}.%F{red})$%f " # Display a red prompt char on failure
 #PROMPT="`cprp`❯ " # Display a red prompt char on failure
 RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
 
