@@ -1,7 +1,9 @@
 !TomorrowNight
 #define t_background        #1d1f21
-#define t_current_line      #282a2e
-#define t_selection      	#373b41
+#define t_current_line      #c5c5c5
+/* #define t_current_line      #282a2e */
+#define t_selection      	#c5c5c5
+/* #define t_selection      	#373b41 */
 #define t_foreground      	#c5c8c6
 #define t_comment	     	#969896
 #define t_red		     	#cc6666

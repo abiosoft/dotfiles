@@ -19,6 +19,7 @@ alias vim='nvim'
 alias flathub='flatpak install flathub'
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
+alias screenshot='grim -g "$(slurp)" screenshot.png'
 
 # git commit editor
 export VISUAL=nvim
