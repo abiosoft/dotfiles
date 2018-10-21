@@ -289,4 +289,10 @@ exec mako
 
 ### deamons end
 
+### keyboard layout
+# copy dotfiles/sway/kblayout.sh to ~/bin/kblayout.sh and edit accordingly
+exec ~/bin/kblayout.sh
+
+### keyboard layout end
+
 include /etc/sway/config.d/*
