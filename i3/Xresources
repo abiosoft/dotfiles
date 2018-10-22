@@ -1,6 +1,6 @@
 !TomorrowNight
 #define t_background        #1d1f21
-#define t_current_line      #c5c5c5
+#define t_current_line      #a5a5a5
 /* #define t_current_line      #282a2e */
 #define t_selection      	#c5c5c5
 /* #define t_selection      	#373b41 */
@@ -53,8 +53,8 @@
 
 
 ! Terminal - rxvt-unicode
-URxvt.font:         xft:Source Code Pro For Powerline:antialias=true:hinting=full:size=11
-URxvt.boldFont:     xft:Source Code Pro For Powerline:antialias=true:hinting=full:size=11
+URxvt.font:         xft:Ubuntu Mono derivative Powerline:antialias=true:size=13
+URxvt.boldFont:     xft:Ubuntu Mono derivative Powerline:antialias=true:size=13
 URxvt.scrollBar:    false
 URxvt.letterSpace:  0
 URxvt.transparent:  true
