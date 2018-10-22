@@ -235,6 +235,19 @@ bar {
 
 }
 
+set $mode_system (l)ock, (e)xit, (s)uspend, (Shift+r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+    bindsym l exec swaylock -c 0000, mode "default"
+    bindsym s exec systemctl suspend, mode "default"
+    bindsym e exit, mode "default"
+    bindsym Shift+r exec systemctl reboot, mode "default"
+    bindsym Shift+s exec systemctl poweroff, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 # use ctrl-b as with tmux.
 # since ideally I should use tmux or i3, not both.
 bindsym Ctrl+b mode "tmux-key"

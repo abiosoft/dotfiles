@@ -3,7 +3,8 @@
 echo installing...
 mkdir -p $HOME/.fonts
 cp ./SF/*.otf $HOME/.fonts
-cp ./fonts.conf $HOME/.fonts.conf
+mkdir -p $HOME/.config/fontconfig/
+cp ./fonts.conf $HOME/.config/fontconfig/fonts.conf
 
 echo resetting cache...
 fc-cache -fv

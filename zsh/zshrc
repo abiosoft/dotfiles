@@ -34,3 +34,8 @@ export PATH="$PATH:$HOME/go/bin"
 NPM_PACKAGES="$HOME/.npm-packages"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
+# vscode lag fix
+alias code='code --disable-gpu '
+
+#fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
