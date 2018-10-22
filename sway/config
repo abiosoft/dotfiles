@@ -92,8 +92,9 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     # reload the configuration file
     bindsym $mod+Shift+c reload
 
+    set $exit swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
     # exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec $exit
 #
 # Moving around:
 #
@@ -235,11 +236,11 @@ bar {
 
 }
 
-set $mode_system (l)ock, (e)xit, (s)uspend, (Shift+r)eboot, (Shift+s)hutdown
+set $mode_system "(l)ock (e)xit (s)uspend (Shift+r)eboot (Shift+s)hutdown"
 mode "$mode_system" {
-    bindsym l exec swaylock -c 0000, mode "default"
+    bindsym l exec swaylock -c 000000, mode "default"
     bindsym s exec systemctl suspend, mode "default"
-    bindsym e exit, mode "default"
+    bindsym e exec $exit, mode "default"
     bindsym Shift+r exec systemctl reboot, mode "default"
     bindsym Shift+s exec systemctl poweroff, mode "default"
 
@@ -255,6 +256,8 @@ mode "tmux-key" {
         # workspaces
         bindsym n workspace next_on_output; mode "default"
         bindsym p workspace prev_on_output; mode "default"
+        bindsym Shift+n move container to workspace next_on_output; workspace next_on_output; mode "default"
+        bindsym Shift+p move container to workspace prev_on_output; workspace prev_on_output; mode "default"
         bindsym Return split h; exec $term; mode "default"
         bindsym Shift+5 split h; exec $term; mode "default"
         bindsym Shift+6 split v; exec $term; mode "default"
@@ -285,6 +288,17 @@ mode "tmux-key" {
         bindsym 7 workspace 7; mode "default"
         bindsym 8 workspace 8; mode "default"
         bindsym 9 workspace 9; mode "default"
+
+
+        bindsym Shift+1 move container to workspace 1; workspace 1; mode "default"
+        bindsym Shift+2 move container to workspace 2; workspace 2; mode "default"
+        bindsym Shift+3 move container to workspace 3; workspace 3; mode "default"
+        bindsym Shift+4 move container to workspace 4; workspace 4; mode "default"
+        bindsym Shift+5 move container to workspace 5; workspace 5; mode "default"
+        bindsym Shift+6 move container to workspace 6; workspace 6; mode "default"
+        bindsym Shift+7 move container to workspace 7; workspace 7; mode "default"
+        bindsym Shift+8 move container to workspace 8; workspace 8; mode "default"
+        bindsym Shift+9 move container to workspace 9; workspace 9; mode "default"
 
         # quit
         bindsym 0 mode "$mode_system"
