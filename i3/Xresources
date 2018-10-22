@@ -51,12 +51,20 @@
 *.color7:       t_selection
 *.color15:      t_current_line
 
+! Xft
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
 
 ! Terminal - rxvt-unicode
-URxvt.font:         xft:Ubuntu Mono derivative Powerline:antialias=true:size=13
-URxvt.boldFont:     xft:Ubuntu Mono derivative Powerline:antialias=true:size=13
+URxvt.font:         xft:SFMono Nerd Font:antialias=true:size=11
+URxvt.boldFont:     xft:SFMono Nerd Font:antialias=true:size=11
 URxvt.scrollBar:    false
-URxvt.letterSpace:  0
+URxvt.letterSpace:  -1
 URxvt.transparent:  true
 URxvt.shading:      20
 URxvt.perl-ext-common: selection-to-clipboard
