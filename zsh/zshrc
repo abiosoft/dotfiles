@@ -35,7 +35,14 @@ NPM_PACKAGES="$HOME/.npm-packages"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
 # vscode lag fix
-alias code='code --disable-gpu '
+CODE=$(which code)
+code(){
+    if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+      $CODE $1 --disable-gpu
+    else
+      $CODE $1
+    fi
+}
 
 #fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

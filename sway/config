@@ -305,7 +305,7 @@ mode "tmux-key" {
 }
 
 
-### deamons
+### daemons
 exec swayidle \
     timeout 300 'swaylock -c 000000' \
     timeout 600 'swaymsg "output * dpms off"' \
@@ -313,8 +313,9 @@ exec swayidle \
     before-sleep 'swaylock -c 000000'
 
 exec mako
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-### deamons end
+### daemons end
 
 ### keyboard layout
 # copy dotfiles/sway/kblayout.sh to ~/bin/kblayout.sh and edit accordingly
