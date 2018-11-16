@@ -2,7 +2,6 @@
 
 
 dirs=(
-    "fonts"
     "neovim"
     "tmux"
     "zsh"
