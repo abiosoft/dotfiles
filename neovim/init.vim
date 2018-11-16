@@ -41,6 +41,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/syntastic'
 Plug 'Yggdroot/indentLine'
 Plug 'avelino/vim-bootstrap-updater'
+Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plug 'sheerun/vim-polyglot'
 
 let g:make = 'gmake'
@@ -74,10 +75,6 @@ Plug 'tomasr/molokai'
 
 " autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-" go
-"" Go Lang Bundle
-Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 
 
 " html
@@ -627,7 +624,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
 " Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
+let g:polyglot_disabled = ['python', 'go']
 let python_highlight_all = 1
 
 
