@@ -128,6 +128,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <C-g> :call LanguageClient_textDocument_documentSymbol()<CR>
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
@@ -136,7 +137,7 @@ let g:LanguageClient_autoStart = 1
 Plug 'dart-lang/dart-vim-plugin'
 let g:LanguageClient_serverCommands = {
 \ 'dart': ['dart_language_server'],
- \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+ \ 'rust': ['rustup', 'run', 'stable', 'rls'],
  \ }
 
 "*****************************************************************************
@@ -764,6 +765,7 @@ set mouse=""
 
 " rust
 let g:rustfmt_autosave = 1
+let g:rustfmt_command = 'rustfmt'
 set hidden
 autocmd BufReadPost *.rs setlocal filetype=rust
 
@@ -773,5 +775,5 @@ let dart_style_guide = 2
 autocmd BufWritePost *.dart :DartFmt
 
 " fix quickfix height
-autocmd FileType qf 3wincmd_
+autocmd FileType qf 6wincmd_
 
