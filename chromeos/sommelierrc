@@ -1,5 +1,6 @@
 echo Xft.dpi: 192 | xrdb -merge
 export GDK_SCALE=2
 export GDK_SCALE_DPI=192
-export SOMMELIER_SCALE=1
+export SOMMELIER_SCALE=2
+export XCURSOR_SIZE=48
 
