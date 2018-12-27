@@ -1,0 +1,4 @@
+alias codex='sommelier -X --scale=0.5 --dpi=160 /usr/share/code/code --unity-launch'
+alias dpilaunch='sommelier -X --scale=0.5 --dpi=160'
+export XCURSOR_SIZE=48
+
