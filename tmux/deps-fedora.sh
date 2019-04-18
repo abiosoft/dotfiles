@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sudo apt -y install tmux
+sudo dnf -y install tmux
