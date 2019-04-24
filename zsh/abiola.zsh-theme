@@ -74,16 +74,15 @@ preexec() {
     cmd_timestamp=`date +%s`
 }
 
+print_host() {
+    [ "$(hostname)" != "localhost" ] && echo "[$(hostname)] "
+}
+
 # Output additional information about paths, repos and exec time
 #
 precmd() {
     vcs_info # Get version control info before we start outputting stuff
-    print -P "\n[$(hostname)] $(repo_information) %F{yellow}$(cmd_exec_time)%f"
-}
-
-cprp() {
-    pwd
-    cprompt
+    print -P "\n$(print_host)$(repo_information) %F{yellow}$(cmd_exec_time)%f"
 }
 
 # gnome builder terminal hack
