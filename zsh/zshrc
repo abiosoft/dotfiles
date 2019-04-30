@@ -20,6 +20,7 @@ alias flathub='flatpak install flathub'
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias screenshot='grim -g "$(slurp)" screenshot.png'
+alias enter='toolbox enter --container'
 
 # git commit editor
 export VISUAL=nvim
@@ -34,15 +35,12 @@ export PATH="$PATH:$HOME/go/bin"
 NPM_PACKAGES="$HOME/.npm-packages"
 PATH="$NPM_PACKAGES/bin:$PATH"
 
-# vscode lag fix
-CODE=$(which code)
-code(){
-    if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-      $CODE $1 --disable-gpu
-    else
-      $CODE $1
-    fi
-}
-
 #fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# silverblue mess
+if [ $(lsb_release -i | awk -F':' '{print $2}') = "Fedora" ]; then
+    export HOME=$(realpath $HOME)
+    cd $HOME
+fi
+
