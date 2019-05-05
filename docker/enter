@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+image="$1"
+[ -z "$1" ] && image="dev"
+
+strip_dots(){
+    host="$1"
+    host="${host//./-}" # replace dot
+    host="${host//:/_}" # replace column
+    echo $host
+}
+
+ensure_volume_exists(){
+    [ $(docker volume ls -q | grep "$1" 2> /dev/null) ] || docker volume create "$1"
+    [ $? -ne 0 ] && echo error creating docker volume $1 && exit 1
+}
+
+image_name(){
+    capture=""
+    tmp=$(awk -F "=" "/$1/ {print \$2}" "$HOME/dotfiles/docker/images.ini")
+    if [ "$tmp" = "" ]; then
+        echo $1
+    else
+        echo $tmp
+    fi
+}
+
+hostname="$(strip_dots "$image")"
+image=$(image_name "$image")
+shift # discard first arg
+
+ensure_volume_exists projects
+ensure_volume_exists ssh
+ensure_volume_exists nvim
+ensure_volume_exists go
+
+# run
+docker run --rm -it \
+    -h $hostname \
+    -v projects:/projects \
+    -v ssh:/root/.ssh \
+    -v nvim:/root/.config/nvim \
+    -v go:/usr/local/go \
+    -v $HOME/.gitconfig:/root/.gitconfig \
+    -w /root \
+    "$image" "$@"
+

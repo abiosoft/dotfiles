@@ -27,7 +27,7 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # GO
-export PATH="$PATH:$HOME/go/bin"
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 
 # NPM
 # create a ~/.npmrc with
@@ -41,6 +41,7 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 # silverblue mess
 if [ $(lsb_release -i | awk -F':' '{print $2}') = "Fedora" ]; then
     export HOME=$(realpath $HOME)
-    cd $HOME
 fi
+
+cd $HOME
 
