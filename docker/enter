@@ -11,12 +11,11 @@ strip_dots(){
 }
 
 ensure_volume_exists(){
-    [ $(docker volume ls -q | grep "$1" 2> /dev/null) ] || docker volume create "$1"
-    [ $? -ne 0 ] && echo error creating docker volume $1 && exit 1
+    docker volume ls -q | grep "$1" &> /dev/null || docker volume create "$1"
+    [ $? -ne 0 ] && echo error creating docker volume "$1" && exit 1
 }
 
 image_name(){
-    capture=""
     tmp=$(awk -F "=" "/$1/ {print \$2}" "$HOME/dotfiles/docker/images.ini")
     if [ "$tmp" = "" ]; then
         echo $1
@@ -30,18 +29,15 @@ image=$(image_name "$image")
 shift # discard first arg
 
 ensure_volume_exists projects
-ensure_volume_exists ssh
-ensure_volume_exists nvim
 ensure_volume_exists go
+ensure_volume_exists home
 
 # run
-docker run --rm -it \
+docker run --rm -it --name $hostname \
     -h $hostname \
     -v projects:/projects \
-    -v ssh:/root/.ssh \
-    -v nvim:/root/.config/nvim \
     -v go:/usr/local/go \
-    -v $HOME/.gitconfig:/root/.gitconfig \
+    -v home:/root \
     -w /root \
     "$image" "$@"
 
