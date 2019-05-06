@@ -41,7 +41,7 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 # silverblue mess
 if [ $(lsb_release -i | awk -F':' '{print $2}') = "Fedora" ]; then
     export HOME=$(realpath $HOME)
+    cd $HOME
 fi
 
-cd $HOME
 
