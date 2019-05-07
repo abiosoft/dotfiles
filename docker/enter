@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+volumes=""
+
+print_usage(){
+    echo Usage: enter [-v VOLUME ...]
+}
+
+# parse args
+while getopts 'v:h' flag; do
+  case "${flag}" in
+    v) volumes="$volumes -v $OPTARG:/vols/$OPTARG" ;;
+    h) print_usage
+       exit 1 ;;
+  esac
+done
+shift $(expr $OPTIND - 1 )
+
 image="$1"
 [ -z "$1" ] && image="dev"
 
@@ -24,20 +40,38 @@ image_name(){
     fi
 }
 
-hostname="$(strip_dots "$image")"
+run(){
+    # start if not running
+    ps=$(docker ps --filter "name=^/$name$" --format '{{.Names}}')
+    if [ "$ps" = "" ]; then
+        # start
+        docker run --rm -d --name $name $volumes \
+            -h $name \
+            -v projects:/projects \
+            -v go:/usr/local/go \
+            -v home:/root \
+            -v dev-env-docker_home:/twhome \
+            -w /root \
+            $image tail -f /dev/null
+    else
+        [ "$volumes"  = "" ] || >&2 echo $image already running, discarding volumes.
+    fi
+
+
+    # run command
+    cmd="$@"
+    [ "$cmd" = "" ] && cmd=$(docker inspect -f '{{.Path}} {{join .Args " "}}' $name)
+    docker exec -it -w /root "$name" $cmd
+}
+
+name="$(strip_dots "$image")"
 image=$(image_name "$image")
 shift # discard first arg
 
 ensure_volume_exists projects
 ensure_volume_exists go
 ensure_volume_exists home
+ensure_volume_exists dev-env-docker_home
 
-# run
-docker run --rm -it --name $hostname \
-    -h $hostname \
-    -v projects:/projects \
-    -v go:/usr/local/go \
-    -v home:/root \
-    -w /root \
-    "$image" "$@"
+run "$@"
 
