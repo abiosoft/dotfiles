@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-docker volume create home
+docker volume create box_home
 
-docker run --rm -d --name temp -v home:/home alpine tail -f /dev/null
+docker run --rm -d --name temp -v box_home:/home alpine tail -f /dev/null
 
 docker cp ../. temp:/home/dotfiles
 docker cp ../zsh/zshrc temp:/home/.zshrc

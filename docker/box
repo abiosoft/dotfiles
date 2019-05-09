@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
 
-volumes=""
+
 
 print_usage(){
     cat <<EOF
 box usage:
 
-enter [-v VOLUME ...] IMAGE
-  enter a development box
+create [-v VOLUME ...] [-w DIR] [-i IMAGE] NAME
+  create a container box
   VOLUME  docker volumes to mount to /vols/
-  IMAGE   docker image name. default 'dev'
+  DIR     default working directory for 'enter'
+  IMAGE   docker image name. default 'box'.
+          tag an existing image as 'box' to use as default
+  NAME    container box name
 
-stop BOX ...
-  stop running box(es)
-  BOX     box name
+enter [-w DIR] NAME
+  enter a container box
+  DIR     working directory
+  NAME    container box name
+
+
+rm NAME ...
+  remove container box(es)
+  NAME    container box name
 
 list
-  list created boxes
+  list created container boxes
 
 -h
   show this help
@@ -24,114 +33,147 @@ list
 EOF
 }
 
+log(){
+    >&2 echo $@
+}
+
+err(){
+    log $@
+    exit 1
+}
+
+box_name(){
+    if [ -z "$1" ]; then
+        echo box_default
+    else
+        echo "box_$1"
+    fi
+}
+
+create(){
+    volumes=""
+    wd=""
+    image=""
+
+    # parse args
+    while true; do
+        case "$1" in
+            -v) shift
+                ensure_volume_exists $1
+                volumes="$volumes -v $1:/vols/$1"
+                shift ;;
+            -w) shift
+                [ "$wd" = "" ] || err working directory is not a list
+                wd="-w $1"
+                shift ;;
+            -i) shift
+                image="$1"
+                shift ;;
+            -h) print_usage
+                exit 1 ;;
+            *)  break ;;
+        esac
+    done
+
+    [ "$image" = "" ] && image="dev"
+
+    name="$1"
+    label="$name"
+    [ -z "$1" ] && label="default" && name="default"
+    image=$(image_name "$image")
+    shift
+
+    ensure_volume_exists box_home
+
+    echo "$(list)" | grep "$name" > /dev/null && err "box $name already exists"
+    docker run -d --name "$(box_name $name)" $volumes $wd \
+        -h $name \
+        -l "groupname=box" \
+        -l "label=$label" \
+        -v box_home:/root \
+        $image tail -f /dev/null \
+        > /dev/null
+    [ $? -ne 0 ] && err "error creating box '$name'"
+    return 0
+}
+
 list(){
-    docker ps -f 'label=groupname=enter' --format '{{.Labels}}' \
-        | awk -F'label=' '{print $2}' |  awk -F',' '{print $1}'
+    docker ps -a -f 'label=groupname=box' --format '{{.Labels}}' \
+        | awk -F'label=' '{print $2}' |  awk -F',' '{print $1}' | sort
     exit $?
 }
 
-strip_dots(){
-    host="$1"
-    host="${host//./-}" # replace dot
-    host="${host//:/_}" # replace column
-    echo $host
+status(){
+    docker inspect "$(box_name $1)" --format='{{.State.Status}}' 2> /dev/null
 }
 
-stop(){
+remove(){
     for name in "$@"; do
-        host=$(strip_dots "$name")
-        docker stop $host > /dev/null
+        box="$(box_name "$name")"
+        docker stop $box > /dev/null && docker rm $box > /dev/null
         if [ $? -eq 0 ]; then
-            echo $host stopped
+            echo $name removed
         else
-            >&2 echo error ocurred stopping $host
-            exit 1
+            err error ocurred removing $name
         fi
     done
     exit 0
 }
 
-case "$1" in
-    list)   list ;;
-    enter)  shift ;;
-    stop)   shift
-            stop "$@" ;;
-    -h)     print_usage
-            exit 1 ;;
-    "")     ;;
-    *)      >&2 echo "invalid arg '$1'"
-            exit 1 ;;
-esac
-
-
-# process enter
-
-# parse args
-while getopts 'v:h' flag; do
-    case "${flag}" in
-        v) volumes="$volumes -v $OPTARG:/vols/$OPTARG" ;;
-        h) print_usage
-            exit 1 ;;
-    esac
-done
-shift $(expr $OPTIND - 1 )
-
-image="$1"
-[ -z "$1" ] && image="dev"
-label="$image"
-
 ensure_volume_exists(){
     docker volume ls -q | grep "$1" &> /dev/null || docker volume create "$1"
-    [ $? -ne 0 ] && >&2 echo error creating docker volume "$1" && exit 1
+    [ $? -ne 0 ] && err error creating docker volume "$1"
 }
 
-image_name(){
-    tmp=$(awk -F "=" "/$1/ {print \$2}" "$HOME/dotfiles/docker/images.ini")
-    if [ "$tmp" = "" ]; then
-        echo $1
-    else
-        echo $tmp
-    fi
-}
+enter(){
+    wd=""
 
-run(){
-    # start if not running
-    ps=$(docker ps --filter "name=^/$name$" --format '{{.Names}}')
-    if [ "$ps" = "" ]; then
-        # start
-        docker run --rm -d --name $name $volumes \
-            -h $name \
-            -l "groupname=enter" \
-            -l "label=$label" \
-            -v projects:/projects \
-            -v go:/usr/local/go \
-            -v home:/root \
-            -v dev-env-docker_home:/twhome \
-            -w /root \
-            $image tail -f /dev/null \
-            > /dev/null
-    else
-        [ "$volumes"  = "" ] || >&2 echo $image already running, discarding volumes.
-    fi
+    # parse args
+    while true; do
+        case "$1" in
+            -w) shift
+                [ "$wd" = "" ] || err working directory is not a list
+                wd="-w $1"
+                shift ;;
+            -h) print_usage
+                exit 1 ;;
+            *)  break ;;
+        esac
+    done
+
+    name="$1"
+    [ -z "$1" ] && name="default"
+    shift
+
+    box_status="$(status "$name")"
+    case "${box_status}" in
+        exited|created) docker start "$(box_name $name)" > /dev/null || err error starting $name ;;
+        running)        ;;
+        "")             err "box '$name' does not exist, create with 'box create $name'" ;;
+        *)              err unknown status $box_status ;;
+    esac
 
     # run command
     cmd="$@"
     if [ "$cmd" = "" ]; then
         # get command from container image
-        container_image="$(docker inspect $name -f '{{.Image}}')"
+        container_image="$(docker inspect "$(box_name $name)" -f '{{.Image}}')"
         cmd=$(docker image inspect "$container_image" -f '{{join .Config.Entrypoint ""}}{{join .Config.Cmd " "}}')
     fi
-    docker exec -it -w /root "$name" $cmd
+    docker exec -it $wd "$(box_name $name)" $cmd
 }
 
-name="$(strip_dots "$image")"
-image=$(image_name "$image")
-shift # discard first arg
+case "$1" in
+    create) shift
+            create "$@" ;;
+    list)   list ;;
+    enter)  shift
+            enter "$@" ;;
+    rm)     shift
+            remove "$@" ;;
+    -h|"")  print_usage
+            exit 1 ;;
+    *)      err "invalid arg '$1'";;
+esac
 
-ensure_volume_exists projects
-ensure_volume_exists go
-ensure_volume_exists home
-ensure_volume_exists dev-env-docker_home
-
-run "$@"
 
