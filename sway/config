@@ -14,19 +14,20 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term termite
+set $term gnome-terminal
 exec --no-startup-id xrdb ~/.Xresources
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 # set $menu dmenu_path | dmenu | xargs swaymsg exec
-set $menu rofi -modi "drun,workspaces:python3 $HOME/dotfiles/sway/windows.py" -show-icons -show drun -location 1 -yoffset 30 -me-select-entry '' -me-accept-entry MousePrimary
+set $menu rofi -modi "drun,windows:python3 $HOME/dotfiles/sway/windows.py" -show-icons -show drun -location 1 -yoffset 30 -me-select-entry '' -me-accept-entry MousePrimary
+set $windows rofi -modi "windows:python3 $HOME/dotfiles/sway/windows.py,drun" -show-icons -show windows -location 1 -yoffset 30 -me-select-entry '' -me-accept-entry MousePrimary
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:SF Mono 11
 # font pango:Source Code Pro For Powerline 12
 # font xft:URWGothic-Book 11
 
-new_window pixel 2
+new_window pixel 1
 
 ### Output configuration
 #
@@ -79,7 +80,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # start your launcher
     bindsym $mod+d exec $menu
-    bindsym Ctrl+space exec $menu
+    #bindsym Ctrl+space exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -236,7 +237,7 @@ bar {
 
 }
 
-set $mode_system "(l)ock (e)xit (s)uspend (Shift+r)eboot (Shift+s)hutdown"
+# set $mode_system "(l)ock (e)xit (s)uspend (Shift+r)eboot (Shift+s)hutdown"
 mode "$mode_system" {
     bindsym l exec swaylock -c 000000, mode "default"
     bindsym s exec systemctl suspend, mode "default"
@@ -249,22 +250,26 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
+bindsym Ctrl+Right workspace next_on_output
+bindsym Ctrl+Left workspace prev_on_output
 # use ctrl-b as with tmux.
 # since ideally I should use tmux or i3, not both.
-bindsym Ctrl+b mode "tmux-key"
-mode "tmux-key" {
+bindsym Ctrl+space mode "navigation"
+mode "navigation" {
         # workspaces
-        bindsym n workspace next_on_output; mode "default"
-        bindsym p workspace prev_on_output; mode "default"
-        bindsym Shift+n move container to workspace next_on_output; workspace next_on_output; mode "default"
-        bindsym Shift+p move container to workspace prev_on_output; workspace prev_on_output; mode "default"
+	    bindsym space exec $menu; mode "default"
+	    bindsym Ctrl+space exec $windows; mode "default"
+        bindsym Right workspace next_on_output; mode "default"
+        bindsym Left workspace prev_on_output; mode "default"
+        bindsym Shift+Left move container to workspace next_on_output; workspace next_on_output; mode "default"
+        bindsym Shift+Right move container to workspace prev_on_output; workspace prev_on_output; mode "default"
         bindsym Return split h; exec $term; mode "default"
         bindsym Shift+5 split h; exec $term; mode "default"
         bindsym Shift+6 split v; exec $term; mode "default"
-        bindsym c exec --no-startup-id sh ~/.config/i3/workspace.sh; mode "default"
-        bindsym Shift+c exec --no-startup-id sh ~/.config/i3/move2workspace.sh; mode "default"
+        bindsym c exec --no-startup-id sh ~/.config/sway/workspace.sh; mode "default"
+        bindsym Shift+c exec --no-startup-id sh ~/.config/sway/move2workspace.sh; mode "default"
         bindsym q kill; mode "default"
-        bindsym space floating toggle; mode "default"
+        bindsym f floating toggle; mode "default"
         bindsym Escape mode "default"
 
         # focus window
@@ -319,7 +324,7 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 ### keyboard layout
 # copy dotfiles/sway/kblayout.sh to ~/bin/kblayout.sh and edit accordingly
-exec ~/bin/kblayout.sh
+exec $HOME/bin/kblayout.sh
 
 ### keyboard layout end
 
