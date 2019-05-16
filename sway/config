@@ -328,4 +328,8 @@ exec $HOME/bin/kblayout.sh
 
 ### keyboard layout end
 
+# tochpad input
+exec $HOME/libinput-gestures/libinput-gestures
+# touchpad input end
+
 include /etc/sway/config.d/*
