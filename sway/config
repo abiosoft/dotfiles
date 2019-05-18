@@ -80,7 +80,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # start your launcher
     bindsym $mod+d exec $menu
-    #bindsym Ctrl+space exec $menu
+    bindsym Ctrl+space exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -222,6 +222,7 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
+    # swaybar_command waybar
     position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
@@ -230,10 +231,10 @@ bar {
     colors {
         statusline #ffffff
         background #323232
-        # inactive_workspace #32323200 #32323200 #5c5c5c
+        active_workspace #32323200 #32323200 #5c5c5c
     }
 
-    # tray_output all
+    tray_output all
 
 }
 
@@ -254,7 +255,7 @@ bindsym Ctrl+Right workspace next_on_output
 bindsym Ctrl+Left workspace prev_on_output
 # use ctrl-b as with tmux.
 # since ideally I should use tmux or i3, not both.
-bindsym Ctrl+space mode "navigation"
+bindsym Ctrl+Up mode "navigation"
 mode "navigation" {
         # workspaces
 	    bindsym space exec $menu; mode "default"
@@ -324,12 +325,25 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 ### keyboard layout
 # copy dotfiles/sway/kblayout.sh to ~/bin/kblayout.sh and edit accordingly
-exec $HOME/bin/kblayout.sh
+exec $HOME/bin/kblayout.sh "1452:627:Apple_Inc._Apple_Internal_Keyboard_/_Trackpad"
 
 ### keyboard layout end
 
 # tochpad input
 exec $HOME/libinput-gestures/libinput-gestures
 # touchpad input end
+
+# volume and brightness
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && notify-send -t 3000 Volume "$(pamixer --get-volume)%"
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && notify-send -t 3000 Volume "$(pamixer --get-volume)%"
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send -t 3000 Volume "$(pamixer --get-volume)%"
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && notify-send -t 3000 Volume "$(pamixer --get-volume)%"
+bindsym XF86MonBrightnessDown exec light -U 5 && notify-send -t 3000 Brightness "$(light -G | awk -F'.' '{print $1}')%"
+bindsym XF86MonBrightnessUp exec light -A 5 && notify-send -t 3000 Brightness "$(light -G | awk -F'.' '{print $1}')%"
+# volume and brightness end
+
+# displays
+output eDP-1 scale 1.5
+
 
 include /etc/sway/config.d/*

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo pacman -Sy --noconfirm mate-media yay light feh networkmanager dconf termite polkit-gnome
+sudo pacman -Sy --noconfirm mate-media yay light feh networkmanager dconf termite polkit-gnome sway slurp grim mako swayidle swaylock pamixer
 
-yay -Sy --noconfirm sway-git wlroots-git slurp-git grim-git mako-git
+yay -Sy --noconfirm wf-recorder-git
 

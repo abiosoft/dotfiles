@@ -30,7 +30,7 @@ cp ../i3/rofi/tomorrow-night.rasi $HOME/.local/share/rofi/themes
 
 # gestures
 git clone https://github.com/bulletmark/libinput-gestures $HOME/libinput-gestures
-grep -E '^input:' /usr/lib/group | sudo tee -a /etc/group
+# grep -E '^input:' /usr/lib/group | sudo tee -a /etc/group
 echo "adding $USER to input group"
 sudo usermod -a -G input $USER
 
