@@ -493,10 +493,17 @@ set mouse=""
 " fix quickfix height
 autocmd FileType qf 6wincmd_
 
-" statusline already show node, disable it
+" statusline already show mode, disable it
 set noshowmode
 
+
+
+
 " coc.nvim
+" instance relevant extensions
+" :CocInstall coc-go coc-css coc-html coc-json coc-python coc-rls coc-tsserver coc-vetur coc-yaml
+"
+
 " if hidden is not set, TextEdit might fail.
 set hidden
 
@@ -546,11 +553,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" nmap <silent> <expr> <C-g> <Plug>(coc-list-outline)<CR>
-
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-" nnoremap <silent> <C-g> :call CocActionAsync('outline')<CR>
 nnoremap <silent> <leader>i :call CocActionAsync('showSignatureHelp')<CR>
 nnoremap <silent> <leader>f :call CocAction('format')<CR>
 
@@ -601,6 +605,7 @@ command! -nargs=0 Rename :call CocAction('rename')
 
 " Use `:Lens` to perform code lens action
 command! -nargs=0 Lens :call CocAction('codeLensAction')
+
 
 
 " Using CocList
