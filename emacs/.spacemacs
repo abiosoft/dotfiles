@@ -31,7 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(python
-     go
+     (go :variables
+         go-tab-width 4)
      rust
      ;; rust
      lsp
@@ -139,8 +140,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 16
+   dotspacemacs-default-font '("Inconsolata"
+                               :size 17
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -299,6 +300,7 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-mode-line-theme 'spacemacs
    ))
 
 (defun empty-frame ()
@@ -329,11 +331,11 @@ you should place your code here."
   ;; disable bold
   (set-face-bold-p 'bold nil)
 
-  ;; remap jj to esc
+  ;; remap jk to esc
   (setq-default evil-escape-key-sequence "jk")
   (setq key-chord-two-keys-delay 1.1)
 
-  ;; outline
+  ;; document symbols/outline
   (global-set-key (kbd "C-g") 'helm-imenu)
 
 
@@ -353,6 +355,10 @@ you should place your code here."
   (add-hook 'html-mode-hook #'lsp)
   (add-hook 'css-mode-hook #'lsp)
 
+  ;; display line numbers
+  (global-linum-mode t)
+
+  ;; macOS specific settings
   (let ((is-mac (string-equal system-type "darwin")))
     (when is-mac
       ;; make fonts look better with anti-aliasing
@@ -381,12 +387,6 @@ you should place your code here."
       (setq-default tab-width 4)
       (setq indent-line-function 'insert-tab)
 
-      ;; line numbers
-      (global-linum-mode t)
-
-      ;; tmux keys
-      ;; (global-unset-key (kbd "C-b"))
-      ;; (global-set-key (kbd "C-b n") 'other-frame)
     )
   )
 )
