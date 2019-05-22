@@ -339,6 +339,10 @@ you should place your code here."
   (global-set-key (kbd "C-g") 'helm-imenu)
 
 
+  ;; ctrl-p
+  (define-key global-map "\C-p" 'helm-projectile-find-file)
+  (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+
   ;; Whitespace & wrapping
   (setq-default truncate-lines t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -380,7 +384,6 @@ you should place your code here."
   (global-set-key (kbd "C-b c") 'empty-frame)
   (global-set-key (kbd "C-b $") 'rename-buffer)
   (global-set-key (kbd "C-b ,") 'spacemacs/comment-or-uncomment-lines)
-
 
   ;; display line numbers
   (global-linum-mode t)
