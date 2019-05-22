@@ -329,7 +329,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; disable bold
-  (set-face-bold-p 'bold nil)
+  (set-face-bold 'bold nil)
 
   ;; remap jk to esc
   (setq-default evil-escape-key-sequence "jk")
@@ -355,8 +355,40 @@ you should place your code here."
   (add-hook 'html-mode-hook #'lsp)
   (add-hook 'css-mode-hook #'lsp)
 
+
+  (defalias 'ctl-b-keymap (make-sparse-keymap))
+  (defvar ctl-b-map (symbol-function 'ctl-b-keymap)
+    "Global keymap for characters following C-b.")
+  (define-key global-map "\C-b" 'ctl-b-keymap)
+  (define-key evil-normal-state-map "\C-b" 'ctl-b-keymap)
+
+  (global-set-key (kbd "C-b b") 'helm-buffers-list)
+  (global-set-key (kbd "C-b %") 'split-window-right-and-focus)
+  (global-set-key (kbd "C-b \"") 'split-window-below-and-focus)
+  (global-set-key (kbd "C-b h") 'evil-window-left)
+  (global-set-key (kbd "C-b H") 'evil-window-move-far-left)
+  (global-set-key (kbd "C-b l") 'evil-window-right)
+  (global-set-key (kbd "C-b L") 'evil-window-move-far-right)
+  (global-set-key (kbd "C-b j") 'evil-window-down)
+  (global-set-key (kbd "C-b J") 'evil-window-move-very-bottom)
+  (global-set-key (kbd "C-b k") 'evil-window-up)
+  (global-set-key (kbd "C-b K") 'evil-window-move-very-top)
+  (global-set-key (kbd "C-b n") 'evil-unimpaired/next-frame)
+  (global-set-key (kbd "C-b p") 'evil-unimpaired/previous-frame)
+  (global-set-key (kbd "C-b z") 'spacemacs/toggle-maximize-buffer)
+  (global-set-key (kbd "C-b x") 'delete-window)
+  (global-set-key (kbd "C-b c") 'empty-frame)
+  (global-set-key (kbd "C-b $") 'rename-buffer)
+  (global-set-key (kbd "C-b ,") 'spacemacs/comment-or-uncomment-lines)
+
+
   ;; display line numbers
   (global-linum-mode t)
+
+  ;; test shortcut
+  ;; (define-key evil-normal-state-map (kbd ", c c") 'spacemacs/comment-or-uncomment-lines)
+  ;; (define-key evil-normal-state-map (kbd "C-b") 'helm-buffers-list)
+  ;; (define-key evil-normal-state-map (kbd "C-B-V") 'evil-window-vsplit)
 
   ;; macOS specific settings
   (let ((is-mac (string-equal system-type "darwin")))
