@@ -31,6 +31,10 @@
       (lsp-format-buffer)
     (indent-region (region-beginning) (region-end))))
 
+(defun close-help-window ()
+  (interactive)
+  (delete-window (get-buffer-window "*Help*"))) 
+
 ;; Minimal UI
 (scroll-bar-mode -1)
 (tool-bar-mode   -1)
@@ -39,10 +43,10 @@
 
 ;; Font
 ;; Set default font
-(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
+(add-to-list 'default-frame-alist '(font . "Inconsolata-17"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
-(set-default-font "Inconsolata 14")
+(set-default-font "Inconsolata 17")
 
 ;; Package configs
 (require 'package)
@@ -288,6 +292,7 @@
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'lsp-mode-hook 'flycheck-mode)
 (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
+(define-key evil-normal-state-map (kbd "J") 'close-help-window)
 (define-key evil-normal-state-map (kbd "C-g") 'helm-imenu)
 (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
 
@@ -305,11 +310,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(custom-safe-themes
-        (quote
-         ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+   (quote
+    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(package-selected-packages
-        (quote
-         (helm-projectile flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
+   (quote
+    (helm-projectile flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
