@@ -69,19 +69,19 @@
   :ensure t
   :init
   (setq helm-M-x-fuzzy-match t
-  helm-mode-fuzzy-match t
-  helm-buffers-fuzzy-matching t
-  helm-recentf-fuzzy-match t
-  helm-locate-fuzzy-match t
-  helm-semantic-fuzzy-match t
-  helm-imenu-fuzzy-match t
-  helm-completion-in-region-fuzzy-match t
-  helm-candidate-number-list 150
-  helm-split-window-in-side-p t
-  helm-move-to-line-cycle-in-source t
-  helm-echo-input-in-header-line t
-  helm-autoresize-max-height 0
-  helm-autoresize-min-height 20)
+    helm-mode-fuzzy-match t
+    helm-buffers-fuzzy-matching t
+    helm-recentf-fuzzy-match t
+    helm-locate-fuzzy-match t
+    helm-semantic-fuzzy-match t
+    helm-imenu-fuzzy-match t
+    helm-completion-in-region-fuzzy-match t
+    helm-candidate-number-list 150
+    helm-split-window-in-side-p t
+    helm-move-to-line-cycle-in-source t
+    helm-echo-input-in-header-line t
+    helm-autoresize-max-height 0
+    helm-autoresize-min-height 20)
   :config
   (helm-mode 1))
 (add-hook 'helm-after-initialize-hook
@@ -91,7 +91,13 @@
     (define-key helm-map (kbd "C-z") 'helm-select-action)
     (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)
     (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)))
+    (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
+    (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
 
 ;; Which Key
 (use-package which-key
@@ -103,6 +109,7 @@
   (which-key-mode 1))
 
 ;; Custom keybindings
+;; Global
 (use-package general
   :ensure t
   :config (general-define-key
@@ -146,7 +153,7 @@
 
     ;; Make forward delete work
     (global-set-key (kbd "<H-backspace>") 'delete-forward-char)
-  ))
+    ))
 
 ;; use 4 tab space
   (setq-default indent-tabs-mode nil)
@@ -186,10 +193,38 @@
   :config
   (global-company-mode 1))
 
+;; Programming Languages
+(use-package go-mode
+  :ensure t)
+(use-package python-mode
+  :ensure t)
+(use-package rust-mode
+  :ensure t)
+(use-package web-mode
+  :ensure t)
+(use-package vue-mode
+  :ensure t)
+(use-package typescript-mode
+  :ensure t)
 ;; Language Server Protocol
-;; (use-package lsp-mode
-;;   :hook (go-mode . lsp)
-;;   :commands lsp)
+(use-package lsp-mode
+  :ensure t
+  :hook
+  (go-mode . lsp)
+  (rust-mode . lsp)
+  (python-mode . lsp)
+  :commands lsp)
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+(use-package helm-lsp
+  :ensure t
+  :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+(use-package dap-mode
+  :ensure t)
 
 ;; ;; git
 (use-package magit
@@ -209,7 +244,7 @@
          ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(package-selected-packages
         (quote
-         (magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
+         (web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
