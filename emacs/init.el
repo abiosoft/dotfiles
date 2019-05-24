@@ -1,19 +1,35 @@
-;; (defun my-lsp-help ()
-;;   "Display the full documentation of the thing at point."
-;;   (interactive)
-;;   (let ((contents (-some->> (lsp--text-document-position-params)
-;;                             (lsp--make-request "textDocument/hover")
-;;                             (lsp--send-request)
-;;                             (gethash "contents"))))
-;;     (if (and contents (not (equal contents "")) )
-;;         (eldoc-message contents)  
-;;         )))
-
-(defun my-lsp-help ()
+;; Functions
+(defun my-lsp-describe-thing-at-point ()
+  "Display the full documentation of the thing at point."
   (interactive)
-  (let ((sw(selected-window)))
-  (lsp-describe-thing-at-point)
-  (select-window sw)))
+  (let ((contents (-some->> (lsp--text-document-position-params)
+                            (lsp--make-request "textDocument/hover")
+                            (lsp--send-request)
+                            (gethash "contents"))))
+    (if (and contents (not (equal contents "")) )
+        (pop-to-buffer
+         (with-current-buffer (get-buffer-create "*Help*")
+           (let ((inhibit-read-only t))
+             (erase-buffer)
+             (insert (lsp--render-on-hover-content contents t))
+             (goto-char (point-min))
+             (view-mode t)
+             (current-buffer))))
+      (lsp--info "No content at point."))))
+
+(defun my-lsp-help()
+  (interactive)
+  (if (bound-and-true-p lsp-mode)
+      (let ((sw (selected-window)))
+      (my-lsp-describe-thing-at-point)
+      (select-window sw))
+    (describe-function (symbol-at-point))))
+
+(defun my-lsp-format ()
+  (interactive)
+  (if (bound-and-true-p lsp-mode)
+      (lsp-format-buffer)
+    (indent-region (region-beginning) (region-end))))
 
 ;; Minimal UI
 (scroll-bar-mode -1)
@@ -22,9 +38,11 @@
 (menu-bar-mode   -1)
 
 ;; Font
-(add-to-list 'default-frame-alist '(font . "Inconsolata-17"))
+;; Set default font
+(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
+(set-default-font "Inconsolata 14")
 
 ;; Package configs
 (require 'package)
@@ -101,20 +119,19 @@
   :config
   (helm-mode 1))
 (add-hook 'helm-after-initialize-hook
-  (lambda()
-    (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
-    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-    (define-key helm-map (kbd "C-z") 'helm-select-action)
-    (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
-   ))
-;;    (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
-;;    (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
-;;    (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
-;;    (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
-;;    (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
-;;    (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
+          (lambda()
+            (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+            (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+            (define-key helm-map (kbd "C-z") 'helm-select-action)
+            (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
+            (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)))
+            ;; (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
+            ;; (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
 
 ;; Which Key
 (use-package which-key
@@ -126,7 +143,16 @@
   (which-key-mode 1))
 
 ;; Custom keybindings
-;; Global
+;; Functions
+(defun split-right ()
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+(defun split-down ()
+  (interactive)
+  (split-window-below)
+  (windmove-down))
+;;; Global
 (use-package general
   :ensure t
   :config (general-define-key
@@ -136,21 +162,26 @@
    ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
     "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
     "SPC" '(helm-M-x :which-key "M-x")
-    "pf"  '(helm-find-files :which-key "find files")
+    "ff"  '(helm-find-files :which-key "find files")
+    "pf"  '(helm-projectile-find-file :which-key "find project files")
+    "pp"  '(helm-projectile-switch-project :which-key "choose project")
     ;; Buffers
     "bb"  '(helm-buffers-list :which-key "buffers list")
     ;; Window
     "wl"  '(windmove-right :which-key "move right")
     "wh"  '(windmove-left :which-key "move left")
     "wk"  '(windmove-up :which-key "move up")
-    "wj"  '(windmove-down :which-key "move bottom")
-    "w/"  '(split-window-right :which-key "split right")
-    "w-"  '(split-window-below :which-key "split bottom")
+    "wj"  '(windmove-down :which-key "move down")
+    "w/"  '(split-right :which-key "split right")
+    "w-"  '(split-down :which-key "split down")
     "wx"  '(delete-window :which-key "delete window")
     ;; Others
     "at"  '(ansi-term :which-key "open terminal")
     ;; Git
     "g"   '(magit-status :which-key "magit status")
+    ;; Editing
+    "cc" '(comment-or-uncomment-region :which-key "comment code")
+    "cf" '(my-lsp-format :which-key "format code")
     ))
 
 ;; macOS specific
@@ -181,10 +212,12 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-require-project-root nil)
+  (setq projectile-completion-system 'helm)
   :config
-  (projectile-mode 1))
-
+  (projectile-mode 1)
+  (projectile-global-mode))
+(use-package helm-projectile
+  :ensure t)
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -255,6 +288,8 @@
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'lsp-mode-hook 'flycheck-mode)
 (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
+(define-key evil-normal-state-map (kbd "C-g") 'helm-imenu)
+(define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
 
 ;; git
 (use-package magit
@@ -270,11 +305,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(custom-safe-themes
-   (quote
-    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+        (quote
+         ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(package-selected-packages
-   (quote
-    (flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
+        (quote
+         (helm-projectile flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
