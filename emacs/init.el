@@ -1,3 +1,19 @@
+;; (defun my-lsp-help ()
+;;   "Display the full documentation of the thing at point."
+;;   (interactive)
+;;   (let ((contents (-some->> (lsp--text-document-position-params)
+;;                             (lsp--make-request "textDocument/hover")
+;;                             (lsp--send-request)
+;;                             (gethash "contents"))))
+;;     (if (and contents (not (equal contents "")) )
+;;         (eldoc-message contents)  
+;;         )))
+
+(defun my-lsp-help ()
+  (interactive)
+  (let ((sw(selected-window)))
+  (lsp-describe-thing-at-point)
+  (select-window sw)))
 
 ;; Minimal UI
 (scroll-bar-mode -1)
@@ -92,12 +108,13 @@
     (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)
     (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
     (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
-    (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
+   ))
+;;    (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
+;;    (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
+;;    (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
+;;    (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
+;;    (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
+;;    (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
 
 ;; Which Key
 (use-package which-key
@@ -206,14 +223,24 @@
   :ensure t)
 (use-package typescript-mode
   :ensure t)
+(use-package flycheck
+  :ensure t)
 ;; Language Server Protocol
 (use-package lsp-mode
   :ensure t
+  :init
+  (setq lsp-auto-configure t)
+  (setq lsp-enable-snippet nil)
   :hook
   (go-mode . lsp)
   (rust-mode . lsp)
   (python-mode . lsp)
   :commands lsp)
+ (use-package lsp-ui
+   :ensure t
+   :init
+   (setq lsp-ui-doc-enable nil)
+   :commands lsp-ui-mode)
 (use-package company-lsp
   :ensure t
   :commands company-lsp)
@@ -225,8 +252,11 @@
   :commands lsp-treemacs-errors-list)
 (use-package dap-mode
   :ensure t)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'lsp-mode-hook 'flycheck-mode)
+(define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
 
-;; ;; git
+;; git
 (use-package magit
   :ensure t)
 
@@ -240,11 +270,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(custom-safe-themes
-        (quote
-         ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+   (quote
+    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(package-selected-packages
-        (quote
-         (web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
+   (quote
+    (flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
