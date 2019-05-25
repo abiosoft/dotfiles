@@ -21,9 +21,19 @@
   (interactive)
   (if (bound-and-true-p lsp-mode)
       (let ((sw (selected-window)))
-      (my-lsp-describe-thing-at-point)
-      (select-window sw))
-    (describe-function (symbol-at-point))))
+        (my-lsp-describe-thing-at-point)
+        (evil-window-move-very-bottom)
+        (select-window sw))
+    (describe-function (symbol-at-point)))
+  (move-help-window-down))
+
+(defun move-help-window-down()
+  (interactive)
+  (let ((sw (selected-window))
+        (hw (get-buffer-window "*Help*")))
+    (select-window hw)
+    (evil-window-move-very-bottom)
+    (select-window sw)))
 
 (defun my-lsp-format ()
   (interactive)
@@ -33,7 +43,28 @@
 
 (defun close-help-window ()
   (interactive)
-  (delete-window (get-buffer-window "*Help*"))) 
+  (let ((w (get-buffer-window "*Help*")))
+    (if w (delete-window w)))) 
+
+(defun move-forward ()
+  (interactive)
+  (forward-char)
+  (close-help-window))
+
+(defun move-backward ()
+  (interactive)
+  (backward-char)
+  (close-help-window))
+
+(defun move-up ()
+  (interactive)
+  (evil-previous-line)
+  (close-help-window))
+
+(defun move-down ()
+  (interactive)
+  (evil-next-line)
+  (close-help-window))
 
 ;; Minimal UI
 (scroll-bar-mode -1)
@@ -88,15 +119,6 @@
   :ensure t
   :hook (after-init . doom-modeline-mode))
   :init (setq doom-modeline-height 20)
-;; (use-package smart-mode-line-powerline-theme
-;;   :ensure t)
-;; (use-package smart-mode-line
-;;   :ensure t
-;;   :init
-;;   (setq sml/no-confirm-load-theme t)
-;;   (setq sml/theme 'powerline)
-;;   :config
-;;   (sml/setup))
 (set-face-attribute 'mode-line nil
    :background "#353535")
 (set-face-attribute 'mode-line-inactive nil
@@ -216,6 +238,7 @@
 (use-package projectile
   :ensure t
   :init
+  (setq projectile-require-project-root nil)
   (setq projectile-completion-system 'helm)
   :config
   (projectile-mode 1)
@@ -295,6 +318,11 @@
 (define-key evil-normal-state-map (kbd "J") 'close-help-window)
 (define-key evil-normal-state-map (kbd "C-g") 'helm-imenu)
 (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
+;; Modify navigation to close help
+(define-key evil-normal-state-map (kbd "h") 'move-backward)
+(define-key evil-normal-state-map (kbd "j") 'move-down)
+(define-key evil-normal-state-map (kbd "k") 'move-up)
+(define-key evil-normal-state-map (kbd "l") 'move-forward)
 
 ;; git
 (use-package magit
