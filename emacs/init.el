@@ -38,7 +38,9 @@
 (defun my-lsp-format ()
   (interactive)
   (if (bound-and-true-p lsp-mode)
-      (lsp-format-buffer)
+      (progn
+       (lsp-format-buffer)
+       (lsp-organize-imports))
     (indent-region (region-beginning) (region-end))))
 
 (defun close-help-window ()
@@ -118,8 +120,8 @@
   (setq evil-insert-state-cursor 'bar)  ; ⎸
   (setq evil-emacs-state-cursor  'hbar))
 ;;  :config  ; _
-  ;; (unless (display-graphic-p)
-  ;;   ;; (require 'evil-terminal-cursor-changer)
+;; (unless (display-graphic-p)
+;;   ;; (require 'evil-terminal-cursor-changer)
 ;;   (evil-terminal-cursor-changer-activate)))
 ;; (add-hook 'after-init )
 
@@ -148,19 +150,19 @@
   :ensure t
   :init
   (setq helm-M-x-fuzzy-match t
-    helm-mode-fuzzy-match t
-    helm-buffers-fuzzy-matching t
-    helm-recentf-fuzzy-match t
-    helm-locate-fuzzy-match t
-    helm-semantic-fuzzy-match t
-    helm-imenu-fuzzy-match t
-    helm-completion-in-region-fuzzy-match t
-    helm-candidate-number-list 150
-    helm-split-window-in-side-p t
-    helm-move-to-line-cycle-in-source t
-    helm-echo-input-in-header-line t
-    helm-autoresize-max-height 0
-    helm-autoresize-min-height 20)
+        helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
+        helm-candidate-number-list 150
+        helm-split-window-in-side-p t
+        helm-move-to-line-cycle-in-source t
+        helm-echo-input-in-header-line t
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 20)
   :config
   (helm-mode 1))
 (add-hook 'helm-after-initialize-hook
@@ -170,13 +172,13 @@
             (define-key helm-map (kbd "C-z") 'helm-select-action)
             (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
             (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)))
-            ;; (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
-            ;; (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
+;; (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
+;; (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
 
 ;; Which Key
 (use-package which-key
@@ -201,33 +203,33 @@
 (use-package general
   :ensure t
   :config (general-define-key
-    :states '(normal visual insert emacs)
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC"
-   ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
-    "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-    "SPC" '(helm-M-x :which-key "M-x")
-    "ff"  '(helm-find-files :which-key "find files")
-    "pf"  '(helm-projectile-find-file :which-key "find project files")
-    "pp"  '(helm-projectile-switch-project :which-key "choose project")
-    ;; Buffers
-    "bb"  '(helm-buffers-list :which-key "buffers list")
-    ;; Window
-    "wl"  '(windmove-right :which-key "move right")
-    "wh"  '(windmove-left :which-key "move left")
-    "wk"  '(windmove-up :which-key "move up")
-    "wj"  '(windmove-down :which-key "move down")
-    "w/"  '(split-right :which-key "split right")
-    "w-"  '(split-down :which-key "split down")
-    "wx"  '(delete-window :which-key "delete window")
-    ;; Others
-    "at"  '(ansi-term :which-key "open terminal")
-    ;; Git
-    "g"   '(magit-status :which-key "magit status")
-    ;; Editing
-    "cc" '(comment-or-uncomment-region :which-key "comment code")
-    "cf" '(my-lsp-format :which-key "format code")
-    ))
+           :states '(normal visual insert emacs)
+           :prefix "SPC"
+           :non-normal-prefix "M-SPC"
+           ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
+           "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
+           "SPC" '(helm-M-x :which-key "M-x")
+           "ff"  '(helm-find-files :which-key "find files")
+           "pf"  '(helm-projectile-find-file :which-key "find project files")
+           "pp"  '(helm-projectile-switch-project :which-key "choose project")
+           ;; Buffers
+           "bb"  '(helm-buffers-list :which-key "buffers list")
+           ;; Window
+           "wl"  '(windmove-right :which-key "move right")
+           "wh"  '(windmove-left :which-key "move left")
+           "wk"  '(windmove-up :which-key "move up")
+           "wj"  '(windmove-down :which-key "move down")
+           "w/"  '(split-right :which-key "split right")
+           "w-"  '(split-down :which-key "split down")
+           "wx"  '(delete-window :which-key "delete window")
+           ;; Others
+           "at"  '(ansi-term :which-key "open terminal")
+           ;; Git
+           "g"   '(magit-status :which-key "magit status")
+           ;; Editing
+           "cc" '(comment-or-uncomment-region :which-key "comment code")
+           "cf" '(my-lsp-format :which-key "format code")
+           ))
 
 ;; macOS specific
 (let ((is-mac (string-equal system-type "darwin")))
@@ -249,9 +251,9 @@
     ))
 
 ;; use 4 tab space
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 4)
-  (setq indent-line-function 'insert-tab)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
 
 ;; Projectile
 (use-package projectile
@@ -323,6 +325,7 @@
   (go-mode . lsp)
   (rust-mode . lsp)
   (python-mode . lsp)
+  (before-save . my-lsp-format)
   :commands lsp)
  (use-package lsp-ui
    :ensure t
@@ -366,7 +369,7 @@
  '(blink-cursor-mode nil)
  '(custom-safe-themes
    (quote
-    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+    ("8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(package-selected-packages
    (quote
     (helm-projectile flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
