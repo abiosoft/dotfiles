@@ -105,24 +105,43 @@
   :config
   (evil-escape-mode 1))
 
+;; terminal insert mode cursor fix
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :hook (after-init . (lambda()
+                        (unless (display-graphic-p)
+                          (evil-terminal-cursor-changer-activate))))
+  :init
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; ⎸
+  (setq evil-emacs-state-cursor  'hbar))
+;;  :config  ; _
+  ;; (unless (display-graphic-p)
+  ;;   ;; (require 'evil-terminal-cursor-changer)
+;;   (evil-terminal-cursor-changer-activate)))
+;; (add-hook 'after-init )
+
 ;; Theme
 (use-package doom-themes
   :ensure t
+  :init
+  (setq
+   doom-themes-enable-bold nil   ; if nil, bold is universally disabled
+   doom-themes-enable-italic t)  ; if nil, italics is universally disabled
   :config
   (load-theme 'doom-tomorrow-night t))
-;; Global settings (defaults)
-(setq
-  doom-themes-enable-bold nil   ; if nil, bold is universally disabled
-  doom-themes-enable-italic t)  ; if nil, italics is universally disabled
 ;; modeline theme
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode))
-  :init (setq doom-modeline-height 20)
-(set-face-attribute 'mode-line nil
-   :background "#353535")
-(set-face-attribute 'mode-line-inactive nil
-   :background "#131313")
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (set-face-attribute 'mode-line nil
+                      :background "#353535")
+  (set-face-attribute 'mode-line-inactive nil
+                      :background "#131313")
+  (setq doom-modeline-height 15))
 
 ;; Helm
 (use-package helm
@@ -240,11 +259,20 @@
   :init
   (setq projectile-require-project-root nil)
   (setq projectile-completion-system 'helm)
+  (setq projectile-mode-line "Projectile")
+  (setq projectile--mode-line "Projectile")
   :config
   (projectile-mode 1)
   (projectile-global-mode))
 (use-package helm-projectile
   :ensure t)
+;; TRAMP fix
+(setq remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp
+      (format "%s\\|%s"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
+(setq tramp-verbose 1)
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -316,8 +344,7 @@
 (add-hook 'lsp-mode-hook 'flycheck-mode)
 (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
 (define-key evil-normal-state-map (kbd "J") 'close-help-window)
-(define-key evil-normal-state-map (kbd "C-g") 'helm-imenu)
-(define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
+(define-key evil-normal-state-map (kbd "SPC c s") 'helm-imenu)
 ;; Modify navigation to close help
 (define-key evil-normal-state-map (kbd "h") 'move-backward)
 (define-key evil-normal-state-map (kbd "j") 'move-down)
