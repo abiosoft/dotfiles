@@ -10,7 +10,7 @@ values."
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs
+   dotspacemacs-distribution 'spacemacs-base
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
    ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
@@ -30,22 +30,39 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(typescript
-     python
-     (go :variables
-         go-tab-width 4)
-     rust
-     ;; rust
-     lsp
+   '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     ;; auto-completion
      ;; better-defaults
      emacs-lisp
+     ;; git
+     ;; markdown
+     ;; org
+     ;; (shell :variables
+     ;;        shell-default-height 30
+     ;;        shell-default-position 'bottom)
+     ;; spell-checking
+     ;; syntax-checking
+     version-control
+     typescript
+     python
+     (go
+      :variables
+      go-tab-width 4)
+     rust
+     (lsp
+      :variables
+      lsp-ui-doc-enable nil
+      lsp-ui-sideline-enable t
+      lsp-ui-sideline-show-symbol t
+      )
+     helm
+     auto-completion
      osx
      git
      markdown
@@ -54,21 +71,22 @@ values."
             shell-default-shell 'ansi-term
             shell-default-width 30
             shell-default-position 'right)
-     ;; spell-checking
      syntax-checking
-     version-control
+     spacemacs-modeline
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      vue-mode
+                                      evil-terminal-cursor-changer
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    evil-search-highlight-persist
+                                    )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -136,20 +154,20 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(sanityinc-tomorrow-night
-                         sanityinc-tomorrow-day)
+   dotspacemacs-themes '(doom-tomorrow-night
+                         doom-tomorrow-day)
+   dotspacemacs-mode-line-theme 'spacemacs
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Inconsolata"
-                               :size 17
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
-   ;; dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
    ;; (default "SPC")
    dotspacemacs-emacs-command-key "SPC"
@@ -157,7 +175,7 @@ values."
    dotspacemacs-ex-command-key ":"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "C-b"
+   dotspacemacs-emacs-leader-key "M-m"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
@@ -177,8 +195,6 @@ values."
    ;; there. (default t)
    dotspacemacs-retain-visual-state-on-shift t
    ;; If non-nil, J and K move lines up and down when in visual mode.
-   ;; (default nil)
-   dotspacemacs-visual-line-move-text nil
    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
@@ -238,7 +254,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup 1
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -270,7 +286,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -302,15 +318,93 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   dotspacemacs-mode-line-theme 'spacemacs
-   ))
+   )
+  )
 
-(defun empty-frame ()
-  "Open a new frame with a buffer named Untitled<N>.
-
-The buffer is not associated with a file."
+;; Functions
+(defun fix-doom-theme ()
   (interactive)
-  (switch-to-buffer-other-frame (generate-new-buffer "Untitled")))
+  (set-face-attribute 'mode-line nil
+                      :background "#353535"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-inactive nil
+                      :background "#131313"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-buffer-id-inactive nil
+                      :weight 'normal)
+  )
+
+(defun my-lsp-describe-thing-at-point ()
+  "Display the full documentation of the thing at point."
+  (interactive)
+  (let ((contents (-some->> (lsp--text-document-position-params)
+                            (lsp--make-request "textDocument/hover")
+                            (lsp--send-request)
+                            (gethash "contents"))))
+    (if (and contents (not (equal contents "")) )
+        (pop-to-buffer
+         (with-current-buffer (get-buffer-create "*Help*")
+           (let ((inhibit-read-only t))
+             (erase-buffer)
+             (insert (lsp--render-on-hover-content contents t))
+             (goto-char (point-min))
+             (view-mode t)
+             (current-buffer))))
+      (lsp--info "No content at point."))))
+
+(defun my-lsp-help()
+  (interactive)
+  (let ((sw (selected-window)))
+    (if (bound-and-true-p lsp-mode)
+        (my-lsp-describe-thing-at-point)
+      ;; (evil-window-move-very-bottom)
+      (describe-function (symbol-at-point)))
+    (select-window sw))
+  ;; (move-help-window-down)
+  )
+
+(defun move-help-window-down()
+  (interactive)
+  (let ((sw (selected-window))
+        (hw (get-buffer-window "*Help*")))
+    (select-window hw)
+    (evil-window-move-very-bottom)
+    (select-window sw)))
+
+(defun my-lsp-format ()
+  (interactive)
+  (if (bound-and-true-p lsp-mode)
+      (progn
+        (lsp-format-buffer)
+        (lsp-organize-imports))
+    (indent-region (region-beginning) (region-end))))
+
+(defun close-help-window ()
+  (interactive)
+  (let ((w (get-buffer-window "*Help*")))
+    (if w (delete-window w))))
+
+(defun move-forward ()
+  (interactive)
+  (forward-char)
+  (close-help-window))
+
+(defun move-backward ()
+  (interactive)
+  (backward-char)
+  (close-help-window))
+
+(defun move-up ()
+  (interactive)
+  (evil-previous-line)
+  (close-help-window))
+
+(defun move-down ()
+  (interactive)
+  (evil-next-line)
+  (close-help-window))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -319,8 +413,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
-)
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -330,26 +423,18 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  (setq show-paren-delay 0)
+  (show-paren-mode 1)
+
   ;; disable bold
   (set-face-bold 'bold nil)
-
-  ;; remap jk to esc
-  (setq-default evil-escape-key-sequence "jk")
-  (setq key-chord-two-keys-delay 1.1)
-
-  ;; document symbols/outline
-  (global-set-key (kbd "C-g") 'helm-imenu)
-
-
-  ;; ctrl-p
-  (define-key global-map "\C-p" 'helm-projectile-find-file)
-  (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
 
   ;; Whitespace & wrapping
   (setq-default truncate-lines t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'my-lsp-format)
 
-  ;; lsp hooks
+  ;; lsp configurations
   (add-hook 'go-mode-hook #'lsp)
   (add-hook 'rust-mode-hook #'lsp)
   (add-hook 'python-mode-hook #'lsp)
@@ -360,42 +445,102 @@ you should place your code here."
   (add-hook 'typescript-mode-hook #'lsp)
   (add-hook 'html-mode-hook #'lsp)
   (add-hook 'css-mode-hook #'lsp)
+  ;; use custom help to show lsp help in *Help* buffer
+  (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
+  (define-key evil-normal-state-map (kbd "J") 'lsp-ui-sideline-toggle-symbols-info)
+
+  ;; git gutter
+  (add-hook 'prog-mode-hook 'git-gutter-mode)
+
+  ;; terminal mode insert cursor fix
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; ⎸
+  (setq evil-emacs-state-cursor  'hbar)
+  (unless (display-graphic-p)
+    (evil-terminal-cursor-changer-activate))
+
+  ;; disable menubar
+  ;; Minimal UI
+  (scroll-bar-mode -1)
+  (tool-bar-mode   -1)
+  (tooltip-mode    -1)
+  (menu-bar-mode   -1)
+
+  ;; projectile
+  (setq projectile-require-project-root nil)
+  (setq projectile-mode-line "Projectile")
+  (setq projectile--mode-line "Projectile")
+
+  ;; Disable backup files
+  (setq make-backup-files nil) ; stop creating backup~ files
+  (setq auto-save-default nil) ; stop creating #autosave# files
+
+  ;; Helm tweaks
+  (setq helm-M-x-fuzzy-match t
+        helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
+        helm-candidate-number-list 150
+        helm-split-window-inside-p t
+        helm-move-to-line-cycle-in-source t
+        helm-echo-input-in-header-line t
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 20)
+  (add-hook 'helm-after-initialize-hook
+            (lambda()
+              (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+              (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+              (define-key helm-map (kbd "C-z") 'helm-select-action)))
+
+  ;; Modify navigation to close help
+  (define-key evil-normal-state-map (kbd "h") 'move-backward)
+  (define-key evil-normal-state-map (kbd "j") 'move-down)
+  (define-key evil-normal-state-map (kbd "k") 'move-up)
+  (define-key evil-normal-state-map (kbd "l") 'move-forward)
+
+  ;; Other keybindings
+  (spacemacs/set-leader-keys "cc" 'comment-line)
+  (spacemacs/set-leader-keys "cf" 'my-lsp-format)
+  (spacemacs/declare-prefix "p" "project")
+  (spacemacs/set-leader-keys "pf" 'helm-projectile-find-file)
 
 
-  (defalias 'ctl-b-keymap (make-sparse-keymap))
-  (defvar ctl-b-map (symbol-function 'ctl-b-keymap)
-    "Global keymap for characters following C-b.")
-  (define-key global-map "\C-b" 'ctl-b-keymap)
-  (define-key evil-normal-state-map "\C-b" 'ctl-b-keymap)
+  ;; theming
+  (setq
+   doom-themes-enable-bold nil   ; if nil, bold is universally disabled
+   doom-themes-enable-italic t)  ; if nil, italics is universally disabled
+  ;; modeline
+  (set-face-attribute 'mode-line nil
+                      :background "#353535"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-inactive nil
+                      :background "#131313"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-buffer-id-inactive nil
+                      :weight 'normal)
 
-  (global-set-key (kbd "C-b b") 'helm-buffers-list)
-  (global-set-key (kbd "C-b %") 'split-window-right-and-focus)
-  (global-set-key (kbd "C-b \"") 'split-window-below-and-focus)
-  (global-set-key (kbd "C-b h") 'evil-window-left)
-  (global-set-key (kbd "C-b H") 'evil-window-move-far-left)
-  (global-set-key (kbd "C-b l") 'evil-window-right)
-  (global-set-key (kbd "C-b L") 'evil-window-move-far-right)
-  (global-set-key (kbd "C-b j") 'evil-window-down)
-  (global-set-key (kbd "C-b J") 'evil-window-move-very-bottom)
-  (global-set-key (kbd "C-b k") 'evil-window-up)
-  (global-set-key (kbd "C-b K") 'evil-window-move-very-top)
-  (global-set-key (kbd "C-b n") 'evil-unimpaired/next-frame)
-  (global-set-key (kbd "C-b p") 'evil-unimpaired/previous-frame)
-  (global-set-key (kbd "C-b z") 'spacemacs/toggle-maximize-buffer)
-  (global-set-key (kbd "C-b x") 'delete-window)
-  (global-set-key (kbd "C-b c") 'empty-frame)
-  (global-set-key (kbd "C-b $") 'rename-buffer)
-  (global-set-key (kbd "C-b ,") 'spacemacs/comment-or-uncomment-lines)
+  ;; lsp tramp Go
+  ;; (lsp-register-client
+  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+  ;;                   :major-modes '(go-mode)
+  ;;                   :remote? t
+  ;;                   :server-id 'gopls-remote))
 
-  ;; display line numbers
-  (global-linum-mode t)
+  ;; use 4 tab space
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq indent-line-function 'insert-tab)
 
-  ;; test shortcut
-  ;; (define-key evil-normal-state-map (kbd ", c c") 'spacemacs/comment-or-uncomment-lines)
-  ;; (define-key evil-normal-state-map (kbd "C-b") 'helm-buffers-list)
-  ;; (define-key evil-normal-state-map (kbd "C-B-V") 'evil-window-vsplit)
 
-  ;; macOS specific settings
+  ;; ;; macOS specific settings
   (let ((is-mac (string-equal system-type "darwin")))
     (when is-mac
       ;; make fonts look better with anti-aliasing
@@ -419,14 +564,9 @@ you should place your code here."
       ;; Make forward delete work
       (global-set-key (kbd "<H-backspace>") 'delete-forward-char)
 
-      ;; use 4 tab space
-      (setq-default indent-tabs-mode nil)
-      (setq-default tab-width 4)
-      (setq indent-line-function 'insert-tab)
-
+      )
     )
   )
-)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -435,9 +575,7 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-rust flycheck-pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help toml-mode racer pos-tip cargo markdown-mode rust-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -454,13 +592,16 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (vue-mode edit-indirect ssass-mode vue-html-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-rust flycheck-pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help toml-mode racer pos-tip cargo markdown-mode rust-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (evil-terminal-cursor-changer grayscale-theme color-theme-sanityinc-tomorrow yasnippet-snippets yapfify xterm-color which-key web-beautify use-package toml-mode toc-org tide symon spaceline-all-the-icons smeargle shell-pop reveal-in-osx-finder racer pytest pyenv-mode py-isort prettier-js pippel pipenv pip-requirements pcre2el overseer osx-trash osx-dictionary osx-clipboard orgit org-present org-pomodoro org-mime org-download org-cliplink org-bullets org-brain nameless multi-term mmm-mode markdown-toc magit-svn magit-gitflow macrostep lsp-ui lsp-treemacs livid-mode live-py-mode launchctl json-navigator json-mode js2-refactor js-doc importmagic htmlize helm-xref helm-themes helm-swoop helm-pydoc helm-projectile helm-org-rifle helm-mode-manager helm-make helm-lsp helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy font-lock+ flycheck-rust flycheck-pos-tip flycheck-package fancy-battery evil-org evil-magit eshell-z eshell-prompt-extras esh-help elisp-slime-nav dotenv-mode doom-themes doom-modeline diminish cython-mode company-tern company-statistics company-lsp company-go company-anaconda cargo blacken bind-map auto-yasnippet auto-compile ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(lsp-ui-sideline-current-symbol ((t (:foreground "white" :box (:line-width 1 :color "gray50") :weight normal :height 0.99))))
+ '(lsp-ui-sideline-global ((t (:foreground "gray40"))))
+ '(lsp-ui-sideline-symbol ((t (:foreground "gray80" :height 0.99)))))
 )
