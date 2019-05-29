@@ -1,3 +1,4 @@
+
 ;; Functions
 (defun my-lsp-describe-thing-at-point ()
   "Display the full documentation of the thing at point."
@@ -39,8 +40,8 @@
   (interactive)
   (if (bound-and-true-p lsp-mode)
       (progn
-       (lsp-format-buffer)
-       (lsp-organize-imports))
+        (lsp-format-buffer)
+        (lsp-organize-imports))
     (indent-region (region-beginning) (region-end))))
 
 (defun close-help-window ()
@@ -76,10 +77,15 @@
 
 ;; Font
 ;; Set default font
-(add-to-list 'default-frame-alist '(font . "Inconsolata-17"))
+(add-to-list 'default-frame-alist '(font . "SF Mono-16"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
-(set-default-font "Inconsolata 17")
+;; disable bold
+(mapc
+ (lambda (face)
+   (when (eq (face-attribute face :weight) 'bold)
+     (set-face-attribute face nil :weight 'normal)))
+ (face-list))
 
 ;; Package configs
 (require 'package)
@@ -93,93 +99,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
-;; Vim mode
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1))
-
-(use-package evil-escape
-  :ensure t
-  :init
-  (setq-default evil-escape-key-sequence "jk")
-  :config
-  (evil-escape-mode 1))
-
-;; terminal insert mode cursor fix
-(use-package evil-terminal-cursor-changer
-  :ensure t
-  :hook (after-init . (lambda()
-                        (unless (display-graphic-p)
-                          (evil-terminal-cursor-changer-activate))))
-  :init
-  (setq evil-motion-state-cursor 'box)  ; █
-  (setq evil-visual-state-cursor 'box)  ; █
-  (setq evil-normal-state-cursor 'box)  ; █
-  (setq evil-insert-state-cursor 'bar)  ; ⎸
-  (setq evil-emacs-state-cursor  'hbar))
-;;  :config  ; _
-;; (unless (display-graphic-p)
-;;   ;; (require 'evil-terminal-cursor-changer)
-;;   (evil-terminal-cursor-changer-activate)))
-;; (add-hook 'after-init )
-
-;; Theme
-(use-package doom-themes
-  :ensure t
-  :init
-  (setq
-   doom-themes-enable-bold nil   ; if nil, bold is universally disabled
-   doom-themes-enable-italic t)  ; if nil, italics is universally disabled
-  :config
-  (load-theme 'doom-tomorrow-night t))
-;; modeline theme
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :init
-  (set-face-attribute 'mode-line nil
-                      :background "#353535")
-  (set-face-attribute 'mode-line-inactive nil
-                      :background "#131313")
-  (setq doom-modeline-height 15))
-
-;; Helm
-(use-package helm
-  :ensure t
-  :init
-  (setq helm-M-x-fuzzy-match t
-        helm-mode-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t
-        helm-locate-fuzzy-match t
-        helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match t
-        helm-completion-in-region-fuzzy-match t
-        helm-candidate-number-list 150
-        helm-split-window-in-side-p t
-        helm-move-to-line-cycle-in-source t
-        helm-echo-input-in-header-line t
-        helm-autoresize-max-height 0
-        helm-autoresize-min-height 20)
-  :config
-  (helm-mode 1))
-(add-hook 'helm-after-initialize-hook
-          (lambda()
-            (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
-            (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-            (define-key helm-map (kbd "C-z") 'helm-select-action)
-            (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
-            (define-key helm-buffer-map (kbd "ESC") 'helm-keyboard-quit)))
-;; (define-key helm-M-x-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-major-mode-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-find-files-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-etags-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-imenu-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-locate-map (kbd "ESC") 'helm-keyboard-quit)
-;; (define-key helm-pdfgrep-map (kbd "ESC") 'helm-keyboard-quit)))
-
 ;; Which Key
 (use-package which-key
   :ensure t
@@ -202,34 +121,148 @@
 ;;; Global
 (use-package general
   :ensure t
-  :config (general-define-key
-           :states '(normal visual insert emacs)
-           :prefix "SPC"
-           :non-normal-prefix "M-SPC"
-           ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
-           "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-           "SPC" '(helm-M-x :which-key "M-x")
-           "ff"  '(helm-find-files :which-key "find files")
-           "pf"  '(helm-projectile-find-file :which-key "find project files")
-           "pp"  '(helm-projectile-switch-project :which-key "choose project")
-           ;; Buffers
-           "bb"  '(helm-buffers-list :which-key "buffers list")
-           ;; Window
-           "wl"  '(windmove-right :which-key "move right")
-           "wh"  '(windmove-left :which-key "move left")
-           "wk"  '(windmove-up :which-key "move up")
-           "wj"  '(windmove-down :which-key "move down")
-           "w/"  '(split-right :which-key "split right")
-           "w-"  '(split-down :which-key "split down")
-           "wx"  '(delete-window :which-key "delete window")
-           ;; Others
-           "at"  '(ansi-term :which-key "open terminal")
-           ;; Git
-           "g"   '(magit-status :which-key "magit status")
-           ;; Editing
-           "cc" '(comment-or-uncomment-region :which-key "comment code")
-           "cf" '(my-lsp-format :which-key "format code")
-           ))
+  :config
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix "C-j"
+   :non-normal-prefix "C-j"
+   ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
+   ;; direct keys
+   "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
+   "C-j" '(helm-M-x :which-key "M-x")
+   "F"  '(helm-find-files :which-key "find files")
+   "f"  '(helm-projectile-find-file :which-key "find project files")
+   "p"  '(helm-projectile-switch-project :which-key "choose project")
+   ;; Buffers
+   "b"  '(helm-buffers-list :which-key "buffers list")
+   ;; Window
+   "l"  '(windmove-right :which-key "move right")
+   "L"  '(evil-window-move-far-right :which-key "move right")
+   "h"  '(windmove-left :which-key "move left")
+   "H"  '(evil-window-move-far-left :which-key "move left")
+   "k"  '(windmove-up :which-key "move up")
+   "K"  '(evil-window-move-very-top :which-key "move up")
+   "j"  '(windmove-down :which-key "move down")
+   "J"  '(evil-window-move-very-bottom :which-key "move down")
+   "%"  '(split-right :which-key "split right")
+   "\""  '(split-down :which-key "split down")
+   "d"  '(delete-window :which-key "delete window")
+   "x"  '(kill-buffer-and-window :which-key "kill buffer+window")
+   ;; Terminal
+   "`"  '(ansi-term :which-key "open terminal")
+   ;; Editing
+   "c" '(:ignore t :which-key "code actions")
+   "cc" '(comment-line :which-key "comment code")
+   "cf" '(my-lsp-format :which-key "format code")
+   "cs" '(helm-imenu :which-key "code outline")
+   ))
+
+;; Theming/Appearance
+;; Functions
+(defun fix-doom-dark-theme ()
+  (interactive)
+  (setq
+   doom-themes-enable-bold nil   ; if nil, bold is universally disabled
+   doom-themes-enable-italic t)  ; if nil, italics is universally disabled
+  (set-face-attribute 'mode-line nil
+                      :background "#353535"
+                      :foreground "grey"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-inactive nil
+                      :background "#131313"
+                      :weight 'normal)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :foreground "grey"
+                      :weight 'normal))
+(use-package doom-themes
+  :ensure t
+  :config
+  (load-theme 'doom-tomorrow-night t)
+  (fix-doom-dark-theme))
+;; Show colons in modeline
+(column-number-mode 1)
+;; Show matching parens
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
+;; Vim mode
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
+  (define-key evil-normal-state-map (kbd "J") 'close-help-window)
+  ;; Modify navigation to close help
+  (define-key evil-normal-state-map (kbd "h") 'move-backward)
+  (define-key evil-normal-state-map (kbd "j") 'move-down)
+  (define-key evil-normal-state-map (kbd "k") 'move-up)
+  (define-key evil-normal-state-map (kbd "l") 'move-forward)
+  (define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
+  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
+
+(use-package evil-escape
+  :ensure t
+  :init
+  (setq-default evil-escape-key-sequence "jk")
+  :config
+  (evil-escape-mode 1))
+
+;; terminal insert mode cursor fix
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :hook (after-init . (lambda()
+                        (unless (display-graphic-p)
+                          (evil-terminal-cursor-changer-activate))))
+  :init
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; ⎸
+  (setq evil-emacs-state-cursor  'hbar))
+
+;; Helm
+(use-package helm
+  :ensure t
+  :init
+  (setq helm-M-x-fuzzy-match t
+        helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
+        helm-candidate-number-list 150
+        helm-split-window-in-side-p t
+        helm-move-to-line-cycle-in-source t
+        helm-echo-input-in-header-line t
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 20)
+  :config
+  (helm-mode 1))
+
+(add-hook 'helm-after-initialize-hook
+          (lambda()
+            (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+            (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+            (define-key helm-map (kbd "C-z") 'helm-select-action)))
+
+;; VTerm
+(add-to-list 'load-path "~/projects/emacs/emacs-libvterm")
+(require 'vterm)
+(unless (display-graphic-p)
+  (define-key vterm-mode-map [up]    '(lambda () (interactive) (vterm-send-key "<up>")))
+  (define-key vterm-mode-map [down]  '(lambda () (interactive) (vterm-send-key "<down>")))
+  (define-key vterm-mode-map [right] '(lambda () (interactive) (vterm-send-key "<right>")))
+  (define-key vterm-mode-map [left]  '(lambda () (interactive) (vterm-send-key "<left>")))
+  (define-key vterm-mode-map [tab]   '(lambda () (interactive) (vterm-send-key "<tab>")))
+  (define-key vterm-mode-map (kbd "DEL") '(lambda () (interactive) (vterm-send-key "<backspace>")))
+  (define-key vterm-mode-map (kbd "RET") '(lambda () (interactive) (vterm-send-key "<return>"))))
+;; Vterm theme
+;; (set-face-attribute 'v-term-color-default-bg
+;;                     :background "#1d1f21"
+;;                     :foreground "#c5c8c6")
+
 
 ;; macOS specific
 (let ((is-mac (string-equal system-type "darwin")))
@@ -244,7 +277,7 @@
     (setq mac-option-modifier 'meta) ;; Bind meta to ALT
     (setq mac-command-modifier 'control) ;; Bind apple/command to super if you want
     (setq mac-function-modifier 'hyper) ;; Bind function key to hyper if you want
-    (setq mac-right-option-modifier 'none) ;; unbind right key for accented input
+    (setq mac-right-option-modifier 'meta) ;; unbind right key for accented input
 
     ;; Make forward delete work
     (global-set-key (kbd "<H-backspace>") 'delete-forward-char)
@@ -268,17 +301,6 @@
   (projectile-global-mode))
 (use-package helm-projectile
   :ensure t)
-;; TRAMP fix
-(setq remote-file-name-inhibit-cache nil)
-(setq vc-ignore-dir-regexp
-      (format "%s\\|%s"
-              vc-ignore-dir-regexp
-              tramp-file-name-regexp))
-(setq tramp-verbose 1)
-
-;; Show matching parens
-(setq show-paren-delay 0)
-(show-paren-mode 1)
 
 ;; Disable backup files
 (setq make-backup-files nil) ; stop creating backup~ files
@@ -288,6 +310,7 @@
 (use-package exec-path-from-shell
   :ensure t
   :init
+  (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
 ;; autocomplete
@@ -327,11 +350,11 @@
   (python-mode . lsp)
   (before-save . my-lsp-format)
   :commands lsp)
- (use-package lsp-ui
-   :ensure t
-   :init
-   (setq lsp-ui-doc-enable nil)
-   :commands lsp-ui-mode)
+(use-package lsp-ui
+  :ensure t
+  :init
+  (setq lsp-ui-doc-enable nil)
+  :commands lsp-ui-mode)
 (use-package company-lsp
   :ensure t
   :commands company-lsp)
@@ -345,18 +368,6 @@
   :ensure t)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'lsp-mode-hook 'flycheck-mode)
-(define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
-(define-key evil-normal-state-map (kbd "J") 'close-help-window)
-(define-key evil-normal-state-map (kbd "SPC c s") 'helm-imenu)
-;; Modify navigation to close help
-(define-key evil-normal-state-map (kbd "h") 'move-backward)
-(define-key evil-normal-state-map (kbd "j") 'move-down)
-(define-key evil-normal-state-map (kbd "k") 'move-up)
-(define-key evil-normal-state-map (kbd "l") 'move-forward)
-
-;; git
-(use-package magit
-  :ensure t)
 
 ;; disable blinking cursor
 (blink-cursor-mode 0)
@@ -366,13 +377,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode nil)
  '(custom-safe-themes
    (quote
-    ("8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
- '(package-selected-packages
-   (quote
-    (helm-projectile flycheck lsp-ui web-mode dap-mode lsp-treemacs helm-lsp company-lsp lsp-mode sh-mode html-mode typescript-mode vue-mode javascript-mode rust-mode python-mode go-mode magit company smart-mode-line-powerline smart-mode-line-powerline-theme exec-path-from-shell projectile general which-key helm doom-themes evil-escape evil use-package))))
+    ("7f1263c969f04a8e58f9441f4ba4d7fb1302243355cb9faecb55aec878a06ee9" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
