@@ -132,8 +132,8 @@
    ;; direct keys
    "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
    "C-b" '(helm-M-x :which-key "M-x")
-   "F"  '(helm-find-files :which-key "find files")
-   "f"  '(helm-projectile-find-file :which-key "find project files")
+   "f"  '(helm-find-files :which-key "find files")
+   "F"  '(helm-projectile-find-file :which-key "find project files")
    "P"  '(helm-projectile-switch-project :which-key "choose project")
    ;; Window
    "l"  '(windmove-right :which-key "move right")
@@ -147,8 +147,9 @@
    "%"  '(split-right :which-key "split right")
    "\""  '(split-down :which-key "split down")
    "d"  '(delete-window :which-key "delete window")
+   "o"  '(delete-other-windows :which-key "delete other windows")
    ;; Terminal
-   "`"  '(ansi-term :which-key "open terminal")
+   "`"  '(vterm :which-key "open terminal")
    ;; Editing
    "c" '(:ignore t :which-key "code actions")
    "cc" '(comment-line :which-key "comment code")
@@ -212,6 +213,7 @@
   (define-key evil-normal-state-map (kbd "j") 'move-down)
   (define-key evil-normal-state-map (kbd "k") 'move-up)
   (define-key evil-normal-state-map (kbd "l") 'move-forward)
+  (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
   (define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
 
@@ -390,17 +392,25 @@
 ;; disable blinking cursor
 (blink-cursor-mode 0)
 
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;; git gutter
+(use-package git-gutter
+  :ensure t
+  :config
+  (global-git-gutter-mode +1))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("7f1263c969f04a8e58f9441f4ba4d7fb1302243355cb9faecb55aec878a06ee9" default)))
+        (quote
+         ("7f1263c969f04a8e58f9441f4ba4d7fb1302243355cb9faecb55aec878a06ee9" default)))
  '(package-selected-packages
-   (quote
-    (eyebrowse yaml-mode which-key web-mode vue-mode use-package typescript-mode telephone-line spacemacs-theme spaceline smart-mode-line-powerline-theme rust-mode python-mode magit lsp-ui lsp-treemacs helm-projectile helm-lsp go-mode general flycheck exec-path-from-shell evil-terminal-cursor-changer evil-escape doom-themes doom-modeline dap-mode cycle-themes company-lsp color-theme-sanityinc-tomorrow))))
+        (quote
+         (git-gutter eyebrowse yaml-mode which-key web-mode vue-mode use-package typescript-mode telephone-line spacemacs-theme spaceline smart-mode-line-powerline-theme rust-mode python-mode magit lsp-ui lsp-treemacs helm-projectile helm-lsp go-mode general flycheck exec-path-from-shell evil-terminal-cursor-changer evil-escape doom-themes doom-modeline dap-mode cycle-themes company-lsp color-theme-sanityinc-tomorrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
