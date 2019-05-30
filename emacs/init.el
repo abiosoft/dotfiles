@@ -77,7 +77,7 @@
 
 ;; Font
 ;; Set default font
-(add-to-list 'default-frame-alist '(font . "SF Mono-16"))
+(add-to-list 'default-frame-alist '(font . "SF Mono-13"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 ;; disable bold
@@ -123,13 +123,14 @@
   :ensure t
   :config
   (general-define-key
-   :states '(normal visual insert emacs)
-   :prefix "C-j"
-   :non-normal-prefix "C-j"
+   :states '(normal visual insert emacs motion)
+   :global-prefix "C-b"
+   :prefix "C-w"
+   :non-normal-prefix "C-b"
    ;; "/"   '(counsel-rg :which-key "ripgrep") ; You'll need counsel package for this
    ;; direct keys
    "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-   "C-j" '(helm-M-x :which-key "M-x")
+   "C-b" '(helm-M-x :which-key "M-x")
    "F"  '(helm-find-files :which-key "find files")
    "f"  '(helm-projectile-find-file :which-key "find project files")
    "p"  '(helm-projectile-switch-project :which-key "choose project")
@@ -148,6 +149,7 @@
    "\""  '(split-down :which-key "split down")
    "d"  '(delete-window :which-key "delete window")
    "x"  '(kill-buffer-and-window :which-key "kill buffer+window")
+   "n"  '(other-frame :which-key "other frame")
    ;; Terminal
    "`"  '(ansi-term :which-key "open terminal")
    ;; Editing
@@ -155,6 +157,12 @@
    "cc" '(comment-line :which-key "comment code")
    "cf" '(my-lsp-format :which-key "format code")
    "cs" '(helm-imenu :which-key "code outline")
+   ;; Windowing
+   "w" '(:ignore t :which-key "window actions")
+   "wf" '(make-frame :which-key "new frame")
+   "wd" '(kill-current-buffer :which-key "kill buffer")
+   "wx" '(delete-frame :which-key "delete frame")
+   "wr" '(rename-buffer :which-key "rename buffer")
    ))
 
 ;; Theming/Appearance
@@ -191,7 +199,7 @@
   :config
   (evil-mode 1)
   (define-key evil-normal-state-map (kbd "K") 'my-lsp-help)
-  (define-key evil-normal-state-map (kbd "J") 'close-help-window)
+  (define-key evil-normal-state-map (kbd "J") 'lsp-ui-sideline-toggle-symbols-info)
   ;; Modify navigation to close help
   (define-key evil-normal-state-map (kbd "h") 'move-backward)
   (define-key evil-normal-state-map (kbd "j") 'move-down)
@@ -258,10 +266,6 @@
   (define-key vterm-mode-map [tab]   '(lambda () (interactive) (vterm-send-key "<tab>")))
   (define-key vterm-mode-map (kbd "DEL") '(lambda () (interactive) (vterm-send-key "<backspace>")))
   (define-key vterm-mode-map (kbd "RET") '(lambda () (interactive) (vterm-send-key "<return>"))))
-;; Vterm theme
-;; (set-face-attribute 'v-term-color-default-bg
-;;                     :background "#1d1f21"
-;;                     :foreground "#c5c8c6")
 
 
 ;; macOS specific
@@ -386,3 +390,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
