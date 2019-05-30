@@ -38,6 +38,7 @@
 
 (defun my-lsp-format ()
   (interactive)
+  (delete-trailing-whitespace)
   (if (bound-and-true-p lsp-mode)
       (progn
         (lsp-format-buffer)
@@ -47,7 +48,7 @@
 (defun close-help-window ()
   (interactive)
   (let ((w (get-buffer-window "*Help*")))
-    (if w (delete-window w)))) 
+    (if w (delete-window w))))
 
 (defun move-forward ()
   (interactive)
@@ -77,7 +78,7 @@
 
 ;; Font
 ;; Set default font
-(add-to-list 'default-frame-alist '(font . "SF Mono-13"))
+(add-to-list 'default-frame-alist '(font . "SF Mono-16"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 ;; disable bold
@@ -123,7 +124,7 @@
   :ensure t
   :config
   (general-define-key
-   :states '(normal visual insert emacs motion)
+   :states '(normal visual insert emacs)
    :global-prefix "C-b"
    :prefix "C-w"
    :non-normal-prefix "C-b"
@@ -133,9 +134,7 @@
    "C-b" '(helm-M-x :which-key "M-x")
    "F"  '(helm-find-files :which-key "find files")
    "f"  '(helm-projectile-find-file :which-key "find project files")
-   "p"  '(helm-projectile-switch-project :which-key "choose project")
-   ;; Buffers
-   "b"  '(helm-buffers-list :which-key "buffers list")
+   "P"  '(helm-projectile-switch-project :which-key "choose project")
    ;; Window
    "l"  '(windmove-right :which-key "move right")
    "L"  '(evil-window-move-far-right :which-key "move right")
@@ -148,8 +147,6 @@
    "%"  '(split-right :which-key "split right")
    "\""  '(split-down :which-key "split down")
    "d"  '(delete-window :which-key "delete window")
-   "x"  '(kill-buffer-and-window :which-key "kill buffer+window")
-   "n"  '(other-frame :which-key "other frame")
    ;; Terminal
    "`"  '(ansi-term :which-key "open terminal")
    ;; Editing
@@ -157,12 +154,22 @@
    "cc" '(comment-line :which-key "comment code")
    "cf" '(my-lsp-format :which-key "format code")
    "cs" '(helm-imenu :which-key "code outline")
-   ;; Windowing
-   "w" '(:ignore t :which-key "window actions")
-   "wf" '(make-frame :which-key "new frame")
-   "wd" '(kill-current-buffer :which-key "kill buffer")
-   "wx" '(delete-frame :which-key "delete frame")
-   "wr" '(rename-buffer :which-key "rename buffer")
+   ;; Workspace
+   "n"  '(eyebrowse-next-window-config :which-key "next workspace")
+   "p"  '(eyebrowse-prev-window-config :which-key "prev workspace")
+   "x"  '(eyebrowse-close-window-config :which-key "delete workspace")
+   "$"  '(eyebrowse-rename-window-config :which-key "rename workspace")
+   "w" '(:ignore t :which-key "workspace actions")
+   "wc" '(eyebrowse-create-window-config :which-key "create workspace")
+   "wn" '(eyebrowse-next-window-config :which-key "next workspace")
+   "wp" '(eyebrowse-prev-window-config :which-key "prev workspace")
+   ;; Buffers
+   "b"  '(helm-buffers-list :which-key "buffers list")
+   "wb" '(:ignore t :which-key "buffer actions")
+   "wbb"  '(helm-buffers-list :which-key "buffers list")
+   "wbd" '(kill-current-buffer :which-key "kill buffer")
+   "wbx" '(kill-buffer-and-window :which-key "kill buffer+window")
+   "wbr" '(rename-buffer :which-key "rename buffer")
    ))
 
 ;; Theming/Appearance
@@ -254,6 +261,13 @@
             (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
             (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
             (define-key helm-map (kbd "C-z") 'helm-select-action)))
+
+(use-package eyebrowse
+  :ensure t
+  :init
+  (setq eyebrowse-wrap-around t)
+  :config
+  (eyebrowse-mode t))
 
 ;; VTerm
 (add-to-list 'load-path "~/projects/emacs/emacs-libvterm")
@@ -383,11 +397,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("7f1263c969f04a8e58f9441f4ba4d7fb1302243355cb9faecb55aec878a06ee9" default))))
+    ("7f1263c969f04a8e58f9441f4ba4d7fb1302243355cb9faecb55aec878a06ee9" default)))
+ '(package-selected-packages
+   (quote
+    (eyebrowse yaml-mode which-key web-mode vue-mode use-package typescript-mode telephone-line spacemacs-theme spaceline smart-mode-line-powerline-theme rust-mode python-mode magit lsp-ui lsp-treemacs helm-projectile helm-lsp go-mode general flycheck exec-path-from-shell evil-terminal-cursor-changer evil-escape doom-themes doom-modeline dap-mode cycle-themes company-lsp color-theme-sanityinc-tomorrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
