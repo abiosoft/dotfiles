@@ -132,8 +132,8 @@
    ;; direct keys
    "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
    "C-b" '(helm-M-x :which-key "M-x")
-   "F"  '(helm-find-files :which-key "find files")
-   "f"  '(helm-projectile-find-file :which-key "find project files")
+   "f"  '(helm-find-files :which-key "find files")
+   "F"  '(helm-projectile-find-file :which-key "find project files")
    "P"  '(helm-projectile-switch-project :which-key "choose project")
    ;; Window
    "l"  '(windmove-right :which-key "move right")
@@ -213,6 +213,7 @@
   (define-key evil-normal-state-map (kbd "j") 'move-down)
   (define-key evil-normal-state-map (kbd "k") 'move-up)
   (define-key evil-normal-state-map (kbd "l") 'move-forward)
+  (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
   (define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
 
