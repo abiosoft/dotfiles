@@ -1,0 +1,32 @@
+let mapleader = ","
+
+" comment
+set commentary
+vmap <leader>cc gcc
+map <leader>cc gcc
+
+" map cmd to ctrl keys for convenience
+map <M-u> <C-u>
+map <M-d> <C-d>
+map <M-v> <C-v>
+map <M-o> <C-o>
+
+" easier split navigation
+map <M-w> <C-w>
+map <M-h> <C-w>h
+map <M-l> <C-w>l
+map <M-j> <C-w>j
+map <M-k> <C-w>k
+
+" clipboard
+set clipboard+=unnamed
+
+
+" vmap to maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" fix appcode parameter expansion
+set selectmode+=refactoring
+set idearefactormode=visual
+
