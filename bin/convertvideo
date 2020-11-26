@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+old_extension=$1
+new_extension=$2
+
+mkdir -p ./converted
+
+for i in *."$old_extension"; do
+    ffmpeg -i "$i" "${i%.*}.$new_extension" \
+    && mv "$i" ./converted
+done
+

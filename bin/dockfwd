@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+print_usage(){
+    cat <<EOF
+
+usage:
+  dockfwd <container> <host_port>:<container_port>
+
+EOF
+    if [ -z "$1" ]; then exit 0; else exit 1; fi
+}
+
+log(){
+    >&2 echo $@
+}
+
+err(){
+    log $@
+    exit 1
+}
+
+container="$1"
+shift
+
+status(){
+    docker inspect "$container" --format='{{.State.Status}}' 2> /dev/null
+}
+
+cleanup_network(){
+    docker network disconnect "$network" "$container" &> /dev/null
+    docker network rm "$network" &> /dev/null
+}
+
+forward(){
+    arg="$1"
+    addr=(${arg//:/ })
+    host_port=${addr[0]}
+    container_port=${addr[1]}
+
+    [ ${#addr[@]} -lt 2 ] && log "ports should be of the format <host_port>:<container_port>" && echo && print_usage 1
+
+
+    box_status="$(status "$container")"
+    case "${box_status}" in
+        exited|created|running) ;;
+        "")             err "container '$container' does not exist" ;;
+        *)              err unknown status $box_status ;;
+    esac
+
+    network="dockfwd_net_$RANDOM"
+    docker network create "$network" > /dev/null || err error occured creating docker network for port forward
+    trap cleanup_network INT TERM
+
+    docker network connect "$network" "$container" || err error occurred connecting to docker network for port forward
+
+    docker run --rm --network "$network" -p $host_port:1234 alpine/socat TCP-LISTEN:1234,fork TCP-CONNECT:"$container":$container_port
+
+    cleanup_network
+}
+
+[ -z "$1" ] && print_usage 1
+
+forward "$@"
+

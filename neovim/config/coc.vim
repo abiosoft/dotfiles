@@ -1,4 +1,3 @@
-
 " coc.nvim
 " instance relevant extensions
 " :CocInstall coc-go coc-css coc-html coc-json coc-python coc-rls coc-tsserver coc-vetur coc-yaml
@@ -22,6 +21,9 @@ set shortmess+=c
 
 " always show signcolumns
 set signcolumn=yes
+
+" status
+set statusline^=%{coc#status()}
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -64,7 +66,7 @@ nmap <silent> gr <Plug>(coc-references)
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nnoremap <silent> <leader>i :call CocActionAsync('showSignatureHelp')<CR>
-nnoremap <silent> <leader>f :call CocAction('format')<CR>
+" nnoremap <silent> <leader>f :call CocAction('format')<CR>
 
 
 function! s:show_documentation()
@@ -113,7 +115,9 @@ command! -nargs=0 Rename :call CocAction('rename')
 
 " Use `:Lens` to perform code lens action
 command! -nargs=0 Lens :call CocAction('codeLensAction')
-
+" Use <leader>l for codelens
+xmap <leader>l <Plug>(coc-codelens-action)
+nmap <leader>l <Plug>(coc-codelens-action)
 
 
 " Using CocList

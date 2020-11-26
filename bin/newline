@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+awk '{gsub(/\\n/,"\n")}1'
+

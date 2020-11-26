@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    >&2 echo port missing.
+    >&2 echo
+    >&2 echo Usage: port PORT_NUMBER
+    >&2 echo "  e.g. port 8080"
+    exit 1
+fi
+
+
+lsof -nP -iTCP:"$1" | grep LISTEN
+

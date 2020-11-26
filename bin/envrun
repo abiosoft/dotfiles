@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+FILE=${FILE:-.env}
+
+if [ ! -f $FILE ]; then
+    >&2 echo "$FILE does not exist"
+    exit 1
+fi
+
+set -o allexport; source $FILE; set +o allexport
+
+"$@"
+

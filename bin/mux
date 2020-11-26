@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+cmd="switch"
+if [ "$1" = "setenv" ]; then
+  cmd="set_env"
+  shift
+fi
+
+wd=$1
+if [ -z $wd ]; then
+  wd="$PWD"
+fi
+
+session=$(basename $wd | tr '.' '_')
+
+unquote() (
+  temp="${1%\"}"
+  temp="${temp#\"}"
+  echo "$temp"
+)
+
+set_env()(
+  # environment files in order of priority, only the first is used
+  declare -a arr=(".env.local" ".env")
+  env_file=""
+  for i in "${arr[@]}"
+  do
+    if [ -f "$i" ]; then
+      env_file="$i"
+      break
+    fi
+  done
+
+  [ -z $env_file ] && >&2 echo no .env file found && exit 0;
+
+  env_vars=$(cat "$env_file" | grep -v '^#' | grep -v '^$')
+  while IFS= read -r line; do
+    key=$(echo "$line" | awk -F'=' '{print $1}')
+    value=$(echo "$line" | awk -F'=' '{print $NF}')
+    value=$(echo "$value" | awk -F'#' '{print $1}') # trim possible comments
+    value=$(unquote "$value")
+    tmux setenv -t "$session" "$key" "$value" > /dev/null 2>&1
+  done <<< "$env_vars"
+)
+
+switch()(
+  tmux ls | awk -F':' '{print $1}' | grep "$session" > /dev/null && echo "$session already running..." && exit 0
+
+  tmux new-session -d -c "$wd" -s $session && \
+    (cd $wd && session="$session" set_env) && \
+    tmux new-window -t "${session}:" -n "$1" nvim . && \
+    tmux split-window -p 35 -h -t "${session}:" && \
+    tmux split-window -t "${session}:" && \
+    tmux select-window -t "${session}:0" && \
+    tmux kill-window -t "${session}:0" && \
+    tmux rename-window -t "${session}:1" "0" && \
+    tmux switch -t "$session"
+)
+
+session="$session" $cmd "$@"
+

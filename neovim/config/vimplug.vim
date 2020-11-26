@@ -36,11 +36,21 @@ Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 Plug 'Yggdroot/indentLine'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'tpope/vim-fugitive'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+"darcula theme
+Plug 'doums/darcula'
+" solarized theme
+Plug 'lifepillar/vim-solarized8'
+" gruvbox theme
+Plug 'lifepillar/vim-gruvbox8'
 
 let g:make = 'gmake'
 if exists('make')
-        let g:make = 'make'
+   let g:make = 'make'
 endif
 Plug 'Shougo/vimproc.vim', {'do': g:make}
 

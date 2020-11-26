@@ -1,9 +1,11 @@
 {
-   "coc.preferences.formatOnSaveFiletypes": [
-        "go",
-        "rust",
-        "python"
-    ],
-    "suggest.enablePreview": true,
-    "codeLens.enable": true
+  "coc.preferences.formatOnSaveFiletypes": [
+    "rust",
+    "python",
+    "json",
+    "javascript",
+    "typescript"
+  ],
+  "suggest.enablePreview": true,
+  "codeLens.enable": true
 }

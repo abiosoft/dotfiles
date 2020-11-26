@@ -12,18 +12,18 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # personal scripts
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/bin:$HOME/dotfiles/bin"
 
 # aliases
-# alias vim='nvim'
-alias flathub='flatpak install flathub'
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-alias screenshot='grim -g "$(slurp)" screenshot.png'
-alias enter='toolbox enter --container'
+alias vim='nvim'
+# alias flathub='flatpak install flathub'
+# alias pbcopy='xclip -selection clipboard'
+# alias pbpaste='xclip -selection clipboard -o'
+# alias screenshot='grim -g "$(slurp)" screenshot.png'
+# alias enter='toolbox enter --container'
 
 # git commit editor
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # GO
@@ -38,10 +38,13 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 #fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# silverblue mess
-if [ $(lsb_release -i | awk -F':' '{print $2}') = "Fedora" ]; then
-    export HOME=$(realpath $HOME)
-    cd $HOME
-fi
+# use python 3 by default
+alias python='python3'
 
+# gpg
+export GPG_TTY=$(tty)
+
+# bat
+# alias cat='bat'
+# export BAT_THEME="tomorrow-night"
 

@@ -94,12 +94,6 @@ set titleold="Terminal"
 set titlestring=%F
 
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
-set statusline^=%{coc#status()}
-
-if exists("*fugitive#statusline")
-    set statusline+=%{fugitive#statusline()}
-endif
-
 
 "*****************************************************************************
 "" Abbreviations
@@ -125,11 +119,26 @@ let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> <F2> :NERDTreeFind<CR>
+nnoremap <leader>o :NERDTreeFind<CR>
 noremap <leader>O :NERDTreeToggle<CR>
+" show hidden files in NERDTree
+let NERDTreeShowHidden=1
+" auto close
+let NERDTreeQuitOnOpen = 1
+" auto delete buffer of deleted file
+let NERDTreeAutoDeleteBuffer = 1
+" other customizations
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+" open nerdtree on launch if there are no file as args
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * wincmd p
+
 
 " grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>f :Ag<space>
 let Grep_Default_Options = '-IR'
 let Grep_Skip_Files = '*.log *.db'
 let Grep_Skip_Dirs = '.git node_modules'
@@ -145,7 +154,7 @@ else
   nnoremap <silent> <leader>sh :VimShellCreate<CR>
 endif
 
-nnoremap <C-p> :FZF<CR>
+nnoremap <C-p> :Files<CR>
 
 "*****************************************************************************
 "" Functions
@@ -288,31 +297,20 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
+" nnoremap <Leader>o :.Gbrowse<CR>
 
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
 
-" go
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
-        \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
-        \ 'r:constructor', 'f:functions' ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
-    \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-
 
 " html
 " for html files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
+
+" for sh files, 2 spaces
+autocmd Filetype sh setlocal ts=2 sw=2 expandtab
+
 
 " Syntax highlight
 " Default highlight is better than polyglot
@@ -321,6 +319,11 @@ let python_highlight_all = 1
 Plug 'sheerun/vim-polyglot'
 Plug 'keith/swift.vim'
 
+" mdx files
+augroup mdx
+  au!
+  autocmd BufNewFile,BufRead *.mdx   set filetype=markdown.mdx
+augroup END
 
 "*****************************************************************************
 "*****************************************************************************
@@ -334,7 +337,6 @@ endif
 "" Convenience variables
 "*****************************************************************************
 
-colorscheme tomorrow-night
 hi Normal guibg=NONE ctermbg=NONE
 
 set shell=/bin/zsh
@@ -342,16 +344,13 @@ set shell=/bin/zsh
 " commentary
 noremap <leader>cc :Commentary<cr>
 
-" show hidden files in NERDTree
-let NERDTreeShowHidden=1
-
 imap jj <Esc>
 
 " save read-only files
 cmap w!! w !sudo tee % >/dev/null
 
 " disable mouse
-set mouse=""
+set mouse=a
 
 " fix quickfix height
 autocmd FileType qf 6wincmd_
