@@ -82,6 +82,19 @@ endif
 " set gcr=a:blinkon0
 set scrolloff=3
 
+" change cursors in modes
+if !has('nvim')
+  " :autocmd InsertEnter * set cul
+  " :autocmd InsertLeave * set nocul
+  let &t_SI = "\e[6 q"
+  let &t_EI = "\e[2 q"
+  " Optionally reset the cursor on start:
+  augroup myCmds
+    au!
+    autocmd VimEnter * silent !echo -ne "\e[2 q"
+  augroup END
+endif
+
 "" Status bar
 set laststatus=2
 
@@ -130,10 +143,10 @@ let NERDTreeAutoDeleteBuffer = 1
 " other customizations
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-" open nerdtree on launch if there are no file as args
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * wincmd p
+" " open nerdtree on launch if there are no file as args
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * wincmd p
 
 
 " grep.vim
@@ -148,7 +161,7 @@ let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_prompt =  '$ '
 
 " terminal emulation
-if g:vim_bootstrap_editor == 'nvim'
+if has('nvim')
   nnoremap <silent> <leader>sh :terminal<CR>
 else
   nnoremap <silent> <leader>sh :VimShellCreate<CR>
@@ -351,6 +364,9 @@ cmap w!! w !sudo tee % >/dev/null
 
 " disable mouse
 set mouse=a
+if !has('nvim')
+    set ttymouse=sgr
+endif
 
 " fix quickfix height
 autocmd FileType qf 6wincmd_
