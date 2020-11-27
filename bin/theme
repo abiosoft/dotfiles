@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 dark() (
-    gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
+    [ "$(uname)" = "Linux" ] && gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
     tmux set -g pane-border-style fg="#555555"
     tmux set -g pane-active-border-style fg="#aaaaaa"
     tmux set -g status-style bg="#3d3f43",fg="#c5c8c6"
 )
 
 light() (
-    gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
+    [ "$(uname)" = "Linux" ] && gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
     tmux set -g pane-border-style fg="#aaaaaa"
     tmux set -g pane-active-border-style fg="#555555"
     tmux set -g status-style fg="#3d3f43",bg="#c5c8c6"
