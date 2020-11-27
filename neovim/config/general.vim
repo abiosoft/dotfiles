@@ -365,6 +365,7 @@ cmap w!! w !sudo tee % >/dev/null
 " disable mouse
 set mouse=a
 if !has('nvim')
+    " fix mouse for vim8
     set ttymouse=sgr
 endif
 

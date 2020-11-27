@@ -44,14 +44,24 @@ set_env()(
 )
 
 switch()(
+  # verify the session isn't previously running
   tmux ls | awk -F':' '{print $1}' | grep "$session" > /dev/null && echo "$session already running..." && exit 0
 
+  # convert working directory to absolute directory
   wd="$(cd "$wd" && pwd)"
-  tmux new-session -d -c "$wd" -s "$session" && \
-    (cd "$wd" && session="$session" set_env) && \
-    tmux new-window -t "${session}:" -n "$1" vim . && \
-    tmux split-window -p 35 -h -t "${session}:" && \
-    tmux split-window -t "${session}:" && \
+
+  # create new tmux session
+  tmux new-session -d -c "$wd" -s "$session"
+  if [ $? -ne 0 ]; then
+    >&2 echo could not start new tmux session
+    exit 1
+  fi
+
+  # customize the tmux session and switch to it
+  (cd "$wd" && session="$session" set_env) && \
+    tmux new-window -t "${session}:" -c "$wd" -n vim vim . && \
+    tmux split-window -p 35 -h -t "${session}:" -c "$wd" && \
+    tmux split-window -t "${session}:" -c "$wd" && \
     tmux select-window -t "${session}:0" && \
     tmux kill-window -t "${session}:0" && \
     tmux rename-window -t "${session}:1" "0" && \
