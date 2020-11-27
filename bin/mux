@@ -46,9 +46,10 @@ set_env()(
 switch()(
   tmux ls | awk -F':' '{print $1}' | grep "$session" > /dev/null && echo "$session already running..." && exit 0
 
-  tmux new-session -d -c "$wd" -s $session && \
-    (cd $wd && session="$session" set_env) && \
-    tmux new-window -t "${session}:" -n "$1" nvim . && \
+  wd="$(cd "$wd" && pwd)"
+  tmux new-session -d -c "$wd" -s "$session" && \
+    (cd "$wd" && session="$session" set_env) && \
+    tmux new-window -t "${session}:" -n "$1" vim . && \
     tmux split-window -p 35 -h -t "${session}:" && \
     tmux split-window -t "${session}:" && \
     tmux select-window -t "${session}:0" && \
@@ -57,5 +58,5 @@ switch()(
     tmux switch -t "$session"
 )
 
-session="$session" $cmd "$@"
+session="$session" wd="$wd" $cmd "$@"
 

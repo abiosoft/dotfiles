@@ -8,5 +8,6 @@ else
     source ~/dotfiles/neovim/config/go.vim
     source ~/dotfiles/neovim/config/fzf.vim
     source ~/dotfiles/neovim/config/theme.vim
+    source ~/dotfiles/neovim/config/viminspector.vim
 endif
 

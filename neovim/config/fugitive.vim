@@ -2,7 +2,9 @@
 " fugitive
 set statusline+=%{fugitive#statusline()}
 
-if &diff
+if has('nvim')
+    set diffopt+=vertical
+else
     set diffopt-=internal
     set diffopt+=vertical
 endif
