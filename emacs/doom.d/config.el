@@ -71,4 +71,5 @@
 ;; keybinding for code navigation
 (map! :n "C-p" #'+ivy/projectile-find-file
       :n "C-g" #'lsp-ivy-workspace-symbol
-      :nv ",cc" #'comment-line)
+      :nv ",cc" #'comment-line
+      :n ", SPC" #'evil-ex-nohighlight)
