@@ -19,15 +19,21 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "JetBrains Mono" :size 14 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Helvetica Neue" :size 15))
+(setq doom-font (font-spec :family "JetBrains Mono" :size 15 :weight 'normal)
+      doom-variable-pitch-font (font-spec :family "Helvetica Neue" :size 16))
 ;; disable bold font
 (setq doom-themes-enable-bold nil)
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-tomorrow-night)
+
+; Set cursor color to grey when doom theme is disabled
+;; (set-cursor-color "#555555")
+;; (add-to-list 'default-frame-alist '(cursor-color . "#555555"))
+;; (custom-set-faces! '(default :cursor-color "#555555"))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -36,7 +42,8 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-
+;; (setq display-line-numbers 'relative)
+;; (setq display-line-numbers-width 3)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -68,8 +75,15 @@
 ;; https://github.com/emacs-lsp/lsp-mode/issues/1778
 (setq lsp-gopls-codelens nil)
 
-;; keybinding for code navigation
+;; autocomplete delay
+(setq company-idle-delay 0)
+
+;; custom keybinding for code navigation
 (map! :n "C-p" #'+ivy/projectile-find-file
       :n "C-g" #'lsp-ivy-workspace-symbol
       :nv ",cc" #'comment-line
+      :n ",f" #'lsp-format-buffer
       :n ", SPC" #'evil-ex-nohighlight)
+
+;; custom keybinding for window management
+(map! :map doom-leader-map "z" #'doom/window-maximize-buffer)
