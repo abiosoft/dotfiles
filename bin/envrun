@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 
-FILE=${FILE:-.env}
+#environment files in order of priority, only the first is used
+declare -a arr=(".env.local" ".env")
+env_file=""
+for i in "${arr[@]}"
+do
+if [ -f "$i" ]; then
+    env_file="$i"
+    break
+fi
+done
 
-if [ ! -f $FILE ]; then
-    >&2 echo "$FILE does not exist"
+if [ ! -f $env_file ]; then
+    >&2 echo "$env_file does not exist"
     exit 1
 fi
 
-set -o allexport; source $FILE; set +o allexport
+set -o allexport; source $env_file; set +o allexport
 
 "$@"
 
