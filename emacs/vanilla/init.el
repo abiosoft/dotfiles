@@ -3,8 +3,9 @@
 (scroll-bar-mode -1)
 (tool-bar-mode   -1)
 (tooltip-mode    -1)
-;; menubar is actually useful
-;; (menu-bar-mode   -1)
+;; menubar is actually useful in GUI
+(unless (display-graphic-p)
+  (menu-bar-mode   -1))
 
 ;;; Functions
 (defun my-lookup()
@@ -75,7 +76,7 @@
             '(("bg-main" . "#222222")
               ("bg-dim" . "#333333")
               ("bg-alt" . "#181732")
-              ("bg-hl-line" . "#333333"))))
+              ("bg-hl-line" . "#555555"))))
 (load-theme 'modus-operandi t)
 
 ;; Show colons in modeline
@@ -87,9 +88,9 @@
 
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
-(setq evil-want-C-i-jump nil)
+;; (setq evil-want-C-i-jump nil)
 (setq evil-lookup-func #'my-lookup)
-(setq evil-toggle-key "C-,")
+(setq evil-toggle-key "C-z")
 
 ;; change model texts
 (setq evil-normal-state-tag "<NORMAL>")
@@ -110,8 +111,17 @@
 ;; setup package
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
+;; evil everywhere
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;; key bindings
 (define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
@@ -254,7 +264,9 @@
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous))
+  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  (define-key company-active-map (kbd "<tab>") nil)
+  (define-key company-active-map (kbd "<return>") #'company-complete-selection))
 
 
 ;;; Programming Languages
@@ -272,46 +284,13 @@
   :ensure t)
 (use-package graphql-mode
   :ensure t)
-(use-package flycheck
-  :ensure t)
 ;; Language Server Protocol
-(use-package lsp-mode
-  :ensure t
-  :init
-  (setq lsp-auto-configure t)
-  (setq lsp-enable-snippet nil)
-  :hook
-  (go-mode . lsp)
-  (rust-mode . lsp)
-  (python-mode . lsp)
-  (before-save . 'lsp-format-buffer)
-  :commands lsp)
-(use-package lsp-ui
-  :ensure t
-  :init
-  (setq lsp-ui-doc-enable nil)
-  (setq lsp-ui-doc-use-webkit nil)
-  (setq lsp-headerline-breadcrumb-enable t)
-  (setq lsp-modeline-code-actions-enable t)
-  (setq lsp-eldoc-enable-hover t)
-  (setq lsp-modeline-diagnostics-enable t)
-  :commands lsp-ui-mode)
-(add-hook 'lsp-ui-doc-frame-hook
-          (lambda (frame _w)
-            (set-face-attribute 'default frame :font "Jetbrains Mono")))
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp)
-(use-package lsp-ivy
+(use-package eglot
   :ensure t)
-(use-package lsp-treemacs
-  :ensure t
-  :commands lsp-treemacs-errors-list)
-(use-package dap-mode
-  :ensure t)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'lsp-mode-hook 'flycheck-mode)
-
+;; eglot temporary fix
+(defun project-root (project)
+  (car (project-roots project)))
+(add-hook 'go-mode-hook 'eglot-ensure)
 
 ;;; Text Editing visual
 ;; disable blinking cursor
@@ -360,7 +339,6 @@
   (setq smooth-scroll-margin 5)
   :config
   (smooth-scrolling-mode 1))
-
 
 ;;; force all popups to show as a real popup
 (use-package popwin

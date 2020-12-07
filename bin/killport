@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+kill -9 $(port $1 | awk -F' ' '{print $2}')
+
