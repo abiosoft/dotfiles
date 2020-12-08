@@ -1,14 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
 	"strconv"
+	"sync"
 	"syscall"
+	"time"
 
+	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 )
 
@@ -18,9 +23,8 @@ var envFiles = []string{
 }
 
 const (
-	configDir  = ".run"
-	stdoutFile = ".run/stdout.log"
-	stderrFile = ".run/stderr.log"
+	usage   = `usage: run <command> [<args>...]`
+	logFile = ".run.log"
 )
 
 func exitErr(err error) {
@@ -28,8 +32,6 @@ func exitErr(err error) {
 	fmt.Fprintln(os.Stderr)
 	os.Exit(1)
 }
-
-const usage = `usage: run <command> [<args>...]`
 
 func getEnv() map[string]string {
 
@@ -47,11 +49,16 @@ func getEnv() map[string]string {
 	return map[string]string{}
 }
 
-func prepareLogs() error {
-	if err := os.MkdirAll(configDir, 0755); err != nil {
-		return err
+func openLogFile() (*os.File, error) {
+	return os.OpenFile(logFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+}
+
+func prepareLogFile() error {
+	l, err := openLogFile()
+	if err != nil {
+		return fmt.Errorf("error preparing log file: %w", err)
 	}
-	return nil
+	return l.Close()
 }
 
 func main() {
@@ -61,15 +68,15 @@ func main() {
 		exitErr(fmt.Errorf("args missing"))
 	}
 
-	if args[0] == "log" {
-		fmt.Fprintln(os.Stderr, "to view the logs, run the following command or $(run log)")
-		fmt.Printf("tail -f %s %s", stdoutFile, stderrFile)
-		fmt.Println()
-		return
+	if err := prepareLogFile(); err != nil {
+		exitErr(fmt.Errorf("error preparing logs: %v", err))
 	}
 
-	if err := prepareLogs(); err != nil {
-		exitErr(fmt.Errorf("error preparing logs: %v", err))
+	if args[0] == "log" {
+		fmt.Fprintln(os.Stderr, "to view the logs, run the following command or $(run log)")
+		fmt.Printf("tail -f %s", logFile)
+		fmt.Println()
+		return
 	}
 
 	cmd, cancel, err := run(args, envVars)
@@ -81,7 +88,7 @@ func main() {
 	for {
 		kill := func() error { return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL) }
 		fmt.Println("input 'r' to restart, 'x' to terminate")
-		fmt.Print("  your input: ")
+		fmt.Print("  input: ")
 
 		var line string
 		fmt.Scanln(&line)
@@ -92,6 +99,7 @@ func main() {
 		case "x":
 			fmt.Println("terminating...")
 			kill()
+			cancel()
 			os.Exit(0)
 		default:
 			fmt.Printf("unrecognized input '%s'", line)
@@ -154,24 +162,62 @@ func run(args []string, vars map[string]string) (*exec.Cmd, func(), error) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	// set log outputs
-	stdout, err := os.OpenFile(stdoutFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	out, err := openLogFile()
 	if err != nil {
-		return nil, cancel, fmt.Errorf("error preparing stdout: %w", err)
+		return nil, cancel, fmt.Errorf("error opening log file: %w", err)
 	}
-	defer stdout.Close()
 
-	stderr, err := os.OpenFile(stderrFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
-	if err != nil {
-		return nil, cancel, fmt.Errorf("error preparing stderr: %w", err)
-	}
-	defer stderr.Close()
-
-	cmd.Stdout = stdout
-	cmd.Stderr = stderr
-
+	cmd.Stdout = &lineWriter{prefix: color.New(color.BgBlue, color.FgWhite).Sprint("stdout"), out: out}
+	cmd.Stderr = &lineWriter{prefix: color.New(color.BgRed, color.FgWhite).Sprint("stderr"), out: out}
 	if err := cmd.Start(); err != nil {
 		return nil, cancel, fmt.Errorf("error starting command: %w", err)
 	}
 
-	return cmd, cancel, nil
+	logStartup(out)
+
+	shutdown := func() {
+		cancel()
+		logShutdown(out)
+		out.Close()
+	}
+
+	return cmd, shutdown, nil
+}
+
+func logStartup(out io.Writer) {
+	fmt.Fprintln(out)
+	fmt.Fprintln(out, "starting up at", time.Now())
+	fmt.Fprintln(out)
+}
+func logShutdown(out io.Writer) {
+	fmt.Fprintln(out)
+	fmt.Fprintln(out, "shutting down at", time.Now())
+	fmt.Fprintln(out)
+}
+
+var _ io.Writer = (*lineWriter)(nil)
+
+// lineWriter is a simple writer that only writes to writer when
+// a newline is encountered.
+type lineWriter struct {
+	out    io.Writer
+	prefix string
+
+	buf bytes.Buffer
+	sync.Mutex
+}
+
+func (l *lineWriter) Write(b []byte) (int, error) {
+	l.Lock()
+	defer l.Unlock()
+
+	for i := range b {
+		l.buf.WriteByte(b[i])
+		if b[i] == '\n' {
+			l.out.Write([]byte(l.prefix + " "))
+			l.buf.WriteTo(l.out)
+			l.buf.Truncate(0)
+		}
+	}
+	return len(b), nil
 }
