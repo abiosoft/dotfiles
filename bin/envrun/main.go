@@ -211,7 +211,31 @@ func (l *lineWriter) Write(b []byte) (int, error) {
 	l.Lock()
 	defer l.Unlock()
 
-	for i := range b {
+	for i := 0; i < len(b); i++ {
+
+		// special case: replace escaped chars with their real value
+		// newline, tab, quote, backslack
+		if b[i] == '\\' {
+			// peek if available
+			if i+1 < len(b) {
+				i++
+				switch b[i] {
+				case 'n':
+					b[i] = '\n'
+				case 't':
+					b[i] = '\t'
+				case '\\':
+					b[i] = '\\'
+				case '"':
+					b[i] = '"'
+				case '\'':
+					b[i] = '\''
+				default:
+					//  don't skip
+					i--
+				}
+			}
+		}
 		l.buf.WriteByte(b[i])
 		if b[i] == '\n' {
 			l.out.Write([]byte(l.prefix + " "))
