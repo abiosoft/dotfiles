@@ -17,6 +17,12 @@ var envFiles = []string{
 	".env",
 }
 
+const (
+	configDir  = ".run"
+	stdoutFile = ".run/stdout.log"
+	stderrFile = ".run/stderr.log"
+)
+
 func exitErr(err error) {
 	fmt.Fprintf(os.Stderr, "error occured: %v", err)
 	fmt.Fprintln(os.Stderr)
@@ -42,7 +48,7 @@ func getEnv() map[string]string {
 }
 
 func prepareLogs() error {
-	if err := os.MkdirAll(".run", 0755); err != nil {
+	if err := os.MkdirAll(configDir, 0755); err != nil {
 		return err
 	}
 	return nil
@@ -53,6 +59,13 @@ func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
 		exitErr(fmt.Errorf("args missing"))
+	}
+
+	if args[0] == "log" {
+		fmt.Fprintln(os.Stderr, "to view the logs, run the following command or $(run log)")
+		fmt.Printf("tail -f %s %s", stdoutFile, stderrFile)
+		fmt.Println()
+		return
 	}
 
 	if err := prepareLogs(); err != nil {
@@ -66,13 +79,23 @@ func main() {
 	}
 
 	for {
-		fmt.Println("input 'r' to restart")
-		fmt.Println()
+		kill := func() error { return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL) }
+		fmt.Println("input 'r' to restart, 'x' to terminate")
+		fmt.Print("  your input: ")
 
 		var line string
 		fmt.Scanln(&line)
 
-		if line != "r" {
+		switch line {
+		case "r":
+			fmt.Println("restarting...")
+		case "x":
+			fmt.Println("terminating...")
+			kill()
+			os.Exit(0)
+		default:
+			fmt.Printf("unrecognized input '%s'", line)
+			fmt.Println()
 			continue
 		}
 
@@ -81,20 +104,21 @@ func main() {
 			continue
 		}
 
-		cmd.Process.Signal(os.Interrupt)
-		cmd.Process.Signal(os.Kill)
-		pgid, err := syscall.Getpgid(cmd.Process.Pid)
-		syscall.Kill(pgid, syscall.SIGTERM)
-
-		// attempt to kill process
+		// attempt to kill process and all it's children
 		fmt.Fprintln(os.Stderr, "attempting to kill process with pid", cmd.Process.Pid)
-		if err := cmd.Process.Kill(); err != nil {
+		if err := kill(); err != nil {
 			err := fmt.Errorf("error terminating process: %w", err)
 			fmt.Fprintln(os.Stderr, err)
 			continue
 		}
+		fmt.Fprintln(os.Stderr, "process killed.")
+		fmt.Fprintln(os.Stderr)
 
+		// cancel the process context
 		cancel()
+
+		// let's wait for the process in case there's some delay in quitting
+		cmd.Process.Wait()
 
 		// start process again
 		cmd, cancel, err = run(args, envVars)
@@ -107,26 +131,36 @@ func main() {
 }
 
 func run(args []string, vars map[string]string) (*exec.Cmd, func(), error) {
+	// convert into shell script for sh to run
 	sh := ""
 	for _, a := range args {
 		sh += " " + strconv.Quote(a)
 	}
+
+	// sha args
 	cmdArgs := []string{"-c", sh}
+
+	// use a cancel context to be on safe side
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, "sh", cmdArgs...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+
+	// environment variables
 	cmd.Env = os.Environ()
 	for k, v := range vars {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
 	}
 
-	stdout, err := os.OpenFile(".run/stdout.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	// ensure we can kill the children
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+
+	// set log outputs
+	stdout, err := os.OpenFile(stdoutFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
 	if err != nil {
 		return nil, cancel, fmt.Errorf("error preparing stdout: %w", err)
 	}
 	defer stdout.Close()
 
-	stderr, err := os.OpenFile(".run/stderr.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	stderr, err := os.OpenFile(stderrFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
 	if err != nil {
 		return nil, cancel, fmt.Errorf("error preparing stderr: %w", err)
 	}

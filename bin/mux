@@ -58,8 +58,7 @@ switch()(
   fi
 
   # customize the tmux session and switch to it
-  (cd "$wd" && session="$session" set_env) && \
-    tmux new-window -t "${session}:" -c "$wd" -n vim vim . && \
+  tmux new-window -t "${session}:" -c "$wd" -n vim vim . && \
     tmux split-window -p 35 -h -t "${session}:" -c "$wd" && \
     tmux split-window -t "${session}:" -c "$wd" && \
     tmux select-window -t "${session}:0" && \
