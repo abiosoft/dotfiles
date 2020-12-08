@@ -77,7 +77,7 @@
               ("bg-dim" . "#333333")
               ("bg-alt" . "#181732")
               ("bg-hl-line" . "#555555"))))
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi t)
 
 ;; Show colons in modeline
 (column-number-mode 1)
@@ -232,10 +232,18 @@
   :init
   (setq projectile-require-project-root nil)
   (setq projectile--mode-line "P"))
+
+;; fix to let eglot find project dir in mono repos
+(defun my-projectile-project-find-function (dir)
+  (let ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+
 (use-package counsel-projectile
   :ensure t
   :config
-  (counsel-projectile-mode 1))
+  (counsel-projectile-mode 1)
+  (with-eval-after-load 'project
+    (add-to-list 'project-find-functions 'my-projectile-project-find-function)))
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
@@ -317,6 +325,7 @@
   :config
   (setq magit-diff-refine-hunk t)
   (setq magit-ediff-dwim-show-on-hunks t)
+  (setq magit-diff-refine-ignore-whitespace nil)
   :ensure t)
 
 
@@ -348,7 +357,6 @@
 
 ;;; Custom keybindings
 (global-set-key (kbd "C-h i") 'my-lookup)
-(global-set-key (kbd "C-h i") 'my-lookup)
  
 ;;; init.el ends here
 (custom-set-variables
@@ -357,10 +365,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(fixed-pitch ((t (:family "JetBrains Mono")))))
