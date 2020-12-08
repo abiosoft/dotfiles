@@ -7,6 +7,7 @@
 (unless (display-graphic-p)
   (menu-bar-mode   -1))
 
+
 ;;; Functions
 (defun my-lookup()
   "Lookup the symbol under cursor."
@@ -15,6 +16,21 @@
       (lsp-describe-thing-at-point)
     (describe-symbol (symbol-at-point))))
 
+;; Toggle Window Maximize
+;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
+(defvar doom--maximize-last-wconf nil)
+;;;###autoload
+(defun doom/window-maximize-buffer ()
+  "Close other windows to focus on this one. Activate again to undo this. If the
+window changes before then, the undo expires.
+Alternatively, use `doom/window-enlargen'."
+  (interactive)
+  (setq doom--maximize-last-wconf
+     (if (and (null (cdr (cl-remove-if #'window-dedicated-p (window-list))))
+                 doom--maximize-last-wconf)
+            (ignore (set-window-configuration doom--maximize-last-wconf))
+          (prog1 (current-window-configuration)
+            (delete-other-windows)))))
 
 ;;; Font
 ;; Set default font
@@ -66,7 +82,15 @@
   (setq doom-modeline-icon nil)
   :hook (after-init . doom-modeline-mode))
 (use-package modus-operandi-theme
-  :ensure t)
+  :ensure t
+  :config
+  (setq modus-operandi-theme-override-colors-alist
+            '(("bg-main" . "#eeeeee")
+              ("bg-hl-line" . "#dddddd")
+              ("bg-hl-alt" . "#eaddd0")
+              ("bg-dim" . "#e8e8e8")
+              ("bg-inactive" . "#dedede")
+              ("fg-main" . "#222222"))))
 (use-package modus-vivendi-theme
    :ensure t
    :config
@@ -74,9 +98,10 @@
    ;; tweak theme background a bit
    (setq modus-vivendi-theme-override-colors-alist
             '(("bg-main" . "#222222")
+              ("fg-main" . "#eeeeee")
               ("bg-dim" . "#333333")
               ("bg-alt" . "#181732")
-              ("bg-hl-line" . "#555555"))))
+              ("bg-hl-line" . "#444444"))))
 (load-theme 'modus-vivendi t)
 
 ;; Show colons in modeline
@@ -357,6 +382,7 @@
 
 ;;; Custom keybindings
 (global-set-key (kbd "C-h i") 'my-lookup)
+(global-set-key (kbd "C-x z") 'doom/window-maximize-buffer)
  
 ;;; init.el ends here
 (custom-set-variables
