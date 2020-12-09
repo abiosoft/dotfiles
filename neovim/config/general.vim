@@ -372,4 +372,8 @@ endif
 " fix quickfix height
 autocmd FileType qf 6wincmd_
 
+" use real-time search replacement. only works in neovim
+if has('nvim')
+    set inccommand=nosplit
+endif
 

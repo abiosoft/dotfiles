@@ -3,5 +3,5 @@
 # change directory to the script's directory.
 script_dir="$(dirname "$0")" || { log "fatal shell error, 'dirname' failed" && exit 1; }
 
-go run "$script_dir/envrun/main.go" "$@"
+(cd $script_dir && go build -o /tmp/envrun "./envrun/main.go") && /tmp/envrun "$@"
 

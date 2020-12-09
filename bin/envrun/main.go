@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -62,6 +63,9 @@ func prepareLogFile() error {
 }
 
 func main() {
+	// we only need the time to see changes in output, date not that important
+	log.SetFlags(log.Ltime)
+
 	envVars := getEnv()
 	args := os.Args[1:]
 	if len(args) == 0 {
@@ -86,41 +90,56 @@ func main() {
 	}
 
 	for {
-		kill := func() error { return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL) }
+		kill := func() error {
+			return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+		}
+		start := func() {
+			cmd, cancel, err = run(args, envVars)
+			if err != nil {
+				err := fmt.Errorf("error running command: %w", err)
+				fmt.Fprintln(os.Stderr, err)
+			}
+		}
+
+		fmt.Println()
 		fmt.Println("input 'r' to restart, 'x' to terminate")
 		fmt.Print("  input: ")
 
 		var line string
 		fmt.Scanln(&line)
 
+		// extra newline for log clarity
+		fmt.Println()
+
 		switch line {
 		case "r":
-			fmt.Println("restarting...")
+			log.Println("restarting...")
 		case "x":
-			fmt.Println("terminating...")
+			log.Println("terminating...")
 			kill()
 			cancel()
 			os.Exit(0)
 		default:
-			fmt.Printf("unrecognized input '%s'", line)
-			fmt.Println()
+			log.Printf("unrecognized input '%s'", line)
+			log.Println()
 			continue
 		}
 
 		if cmd == nil {
-			fmt.Fprintln(os.Stderr, "command not running, cannot restart")
+			log.Println("command not running, cannot restart")
+			start()
 			continue
 		}
 
 		// attempt to kill process and all it's children
-		fmt.Fprintln(os.Stderr, "attempting to kill process with pid", cmd.Process.Pid)
+		log.Println("attempting to kill process with pid", cmd.Process.Pid)
 		if err := kill(); err != nil {
 			err := fmt.Errorf("error terminating process: %w", err)
 			fmt.Fprintln(os.Stderr, err)
 			continue
 		}
-		fmt.Fprintln(os.Stderr, "process killed.")
-		fmt.Fprintln(os.Stderr)
+		log.Println("process killed.")
+		log.Println()
 
 		// cancel the process context
 		cancel()
@@ -128,13 +147,8 @@ func main() {
 		// let's wait for the process in case there's some delay in quitting
 		cmd.Process.Wait()
 
-		// start process again
-		cmd, cancel, err = run(args, envVars)
-		if err != nil {
-			err := fmt.Errorf("error running command: %w", err)
-			fmt.Fprintln(os.Stderr, err)
-		}
-
+		// let's attempt to run the program again
+		start()
 	}
 }
 
@@ -169,6 +183,10 @@ func run(args []string, vars map[string]string) (*exec.Cmd, func(), error) {
 
 	cmd.Stdout = &lineWriter{prefix: color.New(color.BgBlue, color.FgWhite).Sprint("stdout"), out: out}
 	cmd.Stderr = &lineWriter{prefix: color.New(color.BgRed, color.FgWhite).Sprint("stderr"), out: out}
+
+	log.Println("running {", strings.Join(args, " "), "}...")
+	log.Println()
+
 	if err := cmd.Start(); err != nil {
 		return nil, cancel, fmt.Errorf("error starting command: %w", err)
 	}
@@ -197,7 +215,7 @@ func logShutdown(out io.Writer) {
 
 var _ io.Writer = (*lineWriter)(nil)
 
-// lineWriter is a simple writer that only writes to writer when
+// lineWriter is a simple writer that only writes to an underlying writer when
 // a newline is encountered.
 type lineWriter struct {
 	out    io.Writer
@@ -224,24 +242,30 @@ func (l *lineWriter) Write(b []byte) (int, error) {
 					b[i] = '\n'
 				case 't':
 					b[i] = '\t'
+
+				// do nothing for these, escape char already skipped
 				case '\\':
-					b[i] = '\\'
 				case '"':
-					b[i] = '"'
 				case '\'':
-					b[i] = '\''
+
+				// otherwise, don't skip escape char
 				default:
-					//  don't skip
 					i--
 				}
 			}
 		}
+
+		// cache the char
 		l.buf.WriteByte(b[i])
+
+		// write to underlying writer if newline is encountered
 		if b[i] == '\n' {
 			l.out.Write([]byte(l.prefix + " "))
 			l.buf.WriteTo(l.out)
 			l.buf.Truncate(0)
 		}
 	}
+
+	// all bytes are always successfully written
 	return len(b), nil
 }
