@@ -320,6 +320,76 @@ Alternatively, use `doom/window-enlargen'."
 (use-package restclient
   :ensure t)
 
+;;; EVIL mode
+;; Configs that must be set before loading evil mode.
+;; (setq evil-want-C-i-jump nil)
+(setq evil-lookup-func #'my-lookup)
+(setq evil-toggle-key "C-z")
+
+;; change model texts
+(setq evil-normal-state-tag "<NORMAL>")
+(setq evil-insert-state-tag "<INSERT>")
+(setq evil-visual-state-tag "<VISUAL>")
+(setq evil-emacs-state-tag "<EMACS>")
+(setq evil-motion-state-tag "<MOTION>")
+(setq evil-replace-state-tag "<REPLACE>")
+(setq evil-operator-state-tag "<OPERATOR>")
+(setq evil-normal-state-message nil)
+(setq evil-insert-state-message nil)
+(setq evil-emacs-state-message nil)
+(setq evil-visual-state-message nil)
+(setq evil-motion-state-message nil)
+(setq evil-replace-state-message nil)
+(setq evil-operator-state-message nil)
+
+;; setup package
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+;; evil everywhere
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+;; key bindings
+(define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
+(define-key evil-normal-state-map (kbd ",cc") 'comment-line)
+(define-key evil-visual-state-map (kbd ",cc") 'comment-line)
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+;; always escape to normal mode including emacs mode
+(define-key evil-emacs-state-map [escape] 'evil-normal-state)
+;; temporary execution in emacs state
+;; (define-key evil-normal-state-map (kbd "i") 'evil-emacs-state)
+;; always start in evil state https://github.com/noctuid/evil-guide#make-evil-normal-state-the-initial-state-always
+(setq evil-emacs-state-modes nil)
+(setq evil-insert-state-modes nil)
+(setq evil-motion-state-modes nil)
+
+;; specify cursor types for modes
+;; insert mode disabled, therefore cursor not set
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :hook (after-init . (lambda()
+                        (unless (display-graphic-p)
+                          (evil-terminal-cursor-changer-activate))))
+  :init
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-emacs-state-cursor  'bar)) ; |
+
+;; Disable insert mode, emacs is better at handling the insert
+;; This needs to come after other evil configs
+(defalias 'evil-insert-state 'evil-emacs-state)
+
+
 ;;; Custom keybindings
 (global-set-key (kbd "C-h i") 'my-lookup)
 (global-set-key (kbd "C-x z") 'doom/window-maximize-buffer)
