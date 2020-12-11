@@ -101,8 +101,14 @@ func main() {
 			}
 		}
 
+		continueOnFailure := false
+
 		fmt.Println()
-		fmt.Println("input 'r' to restart, 'x' to terminate")
+		fmt.Println("input one of the following")
+		fmt.Println("  'r' to hard restart")
+		fmt.Println("  'ro' to soft restart")
+		fmt.Println("  'x' to terminate")
+		fmt.Println()
 		fmt.Print("  input: ")
 
 		var line string
@@ -113,6 +119,9 @@ func main() {
 
 		switch line {
 		case "r":
+			continueOnFailure = true
+			fallthrough
+		case "ro":
 			log.Println("restarting...")
 		case "x":
 			log.Println("terminating...")
@@ -136,8 +145,13 @@ func main() {
 		if err := kill(); err != nil {
 			err := fmt.Errorf("error terminating process: %w", err)
 			fmt.Fprintln(os.Stderr, err)
+
+			if continueOnFailure {
+				start()
+			}
 			continue
 		}
+
 		log.Println("process killed.")
 		log.Println()
 
