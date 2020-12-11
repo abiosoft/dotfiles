@@ -26,7 +26,7 @@ window changes before then, the undo expires.
 Alternatively, use `doom/window-enlargen'."
   (interactive)
   (setq doom--maximize-last-wconf
-     (if (and (null (cdr (cl-remove-if #'window-dedicated-p (window-list))))
+        (if (and (null (cdr (cl-remove-if #'window-dedicated-p (window-list))))
                  doom--maximize-last-wconf)
             (ignore (set-window-configuration doom--maximize-last-wconf))
           (prog1 (current-window-configuration)
@@ -131,7 +131,6 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x :") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "<f1> f") 'counsel-describe-function)
@@ -145,6 +144,7 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(global-set-key (kbd "M-x") nil)
 
 
 ;;; VTerm
@@ -152,15 +152,6 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t)
 ;; (add-to-list 'load-path "~/projects/emacs/emacs-libvterm")
 ;; (require 'vterm)
-;; (unless (display-graphic-p)
-;;   (define-key vterm-mode-map [up]    '(lambda () (interactive) (vterm-send-key "<up>")))
-;;   (define-key vterm-mode-map [down]  '(lambda () (interactive) (vterm-send-key "<down>")))
-;;   (define-key vterm-mode-map [right] '(lambda () (interactive) (vterm-send-key "<right>")))
-;;   (define-key vterm-mode-map [left]  '(lambda () (interactive) (vterm-send-key "<left>")))
-;;   (define-key vterm-mode-map [tab]   '(lambda () (interactive) (vterm-send-key "<tab>")))
-;;   (define-key vterm-mode-map (kbd "DEL") '(lambda () (interactive) (vterm-send-key "<backspace>")))
-;;   (define-key vterm-mode-map (kbd "RET") '(lambda () (interactive) (vterm-send-key "<return>"))))
-
 
 ;;; macOS specific
 (let ((is-mac (string-equal system-type "darwin")))
@@ -333,7 +324,6 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
-;; (setq evil-want-C-i-jump nil)
 (setq evil-lookup-func #'my-lookup)
 (setq evil-toggle-key "C-z")
 
@@ -368,6 +358,14 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (evil-collection-init))
 
+;; free C-n for personal use. my favourite tmux mapping
+(define-key evil-normal-state-map (kbd "C-n") nil)
+(define-key evil-insert-state-map (kbd "C-n") nil)
+(define-key evil-visual-state-map (kbd "C-n") nil)
+(define-key evil-emacs-state-map (kbd "C-n") nil)
+(define-key evil-motion-state-map (kbd "C-n") nil)
+(global-set-key (kbd "C-n") nil)
+
 ;; key bindings
 (define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
 (define-key evil-normal-state-map (kbd ",cc") 'comment-line)
@@ -376,8 +374,6 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
 ;; always escape to normal mode including emacs mode
 (define-key evil-emacs-state-map [escape] 'evil-normal-state)
-;; temporary execution in emacs state
-;; (define-key evil-normal-state-map (kbd "i") 'evil-emacs-state)
 ;; always start in evil state https://github.com/noctuid/evil-guide#make-evil-normal-state-the-initial-state-always
 (setq evil-emacs-state-modes nil)
 (setq evil-insert-state-modes nil)
@@ -396,15 +392,49 @@ Alternatively, use `doom/window-enlargen'."
   (setq evil-normal-state-cursor 'box)  ; █
   (setq evil-emacs-state-cursor  'bar)) ; |
 
-;; Disable insert mode, emacs is better at handling the insert
-;; This needs to come after other evil configs
-(defalias 'evil-insert-state 'evil-emacs-state)
+;; custom keybinding for code navigation in evil modes
+;; same as my vim bindings
+;; (map! :n "M-g" #'lsp-ivy-workspace-symbol
+;;       :nv ",cc" #'comment-line
+;;       :nv ",O" #'neotree-toggle
+;;       :nv ",o" #'+neotree/find-this-file
+;;       :n ",f" #'lsp-format-buffer
+;;       :nv "TAB" #'+workspace/switch-right
+;;       :nv "<backtab>" #'+workspace/switch-left
+;;       :n ", SPC" #'evil-ex-nohighlight)
+;; other custom vim bindings
+;; (global-set-key (kbd "M-p") '+ivy/projectile-find-file)
+;; (global-set-key (kbd "M-u") 'evil-scroll-up)
+;; (global-set-key (kbd "M-d") 'evil-scroll-down)
+;; (global-set-key (kbd "M-v") 'evil-visual-block)
 
+(use-package perspective
+  :ensure t
+  :bind (("C-x b" . persp-switch-to-buffer*)
+         ("C-x k" . persp-kill-buffer*)))
+(persp-mode)
 
-;;; Custom keybindings
-(global-set-key (kbd "C-h i") 'my-lookup)
-(global-set-key (kbd "C-x z") 'doom/window-maximize-buffer)
- 
+;; custom keybinding for window management
+;; same as my tmux bindings
+(global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
+(global-set-key (kbd "C-n h") 'evil-window-left)
+(global-set-key (kbd "C-n H") 'evil-window-move-far-left)
+(global-set-key (kbd "C-n l") 'evil-window-right)
+(global-set-key (kbd "C-n L") 'evil-window-move-far-right)
+(global-set-key (kbd "C-n j") 'evil-window-down)
+(global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
+(global-set-key (kbd "C-n k") 'evil-window-up)
+(global-set-key (kbd "C-n K") 'evil-window-move-very-top)
+(global-set-key (kbd "C-n %") 'evil-window-vsplit)
+(global-set-key (kbd "C-n \"") 'evil-window-split)
+(global-set-key (kbd "C-n x") 'evil-window-delete)
+(global-set-key (kbd "C-n b") 'persp-ivy-switch-buffer)
+(global-set-key (kbd "C-n :") 'counsel-M-x)
+(global-set-key (kbd "C-n s") 'persp-switch)
+(global-set-key (kbd "C-n $") 'persp-rename)
+(global-set-key (kbd "C-n n") 'persp-next)
+(global-set-key (kbd "C-n p") 'persp-prev)
+
 ;;; init.el ends here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
