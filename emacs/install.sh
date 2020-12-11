@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-cp -r ./doom.d ~/.doom.d
+mkdir -p ~/.emacs.d
+cp vanilla/init.el ~/.emacs.d/init.el
+

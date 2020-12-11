@@ -55,7 +55,8 @@ Alternatively, use `doom/window-enlargen'."
           (with-current-buffer
                     (url-retrieve-synchronously
                                "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-                                        'silent 'inhibit-cookies)
+                               'silent 'inhibit-cookies)
+                               
                           (goto-char (point-max))
                                 (eval-print-last-sexp)))
       (load bootstrap-file nil 'nomessage))
@@ -191,7 +192,14 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t
   :init
   (setq projectile-require-project-root nil)
-  (setq projectile--mode-line "P"))
+  (setq projectile--mode-line "P")
+  ;; we mainly want projects defined by a few markers and we always want to take the top-most marker.
+    ;; Reorder so other cases are secondary
+  (setq projectile-project-root-files #'( ".projectile" ))
+  (setq projectile-project-root-files-functions #'(projectile-root-top-down
+                                               projectile-root-top-down-recurring
+                                               projectile-root-bottom-up
+                                               projectile-root-local)))
 
 ;; fix to let eglot find project dir in mono repos
 (defun my-projectile-project-find-function (dir)
@@ -301,6 +309,9 @@ Alternatively, use `doom/window-enlargen'."
 (setq ediff-split-window-function 'split-window-vertically)
 
 
+;;; improve dired
+(setq dired-dwim-target t)
+
 ;;; smooth scrolling like vim and other editors
 (use-package smooth-scrolling
   :ensure t
@@ -401,7 +412,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
