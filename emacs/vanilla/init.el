@@ -463,6 +463,10 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n p") 'persp-prev)
 (global-set-key (kbd "C-n X") 'persp-kill)
 
+
+;;; auto tail log files
+(add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+
 ;;; init.el ends here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
