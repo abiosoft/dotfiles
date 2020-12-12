@@ -9,24 +9,25 @@
 
 
 ;;; Functions
-(defun my-lookup()
+(defun ab/help-symbol-lookup()
   "Lookup the symbol under cursor."
   (interactive)
-  (if (bound-and-true-p lsp-mode)
-      (lsp-describe-thing-at-point)
-    (describe-symbol (symbol-at-point))))
-;; Custom keybindings
-;; Functions
-(defun split-right ()
+  (describe-symbol (symbol-at-point)))
+(defun ab/window-split-right ()
   "Split windows right and move to the new split"
   (interactive)
   (split-window-right)
   (windmove-right))
-(defun split-down ()
+(defun ab/window-split-down ()
   "Split windows down and move to the new split"
   (interactive)
   (split-window-below)
   (windmove-down))
+;; Create new workspace
+(defun ab/workspace-new()
+  "Create a new workspace using perspective.el"
+  (interactive)
+  (persp-switch "new workspace"))
 
 
 ;; Toggle Window Maximize
@@ -196,8 +197,9 @@ Alternatively, use `doom/window-enlargen'."
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-require-project-root nil)
-  (setq projectile--mode-line "P")
+  (setq projectile-require-project-root t)
+  (setq projectile-switch-project-action #'projectile-dired)
+  (setq projectile-mode-line-prefix "P")
   ;; we mainly want projects defined by a few markers and we always want to take the top-most marker.
     ;; Reorder so other cases are secondary
   (setq projectile-project-root-files #'( ".projectile" ))
@@ -254,6 +256,7 @@ Alternatively, use `doom/window-enlargen'."
 (defun project-root (project)
   (car (project-roots project)))
 (add-hook 'go-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
 
 ;;; Text Editing visual
 ;; disable blinking cursor
@@ -320,7 +323,7 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
-(setq evil-lookup-func #'my-lookup)
+(setq evil-lookup-func #'ab/help-symbol-lookup)
 (setq evil-toggle-key "C-z")
 
 ;; change model texts
@@ -354,6 +357,15 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (evil-collection-init))
 
+;; free C-p for personal use. I use it for file selection in other editors.
+(define-key evil-normal-state-local-map (kbd "C-p") nil)
+(define-key evil-normal-state-map (kbd "C-p") nil)
+(define-key evil-insert-state-map (kbd "C-p") nil)
+(define-key evil-visual-state-map (kbd "C-p") nil)
+(define-key evil-emacs-state-map (kbd "C-p") nil)
+(define-key evil-motion-state-map (kbd "C-p") nil)
+(global-set-key (kbd "C-p") nil)
+(global-set-key (kbd "<normal-state> C-p") nil)
 ;; free C-n for personal use. my favourite tmux mapping
 (define-key evil-normal-state-local-map (kbd "C-n") nil)
 (define-key evil-normal-state-map (kbd "C-n") nil)
@@ -363,8 +375,6 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-motion-state-map (kbd "C-n") nil)
 (global-set-key (kbd "C-n") nil)
 (global-set-key (kbd "<normal-state> C-n") nil)
-
-
 ;; eshell is somehow notorious and refusing to release C-n
 ;; binding only works by using hook
 (defun bind-eshell-keys()
@@ -398,22 +408,6 @@ Alternatively, use `doom/window-enlargen'."
   (setq evil-visual-state-cursor 'box)  ; █
   (setq evil-normal-state-cursor 'box)  ; █
   (setq evil-emacs-state-cursor  'bar)) ; |
-
-;; custom keybinding for code navigation in evil modes
-;; same as my vim bindings
-;; (map! :n "M-g" #'lsp-ivy-workspace-symbol
-;;       :nv ",cc" #'comment-line
-;;       :nv ",O" #'neotree-toggle
-;;       :nv ",o" #'+neotree/find-this-file
-;;       :n ",f" #'lsp-format-buffer
-;;       :nv "TAB" #'+workspace/switch-right
-;;       :nv "<backtab>" #'+workspace/switch-left
-;;       :n ", SPC" #'evil-ex-nohighlight)
-;; other custom vim bindings
-;; (global-set-key (kbd "M-p") '+ivy/projectile-find-file)
-;; (global-set-key (kbd "M-u") 'evil-scroll-up)
-;; (global-set-key (kbd "M-d") 'evil-scroll-down)
-;; (global-set-key (kbd "M-v") 'evil-visual-block)
 
 
 ;; autocomplete
@@ -451,17 +445,18 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
 (global-set-key (kbd "C-n k") 'evil-window-up)
 (global-set-key (kbd "C-n K") 'evil-window-move-very-top)
-(global-set-key (kbd "C-n %") 'split-right)
-(global-set-key (kbd "C-n \"") 'split-down)
+(global-set-key (kbd "C-n %") 'ab/window-split-right)
+(global-set-key (kbd "C-n \"") 'ab/window-split-down)
 (global-set-key (kbd "C-n x") 'evil-window-delete)
 (global-set-key (kbd "C-n b") 'persp-ivy-switch-buffer)
 (global-set-key (kbd "C-n :") 'counsel-M-x)
 (global-set-key (kbd "C-n s") 'persp-switch)
-(global-set-key (kbd "C-n c") (lambda () (interactive) (persp-switch "new-unnamed")))
+(global-set-key (kbd "C-n c") 'ab/workspace-new)
 (global-set-key (kbd "C-n $") 'persp-rename)
 (global-set-key (kbd "C-n n") 'persp-next)
 (global-set-key (kbd "C-n p") 'persp-prev)
 (global-set-key (kbd "C-n X") 'persp-kill)
+(global-set-key (kbd "C-p") 'counsel-projectile-find-file)
 
 
 ;;; auto tail log files
