@@ -446,9 +446,11 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n b") 'persp-ivy-switch-buffer)
 (global-set-key (kbd "C-n :") 'counsel-M-x)
 (global-set-key (kbd "C-n s") 'persp-switch)
+(global-set-key (kbd "C-n c") (lambda () (interactive) (persp-switch "new-unnamed")))
 (global-set-key (kbd "C-n $") 'persp-rename)
 (global-set-key (kbd "C-n n") 'persp-next)
 (global-set-key (kbd "C-n p") 'persp-prev)
+(global-set-key (kbd "C-n X") 'persp-kill)
 
 ;;; init.el ends here
 (custom-set-variables
