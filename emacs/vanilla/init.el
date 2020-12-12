@@ -127,8 +127,11 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;;; Ivy/Counsel setup
+;; flx for fuzzy and sorting
 (use-package flx
   :ensure t)
+
+;; the ivy parent package
 (use-package counsel
   :ensure t
   :init
@@ -139,6 +142,7 @@ Alternatively, use `doom/window-enlargen'."
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
   :config
   (ivy-mode 1))
+
 ;; other counsel key bindings
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
@@ -296,7 +300,7 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; improve ediff
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-vertically)
+(setq ediff-split-window-function 'split-window-horizontally)
 
 
 ;;; improve dired
