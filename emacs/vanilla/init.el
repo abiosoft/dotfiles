@@ -460,7 +460,10 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n n") 'persp-next)
 (global-set-key (kbd "C-n p") 'persp-prev)
 (global-set-key (kbd "C-n X") 'persp-kill)
+;; custom keybindings for code editing
+;; same as my vim bindings
 (global-set-key (kbd "C-p") 'counsel-projectile-find-file)
+(define-key evil-normal-state-map (kbd "C-g") 'counsel-imenu)
 
 
 ;;; auto tail log files
