@@ -15,6 +15,19 @@
   (if (bound-and-true-p lsp-mode)
       (lsp-describe-thing-at-point)
     (describe-symbol (symbol-at-point))))
+;; Custom keybindings
+;; Functions
+(defun split-right ()
+  "Split windows right and move to the new split"
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+(defun split-down ()
+  "Split windows down and move to the new split"
+  (interactive)
+  (split-window-below)
+  (windmove-down))
+
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
@@ -144,7 +157,8 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(global-set-key (kbd "M-x") nil)
+(define-key ivy-minibuffer-map (kbd "C-n") 'ivy-next-line)
+(define-key ivy-minibuffer-map (kbd "C-p") 'ivy-previous-line)
 
 
 ;;; VTerm
@@ -217,24 +231,6 @@ Alternatively, use `doom/window-enlargen'."
   :init
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
-
-;; autocomplete
-(use-package company
-  :ensure t
-  :init
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 1)
-  (setq company-selection-wrap-around t)
-  :config
-  (global-company-mode 1))
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous)
-  (define-key company-active-map (kbd "<tab>") nil)
-  (define-key company-active-map (kbd "<return>") #'company-complete-selection))
-
 
 ;;; Programming Languages
 (use-package go-mode
@@ -408,6 +404,25 @@ Alternatively, use `doom/window-enlargen'."
 ;; (global-set-key (kbd "M-d") 'evil-scroll-down)
 ;; (global-set-key (kbd "M-v") 'evil-visual-block)
 
+
+;; autocomplete
+(use-package company
+  :ensure t
+  :init
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1)
+  (setq company-selection-wrap-around t)
+  :config
+  (global-company-mode 1))
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  (define-key company-active-map [tab] nil)
+  (define-key company-active-map [return] #'company-complete-common-or-cycle))
+
+
 (use-package perspective
   :ensure t
   :bind (("C-x b" . persp-switch-to-buffer*)
@@ -425,8 +440,8 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
 (global-set-key (kbd "C-n k") 'evil-window-up)
 (global-set-key (kbd "C-n K") 'evil-window-move-very-top)
-(global-set-key (kbd "C-n %") 'evil-window-vsplit)
-(global-set-key (kbd "C-n \"") 'evil-window-split)
+(global-set-key (kbd "C-n %") 'split-right)
+(global-set-key (kbd "C-n \"") 'split-down)
 (global-set-key (kbd "C-n x") 'evil-window-delete)
 (global-set-key (kbd "C-n b") 'persp-ivy-switch-buffer)
 (global-set-key (kbd "C-n :") 'counsel-M-x)
