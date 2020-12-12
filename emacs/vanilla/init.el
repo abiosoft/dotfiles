@@ -157,8 +157,8 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(define-key ivy-minibuffer-map (kbd "C-n") 'ivy-next-line)
-(define-key ivy-minibuffer-map (kbd "C-p") 'ivy-previous-line)
+(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
+(define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
 
 
 ;;; VTerm
@@ -355,12 +355,23 @@ Alternatively, use `doom/window-enlargen'."
   (evil-collection-init))
 
 ;; free C-n for personal use. my favourite tmux mapping
+(define-key evil-normal-state-local-map (kbd "C-n") nil)
 (define-key evil-normal-state-map (kbd "C-n") nil)
 (define-key evil-insert-state-map (kbd "C-n") nil)
 (define-key evil-visual-state-map (kbd "C-n") nil)
 (define-key evil-emacs-state-map (kbd "C-n") nil)
 (define-key evil-motion-state-map (kbd "C-n") nil)
 (global-set-key (kbd "C-n") nil)
+(global-set-key (kbd "<normal-state> C-n") nil)
+
+
+;; eshell is somehow notorious and refusing to release C-n
+;; binding only works by using hook
+(defun bind-eshell-keys()
+  (evil-define-key 'normal eshell-mode-map (kbd "C-n") nil)
+  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil))
+(add-hook 'eshell-mode-hook 'bind-eshell-keys)
+
 
 ;; key bindings
 (define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
@@ -417,8 +428,8 @@ Alternatively, use `doom/window-enlargen'."
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  (define-key company-active-map (kbd "C-j") #'company-select-next)
+  (define-key company-active-map (kbd "C-k") #'company-select-previous)
   (define-key company-active-map [tab] nil)
   (define-key company-active-map [return] #'company-complete-common-or-cycle))
 
