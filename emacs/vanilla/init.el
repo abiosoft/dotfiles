@@ -1,4 +1,4 @@
-;;; Minimal UI
+;; Minimal UI
 ;;; Code: configuration
 (scroll-bar-mode -1)
 (tool-bar-mode   -1)
@@ -28,7 +28,13 @@
   "Create a new workspace using perspective.el"
   (interactive)
   (persp-switch "new workspace"))
-
+;; tslint fix
+(defun ab/tslint-fix-file ()
+  "Apply tslint --fix to the current file"
+  (interactive)
+  (message "tslint --fixing the file" (buffer-file-name))
+  (call-process-shell-command (concat "tslint --fix --config " (projectile-project-root) "tslint.json " (buffer-file-name) " &") nil 0))
+  ;; (revert-buffer t t))
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
@@ -63,17 +69,17 @@ Alternatively, use `doom/window-enlargen'."
 ;; boostrap straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
-               (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-            (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-          (with-current-buffer
-                    (url-retrieve-synchronously
-                               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-                               'silent 'inhibit-cookies)
-                               
-                          (goto-char (point-max))
-                                (eval-print-last-sexp)))
-      (load bootstrap-file nil 'nomessage))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 ;; setup use-package
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
@@ -100,23 +106,23 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t
   :config
   (setq modus-operandi-theme-override-colors-alist
-            '(("bg-main" . "#eeeeee")
-              ("bg-hl-line" . "#dddddd")
-              ("bg-hl-alt" . "#eaddd0")
-              ("bg-dim" . "#e8e8e8")
-              ("bg-inactive" . "#dedede")
-              ("fg-main" . "#222222"))))
+        '(("bg-main" . "#eeeeee")
+          ("bg-hl-line" . "#dddddd")
+          ("bg-hl-alt" . "#eaddd0")
+          ("bg-dim" . "#e8e8e8")
+          ("bg-inactive" . "#dedede")
+          ("fg-main" . "#222222"))))
 (use-package modus-vivendi-theme
-   :ensure t
-   :config
-   (setq modus-vivendi-theme-syntax 'faint)
-   ;; tweak theme background a bit
-   (setq modus-vivendi-theme-override-colors-alist
-            '(("bg-main" . "#222222")
-              ("fg-main" . "#eeeeee")
-              ("bg-dim" . "#333333")
-              ("bg-alt" . "#181732")
-              ("bg-hl-line" . "#444444"))))
+  :ensure t
+  :config
+  (setq modus-vivendi-theme-syntax 'faint)
+  ;; tweak theme background a bit
+  (setq modus-vivendi-theme-override-colors-alist
+        '(("bg-main" . "#222222")
+          ("fg-main" . "#eeeeee")
+          ("bg-dim" . "#333333")
+          ("bg-alt" . "#181732")
+          ("bg-hl-line" . "#444444"))))
 (load-theme 'modus-vivendi t)
 
 ;; Show colons in modeline
@@ -205,12 +211,12 @@ Alternatively, use `doom/window-enlargen'."
   (setq projectile-switch-project-action #'projectile-dired)
   (setq projectile-mode-line-prefix "P")
   ;; we mainly want projects defined by a few markers and we always want to take the top-most marker.
-    ;; Reorder so other cases are secondary
+  ;; Reorder so other cases are secondary
   (setq projectile-project-root-files #'( ".projectile" ))
   (setq projectile-project-root-files-functions #'(projectile-root-top-down
-                                               projectile-root-top-down-recurring
-                                               projectile-root-bottom-up
-                                               projectile-root-local)))
+                                                   projectile-root-top-down-recurring
+                                                   projectile-root-bottom-up
+                                                   projectile-root-local)))
 
 ;; fix to let eglot find project dir in mono repos
 (defun my-projectile-project-find-function (dir)
@@ -253,6 +259,39 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t)
 (use-package graphql-mode
   :ensure t)
+
+;; TIDE for typescript
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+;; formats the buffer before saving
+;; (add-hook 'before-save-hook 'tide-format-before-save); using prettier for now
+;; tide
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)))
+         ;; (before-save . ab/tslint-fix-file)) ;; prettier is better at this
+;; prettier
+(use-package prettier-js
+  :ensure t
+  :after (typescript-mode)
+  :config
+  (setq prettier-js-args '("--tab-width" "2" "--arrow-parens" "avoid"))
+  :hook (typescript-mode . prettier-js-mode))
+
 ;; Language Server Protocol
 (use-package eglot
   :ensure t)
@@ -260,7 +299,7 @@ Alternatively, use `doom/window-enlargen'."
 (defun project-root (project)
   (car (project-roots project)))
 (add-hook 'go-mode-hook 'eglot-ensure)
-(add-hook 'typescript-mode-hook 'eglot-ensure)
+
 
 ;;; Text Editing visual
 ;; disable blinking cursor
@@ -278,11 +317,11 @@ Alternatively, use `doom/window-enlargen'."
 ;;; Magit
 ;; getting errors until I installed magit-popup and with-editor
 (use-package magit-popup
-   :ensure t ; make sure it is installed
-   :demand t) ; make sure it is loaded
+  :ensure t ; make sure it is installed
+  :demand t) ; make sure it is loaded
 (use-package with-editor
-   :ensure t ; make sure it is installed
-   :demand t) ; make sure it is loaded
+  :ensure t ; make sure it is installed
+  :demand t) ; make sure it is loaded
 (use-package magit
   :config
   (setq magit-diff-refine-hunk t)
@@ -429,7 +468,7 @@ Alternatively, use `doom/window-enlargen'."
   (define-key company-active-map (kbd "C-j") #'company-select-next)
   (define-key company-active-map (kbd "C-k") #'company-select-previous)
   (define-key company-active-map [tab] nil)
-  (define-key company-active-map [return] #'company-complete-common-or-cycle))
+  (define-key company-active-map [return] #'company-complete-common))
 
 
 (use-package perspective
