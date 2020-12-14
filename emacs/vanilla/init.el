@@ -5,6 +5,7 @@
 (tooltip-mode    -1)
 ;; menubar is actually useful in GUI
 (unless (display-graphic-p)
+  (xterm-mouse-mode 1)
   (menu-bar-mode   -1))
 
 
@@ -278,12 +279,12 @@ Alternatively, use `doom/window-enlargen'."
 ;; formats the buffer before saving
 ;; (add-hook 'before-save-hook 'tide-format-before-save); using prettier for now
 ;; tide
-(use-package tide
-  :ensure t
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)))
-         ;; (before-save . ab/tslint-fix-file)) ;; prettier is better at this
+;; (use-package tide
+;;   :ensure t
+;;   :after (typescript-mode company flycheck)
+;;   :hook ((typescript-mode . tide-setup)
+;;          (typescript-mode . tide-hl-identifier-mode)))
+;;          ;; (before-save . ab/tslint-fix-file)) ;; prettier is better at this
 ;; prettier
 (use-package prettier-js
   :ensure t
@@ -293,12 +294,30 @@ Alternatively, use `doom/window-enlargen'."
   :hook (typescript-mode . prettier-js-mode))
 
 ;; Language Server Protocol
-(use-package eglot
-  :ensure t)
-;; eglot temporary fix
-(defun project-root (project)
-  (car (project-roots project)))
-(add-hook 'go-mode-hook 'eglot-ensure)
+;; (use-package eglot
+;;   :ensure t)
+;; ;; eglot temporary fix
+;; (defun project-root (project)
+;;   (car (project-roots project)))
+;; (add-hook 'go-mode-hook 'eglot-ensure)
+
+;; if you want to change prefix for lsp-mode keybindings.
+(setq lsp-keymap-prefix "C-c l")
+(use-package lsp-mode
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+            (go-mode . lsp)
+            (typescript-mode . lsp)
+            ;; if you want which-key integration
+            (lsp-mode . lsp-enable-which-key-integration))
+    :config
+    (setq lsp-completion-provider :capf)
+    (setq lsp-idle-delay 0.500)
+    (setq lsp-ui-doc-enable nil)
+    (setq lsp-lens-enable nil)
+    (setq lsp-headerline-breadcrumb-enable nil)
+    (setq lsp-signature-render-documentation nil)
+    :commands lsp)
+
 
 
 ;;; Text Editing visual
@@ -368,6 +387,7 @@ Alternatively, use `doom/window-enlargen'."
 ;; Configs that must be set before loading evil mode.
 (setq evil-lookup-func #'ab/help-symbol-lookup)
 (setq evil-toggle-key "C-z")
+(setq evil-want-C-i-jump nil)
 
 ;; change model texts
 (setq evil-normal-state-tag "<NORMAL>")
@@ -462,15 +482,24 @@ Alternatively, use `doom/window-enlargen'."
   (setq company-selection-wrap-around t)
   :config
   (global-company-mode 1))
+;; quickhelp for autocomplete
+(use-package company-quickhelp
+  :ensure t
+  :init
+  (setq company-quickhelp-delay 0)
+  :config
+  (company-quickhelp-mode 1))
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-j") #'company-select-next)
   (define-key company-active-map (kbd "C-k") #'company-select-previous)
-  (define-key company-active-map [tab] nil)
-  (define-key company-active-map [return] #'company-complete-common))
+  (define-key company-active-map (kbd "<return>") #'company-complete-common-or-cycle))
+  ;; (define-key company-active-map [tab] nil)
+  ;; (define-key company-active-map (kbd "<return>") #'company-complete-selection))
 
 
+;; workspace
 (use-package perspective
   :ensure t
   :bind (("C-x b" . persp-switch-to-buffer*)
@@ -507,6 +536,13 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; auto tail log files
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+
+
+;;; fine tuning
+;;; gotten from https://emacs-lsp.github.io/lsp-mode/page/performance/
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
 
 ;;; init.el ends here
 (custom-set-variables
