@@ -364,14 +364,6 @@ Alternatively, use `doom/window-enlargen'."
 ;;; improve dired
 (setq dired-dwim-target t)
 
-;;; smooth scrolling like vim and other editors
-(use-package smooth-scrolling
-  :ensure t
-  :init
-  (setq smooth-scroll-margin 5)
-  :config
-  (smooth-scrolling-mode 1))
-
 
 ;;; force all popups to show as a real popup
 (use-package popwin
