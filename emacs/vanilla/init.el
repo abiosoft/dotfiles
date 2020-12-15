@@ -375,6 +375,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package restclient
   :ensure t)
 
+
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
 (setq evil-lookup-func #'ab/help-symbol-lookup)
@@ -486,7 +487,7 @@ Alternatively, use `doom/window-enlargen'."
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-j") #'company-select-next)
   (define-key company-active-map (kbd "C-k") #'company-select-previous)
-  (define-key company-active-map (kbd "<return>") #'company-complete-common-or-cycle))
+  (define-key company-active-map (kbd "<return>") #'company-complete))
   ;; (define-key company-active-map [tab] nil)
   ;; (define-key company-active-map (kbd "<return>") #'company-complete-selection))
 
