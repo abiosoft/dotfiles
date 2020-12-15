@@ -245,6 +245,7 @@ Alternatively, use `doom/window-enlargen'."
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
+
 ;;; Programming Languages
 (use-package go-mode
   :ensure t)
@@ -261,30 +262,6 @@ Alternatively, use `doom/window-enlargen'."
 (use-package graphql-mode
   :ensure t)
 
-;; TIDE for typescript
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-;; formats the buffer before saving
-;; (add-hook 'before-save-hook 'tide-format-before-save); using prettier for now
-;; tide
-;; (use-package tide
-;;   :ensure t
-;;   :after (typescript-mode company flycheck)
-;;   :hook ((typescript-mode . tide-setup)
-;;          (typescript-mode . tide-hl-identifier-mode)))
-;;          ;; (before-save . ab/tslint-fix-file)) ;; prettier is better at this
 ;; prettier
 (use-package prettier-js
   :ensure t
@@ -294,12 +271,6 @@ Alternatively, use `doom/window-enlargen'."
   :hook (typescript-mode . prettier-js-mode))
 
 ;; Language Server Protocol
-;; (use-package eglot
-;;   :ensure t)
-;; ;; eglot temporary fix
-;; (defun project-root (project)
-;;   (car (project-roots project)))
-;; (add-hook 'go-mode-hook 'eglot-ensure)
 
 ;; if you want to change prefix for lsp-mode keybindings.
 (setq lsp-keymap-prefix "C-c l")
@@ -317,7 +288,6 @@ Alternatively, use `doom/window-enlargen'."
     (setq lsp-headerline-breadcrumb-enable nil)
     (setq lsp-signature-render-documentation nil)
     :commands lsp)
-
 
 
 ;;; Text Editing visual
