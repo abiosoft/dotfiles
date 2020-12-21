@@ -26,9 +26,20 @@ status(){
     docker inspect "$container" --format='{{.State.Status}}' 2> /dev/null
 }
 
+address(){
+    format="{{.NetworkSettings.Networks.${network}.IPAddress}}"
+    docker inspect "$container" --format="$format" 2> /dev/null
+}
+
 cleanup_network(){
+    log
+    log performing cleanups...
+
     docker network disconnect "$network" "$container" &> /dev/null
     docker network rm "$network" &> /dev/null
+
+    log done.
+    cleanup=true
 }
 
 forward(){
@@ -37,25 +48,29 @@ forward(){
     host_port=${addr[0]}
     container_port=${addr[1]}
 
-    [ ${#addr[@]} -lt 2 ] && log "ports should be of the format <host_port>:<container_port>" && echo && print_usage 1
+    [ ${#addr[@]} -lt 2 ] && log "ports should be of the format <host_port>:<container_port>" && log && print_usage 1
 
 
-    box_status="$(status "$container")"
+    box_status="$(status)"
     case "${box_status}" in
         exited|created|running) ;;
         "")             err "container '$container' does not exist" ;;
         *)              err unknown status $box_status ;;
     esac
-
+    
     network="dockfwd_net_$RANDOM"
+    
     docker network create "$network" > /dev/null || err error occured creating docker network for port forward
     trap cleanup_network INT TERM
 
     docker network connect "$network" "$container" || err error occurred connecting to docker network for port forward
 
-    docker run --rm --network "$network" -p $host_port:1234 alpine/socat TCP-LISTEN:1234,fork TCP-CONNECT:"$container":$container_port
+    container_host="$(address)"
 
-    cleanup_network
+    log forwarding port $host_port to $container:$container_port...
+    docker run --rm --network "$network" -p $host_port:1234 alpine/socat TCP-LISTEN:1234,fork TCP-CONNECT:"$container_host":"$container_port"
+
+    if [ -z "$cleanup" ]; then cleanup_network; fi
 }
 
 [ -z "$1" ] && print_usage 1
