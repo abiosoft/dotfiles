@@ -198,7 +198,7 @@ func run(args []string, vars map[string]string) (*exec.Cmd, func(), error) {
 	cmd.Stdout = &lineWriter{prefix: color.New(color.BgBlue, color.FgWhite).Sprint("stdout"), out: out}
 	cmd.Stderr = &lineWriter{prefix: color.New(color.BgRed, color.FgWhite).Sprint("stderr"), out: out}
 
-	log.Println("running {", strings.Join(args, " "), "}...")
+	log.Println("running {", strings.Join(args, ", "), "}...")
 	log.Println()
 
 	if err := cmd.Start(); err != nil {
