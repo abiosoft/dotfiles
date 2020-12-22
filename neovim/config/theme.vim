@@ -1,5 +1,5 @@
 " theme settings
-" set termguicolors
+set termguicolors
 
 " set background=light
 " colorscheme gruvbox8
