@@ -7,7 +7,10 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1)
   (menu-bar-mode   -1))
-
+;; disable blinking cursor
+(blink-cursor-mode 0)
+;; hopefully improve flickering
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 ;;; Functions
 (defun ab/help-symbol-lookup()
@@ -30,6 +33,7 @@
   (interactive)
   (persp-switch "new workspace"))
 ;; tslint fix
+;; not used but leaving it for future references e.g. syntax for shell command
 (defun ab/tslint-fix-file ()
   "Apply tslint --fix to the current file"
   (interactive)
@@ -55,16 +59,11 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Font
 ;; Set default font
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
-(add-to-list 'default-frame-alist '(height . 48))
-(add-to-list 'default-frame-alist '(width . 160))
-;; disable bold
-(mapc
- (lambda (face)
-   (when (eq (face-attribute face :weight) 'bold)
-     (set-face-attribute face nil :weight 'normal)))
- (face-list))
-
+(set-face-attribute 'default nil
+                    :family "JetBrains Mono"
+                    :height 140 ;; this is 1/10 pt e.g. 140 = 14pt
+                    :weight 'normal
+                    :width 'normal)
 
 ;;; Package configs
 ;; boostrap straight.el
@@ -102,6 +101,8 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t
   :config
   (setq doom-modeline-icon nil)
+  (setq doom-modeline-workspace-name t)
+  (setq doom-modeline-persp-name t)
   :hook (after-init . doom-modeline-mode))
 (use-package modus-operandi-theme
   :ensure t
@@ -146,38 +147,14 @@ Alternatively, use `doom/window-enlargen'."
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-on-del-error-function #'ignore)
   (setq ivy-initial-inputs-alist nil)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
+                                (t . ivy--regex-fuzzy)))
   :config
   (ivy-mode 1))
 
 ;; other counsel key bindings
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "C-x :") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
-(define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
-
-
-;;; VTerm
-(use-package vterm
-  :ensure t)
-;; (add-to-list 'load-path "~/projects/emacs/emacs-libvterm")
-;; (require 'vterm)
 
 ;;; macOS specific
 (let ((is-mac (string-equal system-type "darwin")))
@@ -201,8 +178,22 @@ Alternatively, use `doom/window-enlargen'."
 ;;; use 4 tab space
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
 
+
+;;; customize eshell prompt
+;;; found at https://stackoverflow.com/a/59236830
+(defun ab/eshell-prompt-function ()
+  (setq eshell-prompt-regexp "^λ: ")
+  (format "%s\nλ: " (abbreviate-file-name (eshell/pwd))))
+(setq eshell-prompt-function #'ab/eshell-prompt-function)
+(setq comint-prompt-read-only t)
+(setq eshell-scroll-to-bottom-on-input t)
+(defun ab/eshell-insert-mode ()
+  "jump to end of buffer i.e. the prompt before switching to insert mode"
+  (interactive)
+  (end-of-buffer)
+  (end-of-line)
+  (evil-insert-state))
 
 ;;; Projectile
 (use-package projectile
@@ -213,23 +204,16 @@ Alternatively, use `doom/window-enlargen'."
   (setq projectile-mode-line-prefix "P")
   ;; we mainly want projects defined by a few markers and we always want to take the top-most marker.
   ;; Reorder so other cases are secondary
-  (setq projectile-project-root-files #'( ".projectile" ))
-  (setq projectile-project-root-files-functions #'(projectile-root-top-down
+  (setq projectile-project-root-files #'( ".projectile" "go.mod" "package.json" ))
+  (setq projectile-project-root-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
                                                    projectile-root-bottom-up
                                                    projectile-root-local)))
 
-;; fix to let eglot find project dir in mono repos
-(defun my-projectile-project-find-function (dir)
-  (let ((root (projectile-project-root dir)))
-    (and root (cons 'transient root))))
-
 (use-package counsel-projectile
   :ensure t
   :config
-  (counsel-projectile-mode 1)
-  (with-eval-after-load 'project
-    (add-to-list 'project-find-functions 'my-projectile-project-find-function)))
+  (counsel-projectile-mode 1))
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
@@ -290,10 +274,6 @@ Alternatively, use `doom/window-enlargen'."
     :commands lsp)
 
 
-;;; Text Editing visual
-;; disable blinking cursor
-(blink-cursor-mode 0)
-
 ;; display line numbers for programming modes
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -341,9 +321,12 @@ Alternatively, use `doom/window-enlargen'."
 (popwin-mode 1)
 
 
-;;; rest client
-(use-package restclient
-  :ensure t)
+;; workspace
+(use-package perspective
+  :ensure t
+  :config
+  (setq persp-show-modestring nil)
+  (persp-mode))
 
 
 ;;; EVIL mode
@@ -383,21 +366,20 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (evil-collection-init))
 
-;; free C-p for personal use. I use it for file selection in other editors.
+
+;; free C-p for personal use except in emacs mode. I use it for file selection in other editors.
 (define-key evil-normal-state-local-map (kbd "C-p") nil)
 (define-key evil-normal-state-map (kbd "C-p") nil)
 (define-key evil-insert-state-map (kbd "C-p") nil)
 (define-key evil-visual-state-map (kbd "C-p") nil)
-(define-key evil-emacs-state-map (kbd "C-p") nil)
 (define-key evil-motion-state-map (kbd "C-p") nil)
 (global-set-key (kbd "C-p") nil)
 (global-set-key (kbd "<normal-state> C-p") nil)
-;; free C-n for personal use. my favourite tmux mapping
+;; free C-n for personal use except in emacs mode. my favourite tmux mapping
 (define-key evil-normal-state-local-map (kbd "C-n") nil)
 (define-key evil-normal-state-map (kbd "C-n") nil)
 (define-key evil-insert-state-map (kbd "C-n") nil)
 (define-key evil-visual-state-map (kbd "C-n") nil)
-(define-key evil-emacs-state-map (kbd "C-n") nil)
 (define-key evil-motion-state-map (kbd "C-n") nil)
 (global-set-key (kbd "C-n") nil)
 (global-set-key (kbd "<normal-state> C-n") nil)
@@ -405,9 +387,10 @@ Alternatively, use `doom/window-enlargen'."
 ;; binding only works by using hook
 (defun bind-eshell-keys()
   (evil-define-key 'normal eshell-mode-map (kbd "C-n") nil)
-  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil))
+  (evil-define-key 'normal eshell-mode-map (kbd "i") 'ab/eshell-insert-mode)
+  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil)
+  (evil-collection-define-key 'insert 'eshell-mode-map (kbd "C-n") nil))
 (add-hook 'eshell-mode-hook 'bind-eshell-keys)
-
 
 ;; key bindings
 (define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
@@ -415,6 +398,12 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-visual-state-map (kbd ",cc") 'comment-line)
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
+(define-key evil-visual-state-map (kbd "C-d") 'evil-scroll-down)
+(define-key evil-normal-state-map (kbd "C-g") 'counsel-imenu)
+(define-key evil-insert-state-map (kbd "C-g") 'counsel-imenu)
+(define-key evil-normal-state-map (kbd "C-p") 'counsel-projectile-find-file)
+(define-key evil-insert-state-map (kbd "C-p") 'counsel-projectile-find-file)
 ;; always escape to normal mode including emacs mode
 (define-key evil-emacs-state-map [escape] 'evil-normal-state)
 ;; always start in evil state https://github.com/noctuid/evil-guide#make-evil-normal-state-the-initial-state-always
@@ -433,7 +422,61 @@ Alternatively, use `doom/window-enlargen'."
   (setq evil-motion-state-cursor 'box)  ; █
   (setq evil-visual-state-cursor 'box)  ; █
   (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; |
   (setq evil-emacs-state-cursor  'bar)) ; |
+
+
+
+;; custom keybinding for window management
+;; follow emacs convention as much as possible
+(global-set-key (kbd "C-x 1") 'doom/window-maximize-buffer)
+(global-set-key (kbd "C-x 3") 'ab/window-split-right)
+(global-set-key (kbd "C-x 2") 'ab/window-split-down)
+(global-set-key (kbd "C-x b") 'persp-ivy-switch-buffer)
+(global-set-key (kbd "C-x k") 'persp-kill-buffer*)
+(global-set-key (kbd "C-x :") 'counsel-M-x)
+(global-set-key (kbd "C-x p .") 'persp-switch)
+(global-set-key (kbd "C-x p 2") 'ab/workspace-new)
+(global-set-key (kbd "C-x p r") 'persp-rename)
+(global-set-key (kbd "C-x p o") 'persp-next)
+(global-set-key (kbd "C-x p 0") 'persp-kill)
+;; custom keybindings for window management. same as tmux
+(global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
+(global-set-key (kbd "C-n h") 'evil-window-left)
+(global-set-key (kbd "C-n H") 'evil-window-move-far-left)
+(global-set-key (kbd "C-n l") 'evil-window-right)
+(global-set-key (kbd "C-n L") 'evil-window-move-far-right)
+(global-set-key (kbd "C-n j") 'evil-window-down)
+(global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
+(global-set-key (kbd "C-n k") 'evil-window-up)
+(global-set-key (kbd "C-n K") 'evil-window-move-very-top)
+(global-set-key (kbd "C-n %") 'ab/window-split-right)
+(global-set-key (kbd "C-n \"") 'ab/window-split-down)
+(global-set-key (kbd "C-n x") 'evil-window-delete)
+(global-set-key (kbd "C-n b b") 'persp-ivy-switch-buffer)
+(global-set-key (kbd "C-n b n") 'projectile-next-project-buffer)
+(global-set-key (kbd "C-n b p") 'projectile-previous-project-buffer)
+(global-set-key (kbd "C-n b x") 'kill-buffer)
+(global-set-key (kbd "C-n b r") 'rename-buffer)
+(global-set-key (kbd "C-n :") 'counsel-M-x)
+(global-set-key (kbd "C-n s") 'tab-bar-select-tab-by-name)
+(global-set-key (kbd "C-n c") 'tab-new)
+(global-set-key (kbd "C-n $") 'tab-rename)
+(global-set-key (kbd "C-n n") 'tab-next)
+(global-set-key (kbd "C-n p") 'tab-previous)
+(global-set-key (kbd "C-n X") 'tab-close)
+;; custom keybindings for code editing
+(global-set-key (kbd "C-h .") 'ab/help-symbol-lookup)
+(global-set-key (kbd "C-c f") 'counsel-projectile-find-file)
+(global-set-key (kbd "C-c i") 'counsel-imenu)
+;; ivy/counsel bindings
+(global-set-key (kbd "C-x :") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
+(define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
 
 
 ;; autocomplete
@@ -449,63 +492,101 @@ Alternatively, use `doom/window-enlargen'."
 (use-package company-quickhelp
   :ensure t
   :init
-  (setq company-quickhelp-delay 0)
+  (setq company-quickhelp-delay 1.0)
   :config
   (company-quickhelp-mode 1))
 (with-eval-after-load 'company
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-j") #'company-select-next)
   (define-key company-active-map (kbd "C-k") #'company-select-previous)
+  (evil-define-key 'insert company-active-map (kbd "<return>") #'company-complete)
   (define-key company-active-map (kbd "<return>") #'company-complete))
-  ;; (define-key company-active-map [tab] nil)
-  ;; (define-key company-active-map (kbd "<return>") #'company-complete-selection))
 
 
-;; workspace
-(use-package perspective
+;;; rest client
+;; optional deps
+(use-package json-mode
+  :ensure t)
+(use-package jq-mode
   :ensure t
-  :bind (("C-x b" . persp-switch-to-buffer*)
-         ("C-x k" . persp-kill-buffer*)))
-(persp-mode)
-
-;; custom keybinding for window management
-;; same as my tmux bindings
-(global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
-(global-set-key (kbd "C-n h") 'evil-window-left)
-(global-set-key (kbd "C-n H") 'evil-window-move-far-left)
-(global-set-key (kbd "C-n l") 'evil-window-right)
-(global-set-key (kbd "C-n L") 'evil-window-move-far-right)
-(global-set-key (kbd "C-n j") 'evil-window-down)
-(global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
-(global-set-key (kbd "C-n k") 'evil-window-up)
-(global-set-key (kbd "C-n K") 'evil-window-move-very-top)
-(global-set-key (kbd "C-n %") 'ab/window-split-right)
-(global-set-key (kbd "C-n \"") 'ab/window-split-down)
-(global-set-key (kbd "C-n x") 'evil-window-delete)
-(global-set-key (kbd "C-n b") 'persp-ivy-switch-buffer)
-(global-set-key (kbd "C-n :") 'counsel-M-x)
-(global-set-key (kbd "C-n s") 'persp-switch)
-(global-set-key (kbd "C-n c") 'ab/workspace-new)
-(global-set-key (kbd "C-n $") 'persp-rename)
-(global-set-key (kbd "C-n n") 'persp-next)
-(global-set-key (kbd "C-n p") 'persp-prev)
-(global-set-key (kbd "C-n X") 'persp-kill)
-;; custom keybindings for code editing
-;; same as my vim bindings
-(global-set-key (kbd "C-p") 'counsel-projectile-find-file)
-(define-key evil-normal-state-map (kbd "C-g") 'counsel-imenu)
+  :config
+  (with-eval-after-load "json-mode"
+    (define-key json-mode-map (kbd "C-c C-j") #'jq-interactively)))
+;; restclient package
+(use-package restclient
+  :ensure t
+  :mode (("\\.http\\'" . restclient-mode)
+         ("\\.rest\\'" . restclient-mode))
+  :bind (:map restclient-mode-map
+	          ("C-c C-f" . json-mode-beautify)))
+;; autocomplete in restclient
+(use-package company-restclient
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-restclient))
 
 
 ;;; auto tail log files
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
 
 
-;;; fine tuning
+;;; org babel
+;; no need to confirm evaluation for all languages, some are harmless
+(setq org-confirm-babel-evaluate nil)
+(setq org-src-fontify-natively t)
+(setq org-adapt-indentation nil)
+;;; add non-core languages
+;; typescript
+(use-package ob-typescript
+  :ensure t)
+;; go
+(use-package ob-go
+  :ensure t
+  :straight (ob-go :type git :host github :repo "pope/ob-go"))
+;; http
+(use-package ob-http
+  :ensure t)
+;; restclient
+(use-package ob-restclient
+  :ensure t)
+;; graphql
+(use-package ob-graphql
+  :ensure t)
+;;; agenda
+(setq org-agenda-files (list
+                        "~/org-agenda/todo.org"))
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+;;; org code executions
+(setq org-babel-python-command "python3")
+(org-babel-do-load-languages 'org-babel-load-languages
+                             '(
+                               (shell . t)
+                               (python . t)
+                               (js . t)
+                               (typescript . t)
+                               (go . t)
+                               (org . t)
+                               (emacs-lisp . t)
+                               (http . t)
+                               (restclient . t)
+                               (java . t)
+                               (makefile . t)
+                               (sql . t)
+                               (awk . t)
+                               (graphql . t)
+                               ))
+;; other org keybindings
+(global-set-key (kbd "C-x C-a") 'org-agenda)
+
+;;; fine tuning performance
 ;;; gotten from https://emacs-lsp.github.io/lsp-mode/page/performance/
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
 
 ;;; init.el ends here
 (custom-set-variables
