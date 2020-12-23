@@ -310,7 +310,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package git-gutter
   :ensure t
   :config
-  (setq git-gutter:disabled-modes '(org-mode))
+  (setq git-gutter:disabled-modes '(org-mode org-indent-mode))
   (global-git-gutter-mode +1))
 
 
@@ -545,6 +545,8 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-adapt-indentation nil)
 (setq org-log-done 'time)
 (setq org-log-done-with-time t)
+;; improve visibility with indentations.
+(setq org-startup-indented t)
 ;;; improve bullets
 (use-package org-superstar
   :ensure t
