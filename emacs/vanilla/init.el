@@ -43,6 +43,37 @@
   (message "tslint --fixing the file" (buffer-file-name))
   (call-process-shell-command (concat "tslint --fix --config " (projectile-project-root) "tslint.json " (buffer-file-name) " &") nil 0))
   ;; (revert-buffer t t))
+;;; eshell helper functions
+(defun ab/eshell-insert-mode ()
+  "jump to end of buffer i.e. the prompt before switching to insert mode"
+  (interactive)
+  (end-of-buffer)
+  (end-of-line)
+  (evil-insert-state))
+(defun ab/new-eshell ()
+  "create a new eshell"
+  (interactive)
+  (if (projectile-project-root)
+      (projectile-run-eshell 'N)
+    (eshell 'N)))
+(defun ab/new-eshell-in-split ()
+  "create a new eshell in new split
+if in eshell already, create a vertical split
+otherwise create a horizontal split"
+  (interactive)
+  (if (derived-mode-p 'eshell-mode)
+      (ab/window-split-down)
+    (ab/window-split-right))
+  (ab/new-eshell))
+;;; found at https://stackoverflow.com/a/59236830
+(defun ab/eshell-prompt-function ()
+  (setq eshell-prompt-regexp "^λ: ")
+  (format "%s\nλ: " (abbreviate-file-name (eshell/pwd))))
+(defun ab/eshell-kill-window-on-exit ()
+  "delete window when eshell is terminated
+as long as the window is not the only window"
+  (when (not (one-window-p))
+    (delete-window)))
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
@@ -188,19 +219,11 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;;; customize eshell prompt
-;;; found at https://stackoverflow.com/a/59236830
-(defun ab/eshell-prompt-function ()
-  (setq eshell-prompt-regexp "^λ: ")
-  (format "%s\nλ: " (abbreviate-file-name (eshell/pwd))))
 (setq eshell-prompt-function #'ab/eshell-prompt-function)
 (setq comint-prompt-read-only t)
 (setq eshell-scroll-to-bottom-on-input t)
-(defun ab/eshell-insert-mode ()
-  "jump to end of buffer i.e. the prompt before switching to insert mode"
-  (interactive)
-  (end-of-buffer)
-  (end-of-line)
-  (evil-insert-state))
+;;; terminate eshell window on exit
+(advice-add 'eshell-life-is-too-much :after 'ab/eshell-kill-window-on-exit)
 
 ;;; Projectile
 (use-package projectile
@@ -485,7 +508,9 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
 (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
-
+;; eshell terminal bindings
+(global-set-key (kbd "C-`") 'ab/new-eshell-in-split)
+(global-set-key (kbd "C-~") 'ab/new-eshell)
 
 ;; autocomplete
 (use-package company
@@ -622,7 +647,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
