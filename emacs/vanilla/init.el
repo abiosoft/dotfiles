@@ -12,6 +12,9 @@
 ;; hopefully improve flickering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+;; add custom scripts to path
+(add-to-list 'load-path (expand-file-name "~/dotfiles/emacs/vanilla/libs"))
+
 ;;; Functions
 (defun ab/help-symbol-lookup()
   "Lookup the symbol under cursor."
@@ -126,6 +129,10 @@ Alternatively, use `doom/window-enlargen'."
           ("bg-alt" . "#181732")
           ("bg-hl-line" . "#444444"))))
 (load-theme 'modus-vivendi t)
+;; org mode theme
+(require 'org-beautify-theme)
+(load-theme 'org-beautify t)
+
 
 ;; Show colons in modeline
 (column-number-mode 1)
@@ -303,6 +310,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package git-gutter
   :ensure t
   :config
+  (setq git-gutter:disabled-modes '(org-mode))
   (global-git-gutter-mode +1))
 
 
@@ -532,8 +540,16 @@ Alternatively, use `doom/window-enlargen'."
 ;;; org babel
 ;; no need to confirm evaluation for all languages, some are harmless
 (setq org-confirm-babel-evaluate nil)
+;; other org useful configs
 (setq org-src-fontify-natively t)
 (setq org-adapt-indentation nil)
+(setq org-log-done 'time)
+(setq org-log-done-with-time t)
+;;; improve bullets
+(use-package org-superstar
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () (org-superstar-mode 1))))
 ;;; add non-core languages
 ;; typescript
 (use-package ob-typescript
@@ -553,7 +569,12 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t)
 ;;; agenda
 (setq org-agenda-files (list
-                        "~/org-agenda/todo.org"))
+                        "~/org-agenda"))
+(setq org-default-notes-file "~/org-agenda/notes.org")
+(setq org-default-tasks-file "~/org-agenda/tasks.org")
+(setq org-todo-keywords '((sequence "TODO(t)" "PREPARING(p)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
+(setq org-todo-keyword-faces '(("DONE" :foreground "#44bd43" :strike-through nil)
+                               ("CANCELLED" :foreground "#ff6480" :strike-through nil)))
 (use-package evil-org
   :ensure t
   :after org
@@ -564,8 +585,7 @@ Alternatively, use `doom/window-enlargen'."
 ;;; org code executions
 (setq org-babel-python-command "python3")
 (org-babel-do-load-languages 'org-babel-load-languages
-                             '(
-                               (shell . t)
+                             '((shell . t)
                                (python . t)
                                (js . t)
                                (typescript . t)
@@ -578,10 +598,15 @@ Alternatively, use `doom/window-enlargen'."
                                (makefile . t)
                                (sql . t)
                                (awk . t)
-                               (graphql . t)
-                               ))
+                               (graphql . t)))
 ;; other org keybindings
-(global-set-key (kbd "C-x C-a") 'org-agenda)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") 'org-store-link)
+;; exit edit mode with 'C-c C-c' to stay consistent with other places like magit
+(eval-after-load 'org-src
+  '(define-key org-src-mode-map
+     (kbd "C-c C-c") #'org-edit-src-exit))
 
 ;;; fine tuning performance
 ;;; gotten from https://emacs-lsp.github.io/lsp-mode/page/performance/
@@ -595,7 +620,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
