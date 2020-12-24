@@ -632,6 +632,7 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c t") 'org-tags-view)
 ;; exit edit mode with 'C-c C-c' to stay consistent with other places like magit
 (eval-after-load 'org-src
   '(define-key org-src-mode-map
