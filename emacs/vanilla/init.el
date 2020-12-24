@@ -305,6 +305,13 @@ Alternatively, use `doom/window-enlargen'."
     (setq lsp-signature-render-documentation nil)
     :commands lsp)
 
+;;; Yasnippets
+(use-package yasnippet
+  :ensure t
+  :config (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :ensure t)
+
 
 ;; display line numbers for programming modes
 (setq display-line-numbers-type 'relative)
