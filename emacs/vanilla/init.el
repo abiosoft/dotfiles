@@ -57,8 +57,8 @@
       (projectile-run-eshell 'N)
     (eshell 'N)))
 (defun ab/new-eshell-in-split ()
-  "create a new eshell in new split
-if in eshell already, create a vertical split
+  "create a new eshell in new split.
+if in eshell already create a vertical split,
 otherwise create a horizontal split"
   (interactive)
   (if (derived-mode-p 'eshell-mode)
@@ -67,6 +67,8 @@ otherwise create a horizontal split"
   (ab/new-eshell))
 ;;; found at https://stackoverflow.com/a/59236830
 (defun ab/eshell-prompt-function ()
+  "use custom prompt for eshell that displays
+current directly and lambda in new line"
   (setq eshell-prompt-regexp "^λ: ")
   (format "%s\nλ: " (abbreviate-file-name (eshell/pwd))))
 (defun ab/eshell-kill-window-on-exit ()
