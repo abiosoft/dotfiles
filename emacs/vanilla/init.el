@@ -12,6 +12,33 @@
 ;; hopefully improve flickering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+;;; macOS specific
+(let ((is-mac (string-equal system-type "darwin")))
+  (when is-mac
+    ;; make fonts look better with anti-aliasing
+    (setq mac-allow-anti-aliasing t)
+    ;; delete files by moving them to the trash
+    (setq delete-by-moving-to-trash t)
+    (setq trash-directory "~/.Trash")
+
+    ;; Set modifier keys
+    (setq mac-option-modifier 'meta) ;; Bind meta to ALT
+    (setq mac-command-modifier 'control) ;; Bind apple/command to super if you want
+    (setq mac-function-modifier 'hyper) ;; Bind function key to hyper if you want
+    (setq mac-right-option-modifier 'meta) ;; unbind right key for accented input
+
+    ;; Make forward delete work
+    (global-set-key (kbd "<H-backspace>") 'delete-forward-char)))
+
+;;; Font
+;; Set default font
+(set-face-attribute 'default nil
+                    :family "JetBrains Mono"
+                    :height 140 ;; this is 1/10 pt e.g. 140 = 14pt
+                    :weight 'normal
+                    :width 'normal)
+
+
 ;; add custom scripts to path
 (add-to-list 'load-path (expand-file-name "~/dotfiles/emacs/vanilla/libs"))
 
@@ -30,11 +57,6 @@
   (interactive)
   (split-window-below)
   (windmove-down))
-;; Create new workspace
-(defun ab/workspace-new()
-  "Create a new workspace using perspective.el"
-  (interactive)
-  (persp-switch "new workspace"))
 ;; tslint fix
 ;; not used but leaving it for future references e.g. syntax for shell command
 (defun ab/tslint-fix-file ()
@@ -58,7 +80,7 @@
     (eshell 'N)))
 (defun ab/new-eshell-in-split ()
   "create a new eshell in new split.
-if in eshell already create a vertical split,
+if in eshell already; create a vertical split,
 otherwise create a horizontal split"
   (interactive)
   (if (derived-mode-p 'eshell-mode)
@@ -77,6 +99,22 @@ as long as the window is not the only window"
   (when (not (one-window-p))
     (delete-window)))
 
+;; org-babel display results in new buffer
+;; credit: https://emacs.stackexchange.com/a/27190
+(defun ab/org-babel-to-buffer ()
+  "A function to efficiently feed babel code block result to a separate buffer"
+  (interactive)
+  (org-open-at-point)
+  (org-babel-remove-result)
+  (with-current-buffer "*Org Babel Results*"
+    (when (string-prefix-p "{" (buffer-substring 1 2))
+      (json-mode))
+    (evil-motion-state)))
+(defun ab/org-mode-config ()
+  "To use with `org-mode-hook'"
+  (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
+(add-hook 'org-mode-hook 'ab/org-mode-config)
+
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
 (defvar doom--maximize-last-wconf nil)
@@ -93,13 +131,6 @@ Alternatively, use `doom/window-enlargen'."
           (prog1 (current-window-configuration)
             (delete-other-windows)))))
 
-;;; Font
-;; Set default font
-(set-face-attribute 'default nil
-                    :family "JetBrains Mono"
-                    :height 140 ;; this is 1/10 pt e.g. 140 = 14pt
-                    :weight 'normal
-                    :width 'normal)
 
 ;;; Package configs
 ;; boostrap straight.el
@@ -112,7 +143,7 @@ Alternatively, use `doom/window-enlargen'."
         (url-retrieve-synchronously
          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
-      
+
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -137,8 +168,6 @@ Alternatively, use `doom/window-enlargen'."
   :ensure t
   :config
   (setq doom-modeline-icon nil)
-  (setq doom-modeline-workspace-name t)
-  (setq doom-modeline-persp-name t)
   :hook (after-init . doom-modeline-mode))
 (use-package modus-operandi-theme
   :ensure t
@@ -162,9 +191,12 @@ Alternatively, use `doom/window-enlargen'."
           ("bg-alt" . "#181732")
           ("bg-hl-line" . "#444444"))))
 (load-theme 'modus-vivendi t)
+
 ;; org mode theme
-(require 'org-beautify-theme)
-(load-theme 'org-beautify t)
+;; only works in GUI mode
+(when (display-graphic-p)
+  (require 'org-beautify-theme)
+  (load-theme 'org-beautify t))
 
 
 ;; Show colons in modeline
@@ -196,28 +228,14 @@ Alternatively, use `doom/window-enlargen'."
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
 
-;;; macOS specific
-(let ((is-mac (string-equal system-type "darwin")))
-  (when is-mac
-    ;; make fonts look better with anti-aliasing
-    (setq mac-allow-anti-aliasing t)
-    ;; delete files by moving them to the trash
-    (setq delete-by-moving-to-trash t)
-    (setq trash-directory "~/.Trash")
-
-    ;; Set modifier keys
-    (setq mac-option-modifier 'meta) ;; Bind meta to ALT
-    (setq mac-command-modifier 'control) ;; Bind apple/command to super if you want
-    (setq mac-function-modifier 'hyper) ;; Bind function key to hyper if you want
-    (setq mac-right-option-modifier 'meta) ;; unbind right key for accented input
-
-    ;; Make forward delete work
-    (global-set-key (kbd "<H-backspace>") 'delete-forward-char)))
-
 
 ;;; use 4 tab space
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+
+
+;;; cleanup whitespace on save
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 
 ;;; customize eshell prompt
@@ -361,14 +379,6 @@ Alternatively, use `doom/window-enlargen'."
 (popwin-mode 1)
 
 
-;; workspace
-(use-package perspective
-  :ensure t
-  :config
-  (setq persp-show-modestring nil)
-  (persp-mode))
-
-
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
 (setq evil-lookup-func #'ab/help-symbol-lookup)
@@ -444,6 +454,8 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-insert-state-map (kbd "C-g") 'counsel-imenu)
 (define-key evil-normal-state-map (kbd "C-p") 'counsel-projectile-find-file)
 (define-key evil-insert-state-map (kbd "C-p") 'counsel-projectile-find-file)
+;; exit motion state with `q`. it's mainly for viewing contents
+(define-key evil-motion-state-map (kbd "q") 'kill-buffer-and-window)
 ;; always escape to normal mode including emacs mode
 (define-key evil-emacs-state-map [escape] 'evil-normal-state)
 ;; always start in evil state https://github.com/noctuid/evil-guide#make-evil-normal-state-the-initial-state-always
@@ -467,19 +479,6 @@ Alternatively, use `doom/window-enlargen'."
 
 
 
-;; custom keybinding for window management
-;; follow emacs convention as much as possible
-(global-set-key (kbd "C-x 1") 'doom/window-maximize-buffer)
-(global-set-key (kbd "C-x 3") 'ab/window-split-right)
-(global-set-key (kbd "C-x 2") 'ab/window-split-down)
-(global-set-key (kbd "C-x b") 'persp-ivy-switch-buffer)
-(global-set-key (kbd "C-x k") 'persp-kill-buffer*)
-(global-set-key (kbd "C-x :") 'counsel-M-x)
-(global-set-key (kbd "C-x p .") 'persp-switch)
-(global-set-key (kbd "C-x p 2") 'ab/workspace-new)
-(global-set-key (kbd "C-x p r") 'persp-rename)
-(global-set-key (kbd "C-x p o") 'persp-next)
-(global-set-key (kbd "C-x p 0") 'persp-kill)
 ;; custom keybindings for window management. same as tmux
 (global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
 (global-set-key (kbd "C-n h") 'evil-window-left)
@@ -493,7 +492,7 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-n %") 'ab/window-split-right)
 (global-set-key (kbd "C-n \"") 'ab/window-split-down)
 (global-set-key (kbd "C-n x") 'evil-window-delete)
-(global-set-key (kbd "C-n b b") 'persp-ivy-switch-buffer)
+(global-set-key (kbd "C-n b b") 'projectile-switch-to-buffer)
 (global-set-key (kbd "C-n b n") 'projectile-next-project-buffer)
 (global-set-key (kbd "C-n b p") 'projectile-previous-project-buffer)
 (global-set-key (kbd "C-n b x") 'kill-buffer)
@@ -545,27 +544,28 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;;; rest client
-;; optional deps
-(use-package json-mode
-  :ensure t)
-(use-package jq-mode
-  :ensure t
-  :config
-  (with-eval-after-load "json-mode"
-    (define-key json-mode-map (kbd "C-c C-j") #'jq-interactively)))
 ;; restclient package
 (use-package restclient
   :ensure t
   :mode (("\\.http\\'" . restclient-mode)
          ("\\.rest\\'" . restclient-mode))
   :bind (:map restclient-mode-map
-	          ("C-c C-f" . json-mode-beautify)))
+              ("C-c C-f" . json-mode-beautify)))
 ;; autocomplete in restclient
 (use-package company-restclient
   :ensure t
   :config
   (add-to-list 'company-backends 'company-restclient))
 
+;;; better json experience
+(use-package json-mode
+  :ensure t)
+;; counsel-jq for real time jq json filter
+(use-package counsel-jq
+  :ensure t
+  :config
+  (with-eval-after-load "json-mode"
+    (define-key json-mode-map (kbd "C-c C-j") #'counsel-jq)))
 
 ;;; auto tail log files
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
@@ -645,10 +645,17 @@ Alternatively, use `doom/window-enlargen'."
   '(define-key org-src-mode-map
      (kbd "C-c C-c") #'org-edit-src-exit))
 
+
 ;;; fine tuning performance
 ;;; gotten from https://emacs-lsp.github.io/lsp-mode/page/performance/
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+
+;;; startup
+(setq inhibit-startup-screen +1)
+(setq initial-major-mode 'org-mode)
+(setq initial-scratch-message nil)
 
 ;;; init.el ends here
 (custom-set-variables
@@ -657,7 +664,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
