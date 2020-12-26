@@ -98,6 +98,31 @@ current directly and lambda in new line"
 as long as the window is not the only window"
   (when (not (one-window-p))
     (delete-window)))
+;; helper function to choose between eshell windows
+(defun ab/select-or-create-eshell-name(name)
+  "Select eshell by name or create a new eshell with name"
+  (interactive)
+  (if (string= name "new eshell")
+      (ab/new-eshell)
+    (switch-to-buffer name)))
+(defun ab/select-or-create-eshell()
+  "Select or create eshell via a completing-read prompt"
+  (interactive)
+  (let* (
+         (project-buffers (if (projectile-project-name)
+                              (projectile-project-buffers)
+                            (buffer-list)))
+         (eshell-buffers
+          (cl-remove-if-not (lambda (n)
+                              (eq (buffer-local-value 'major-mode n) 'eshell-mode))
+                            project-buffers))
+         (eshell-buffer-names (mapcar 'buffer-name eshell-buffers))
+         (empty (eq 0 (length eshell-buffer-names))))
+    (if empty
+        (ab/select-or-create-eshell-name "new eshell")
+      (let (
+            (selected-shell (completing-read "select eshell: " (cons "new eshell" eshell-buffer-names))))
+        (ab/select-or-create-eshell-name selected-shell)))))
 
 ;; org-babel display results in new buffer
 ;; credit: https://emacs.stackexchange.com/a/27190
@@ -518,7 +543,7 @@ Alternatively, use `doom/window-enlargen'."
 (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
 ;; eshell terminal bindings
 (global-set-key (kbd "C-`") 'ab/new-eshell-in-split)
-(global-set-key (kbd "C-~") 'ab/new-eshell)
+(global-set-key (kbd "C-~") 'ab/select-or-create-eshell)
 
 ;; autocomplete
 (use-package company
@@ -609,8 +634,9 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-default-notes-file "~/org-agenda/notes.org")
 (setq org-default-tasks-file "~/org-agenda/tasks.org")
 (setq org-todo-keywords '((sequence "TODO(t)" "PREPARING(p)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
-(setq org-todo-keyword-faces '(("DONE" :foreground "#44bd43" :strike-through nil)
-                               ("CANCELLED" :foreground "#ff6480" :strike-through nil)))
+(setq org-todo-keyword-faces '(("DONE" :foreground "forest green" :strike-through nil)
+                               ("CANCELLED" :foreground "red" :strike-through nil)))
+
 (use-package evil-org
   :ensure t
   :after org
