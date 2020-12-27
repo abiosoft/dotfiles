@@ -147,7 +147,17 @@ as long as the window is not the only window"
 it will be launched as a child process of this,
 therefore closing this emacs will close all extra emacs.
 "
+  (interactive)
   (call-process-shell-command "emacs &"))
+;; extra vanilla emacs
+(defun launch-new-vanilla-emacs()
+  "launch new emacs process.
+it will be launched as a child process of this,
+therefore closing this emacs will close all extra emacs.
+"
+  (interactive)
+  (call-process-shell-command "emacs -Q &"))
+
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
