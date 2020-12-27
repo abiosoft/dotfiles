@@ -132,13 +132,22 @@ as long as the window is not the only window"
   (org-open-at-point)
   (org-babel-remove-result)
   (with-current-buffer "*Org Babel Results*"
-    (when (string-prefix-p "{" (buffer-substring 1 2))
+    (when (and
+           (> (length (buffer-string)) 2)
+           (string-prefix-p "{" (buffer-substring 1 2)))
       (json-mode))
     (evil-motion-state)))
 (defun ab/org-mode-config ()
   "To use with `org-mode-hook'"
   (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
 (add-hook 'org-mode-hook 'ab/org-mode-config)
+;; extra emacs
+(defun launch-new-emacs()
+  "launch new emacs process.
+it will be launched as a child process of this,
+therefore closing this emacs will close all extra emacs.
+"
+  (call-process-shell-command "emacs &"))
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
