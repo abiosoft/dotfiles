@@ -198,7 +198,6 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Which Key
 (use-package which-key
-  :ensure t
   :init
   (setq which-key-separator " ")
   (setq which-key-prefix-prefix "+")
@@ -209,12 +208,10 @@ Alternatively, use `doom/window-enlargen'."
 ;;; Global
 ;; Theming/Appearance
 (use-package doom-modeline
-  :ensure t
   :config
   (setq doom-modeline-icon nil)
   :hook (after-init . doom-modeline-mode))
 (use-package modus-operandi-theme
-  :ensure t
   :config
   (setq modus-operandi-theme-override-colors-alist
         '(("bg-main" . "#eeeeee")
@@ -224,7 +221,6 @@ Alternatively, use `doom/window-enlargen'."
           ("bg-inactive" . "#dedede")
           ("fg-main" . "#222222"))))
 (use-package modus-vivendi-theme
-  :ensure t
   :config
   (setq modus-vivendi-theme-syntax 'faint)
   ;; tweak theme background a bit
@@ -252,12 +248,10 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Ivy/Counsel setup
 ;; flx for fuzzy and sorting
-(use-package flx
-  :ensure t)
+(use-package flx)
 
 ;; the ivy parent package
 (use-package counsel
-  :ensure t
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -291,7 +285,6 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Projectile
 (use-package projectile
-  :ensure t
   :init
   (setq projectile-require-project-root t)
   (setq projectile-switch-project-action #'projectile-dired)
@@ -305,7 +298,6 @@ Alternatively, use `doom/window-enlargen'."
                                                    projectile-root-local)))
 
 (use-package counsel-projectile
-  :ensure t
   :config
   (counsel-projectile-mode 1))
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
@@ -318,31 +310,22 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; PATH
 (use-package exec-path-from-shell
-  :ensure t
   :init
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
 
 ;;; Programming Languages
-(use-package go-mode
-  :ensure t)
-(use-package python-mode
-  :ensure t)
-(use-package rust-mode
-  :ensure t)
-(use-package web-mode
-  :ensure t)
-(use-package vue-mode
-  :ensure t)
-(use-package typescript-mode
-  :ensure t)
-(use-package graphql-mode
-  :ensure t)
+(use-package go-mode)
+(use-package python-mode)
+(use-package rust-mode)
+(use-package web-mode)
+(use-package vue-mode)
+(use-package typescript-mode)
+(use-package graphql-mode)
 
 ;; prettier
 (use-package prettier-js
-  :ensure t
   :after (typescript-mode)
   :config
   (setq prettier-js-args '("--tab-width" "2" "--arrow-parens" "avoid"))
@@ -369,10 +352,8 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Yasnippets
 (use-package yasnippet
-  :ensure t
   :config (yas-global-mode 1))
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package yasnippet-snippets)
 
 
 ;; display line numbers for programming modes
@@ -386,23 +367,19 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; Magit
 ;; getting errors until I installed magit-popup and with-editor
-(use-package magit-popup
-  :ensure t ; make sure it is installed
+(use-package magit-popup ; make sure it is installed
   :demand t) ; make sure it is loaded
-(use-package with-editor
-  :ensure t ; make sure it is installed
+(use-package with-editor ; make sure it is installed
   :demand t) ; make sure it is loaded
 (use-package magit
   :config
   (setq magit-diff-refine-hunk t)
   (setq magit-ediff-dwim-show-on-hunks t)
-  (setq magit-diff-refine-ignore-whitespace nil)
-  :ensure t)
+  (setq magit-diff-refine-ignore-whitespace nil))
 
 
 ;;; git gutter
 (use-package git-gutter
-  :ensure t
   :config
   (setq git-gutter:disabled-modes '(org-mode org-indent-mode))
   (global-git-gutter-mode +1))
@@ -418,8 +395,7 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;;; force all popups to show as a real popup
-(use-package popwin
-  :ensure t)
+(use-package popwin)
 (popwin-mode 1)
 
 
@@ -447,7 +423,6 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; setup package
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
@@ -456,7 +431,6 @@ Alternatively, use `doom/window-enlargen'."
 ;; evil everywhere
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 
@@ -510,7 +484,6 @@ Alternatively, use `doom/window-enlargen'."
 ;; specify cursor types for modes
 ;; insert mode disabled, therefore cursor not set
 (use-package evil-terminal-cursor-changer
-  :ensure t
   :hook (after-init . (lambda()
                         (unless (display-graphic-p)
                           (evil-terminal-cursor-changer-activate))))
@@ -566,7 +539,6 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; autocomplete
 (use-package company
-  :ensure t
   :init
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 1)
@@ -575,7 +547,6 @@ Alternatively, use `doom/window-enlargen'."
   (global-company-mode 1))
 ;; quickhelp for autocomplete
 (use-package company-quickhelp
-  :ensure t
   :init
   (setq company-quickhelp-delay 1.0)
   :config
@@ -590,23 +561,19 @@ Alternatively, use `doom/window-enlargen'."
 ;;; rest client
 ;; restclient package
 (use-package restclient
-  :ensure t
   :mode (("\\.http\\'" . restclient-mode)
          ("\\.rest\\'" . restclient-mode))
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 ;; autocomplete in restclient
 (use-package company-restclient
-  :ensure t
   :config
   (add-to-list 'company-backends 'company-restclient))
 
 ;;; better json experience
-(use-package json-mode
-  :ensure t)
+(use-package json-mode)
 ;; counsel-jq for real time jq json filter
 (use-package counsel-jq
-  :ensure t
   :config
   (with-eval-after-load "json-mode"
     (define-key json-mode-map (kbd "C-c C-j") #'counsel-jq)))
@@ -627,26 +594,20 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-startup-indented t)
 ;;; improve bullets
 (use-package org-superstar
-  :ensure t
   :after org
   :hook (org-mode . (lambda () (org-superstar-mode 1))))
 ;;; add non-core languages
 ;; typescript
-(use-package ob-typescript
-  :ensure t)
+(use-package ob-typescript)
 ;; go
 (use-package ob-go
-  :ensure t
   :straight (ob-go :type git :host github :repo "pope/ob-go"))
 ;; http
-(use-package ob-http
-  :ensure t)
+(use-package ob-http)
 ;; restclient
-(use-package ob-restclient
-  :ensure t)
+(use-package ob-restclient)
 ;; graphql
-(use-package ob-graphql
-  :ensure t)
+(use-package ob-graphql)
 ;;; agenda
 (setq org-agenda-files (list
                         "~/org-agenda"))
@@ -657,7 +618,6 @@ Alternatively, use `doom/window-enlargen'."
                                ("CANCELLED" :foreground "red" :strike-through nil)))
 
 (use-package evil-org
-  :ensure t
   :after org
   :hook (org-mode . (lambda () evil-org-mode))
   :config
