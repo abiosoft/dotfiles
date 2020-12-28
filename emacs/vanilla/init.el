@@ -139,6 +139,7 @@ as long as the window is not the only window"
     (evil-motion-state)))
 (defun ab/org-mode-config ()
   "To use with `org-mode-hook'"
+  (git-gutter-mode -1) ;; attempt to explicity disable git-gutter.
   (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
 (add-hook 'org-mode-hook 'ab/org-mode-config)
 ;; extra emacs
@@ -381,9 +382,10 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; git gutter
 (use-package git-gutter
+  :init
+  (setq git-gutter:disabled-modes '(org-mode))
   :config
-  (setq git-gutter:disabled-modes '(org-mode org-indent-mode))
-  (global-git-gutter-mode +1))
+  (global-git-gutter-mode 1))
 
 
 ;;; improve ediff
