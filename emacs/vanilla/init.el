@@ -210,6 +210,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package doom-modeline
   :config
   (setq doom-modeline-icon nil)
+  (size-indication-mode) ;; show file sizes
   :hook (after-init . doom-modeline-mode))
 (use-package modus-operandi-theme
   :config
