@@ -64,7 +64,7 @@
   (interactive)
   (message "tslint --fixing the file" (buffer-file-name))
   (call-process-shell-command (concat "tslint --fix --config " (projectile-project-root) "tslint.json " (buffer-file-name) " &") nil 0))
-  ;; (revert-buffer t t))
+;; (revert-buffer t t))
 ;;; eshell helper functions
 (defun ab/eshell-insert-mode ()
   "jump to end of buffer i.e. the prompt before switching to insert mode"
@@ -294,9 +294,9 @@ Alternatively, use `doom/window-enlargen'."
   ;; Reorder so other cases are secondary
   (setq projectile-project-root-files #'( ".projectile" "go.mod" "package.json" ))
   (setq projectile-project-root-functions #'(projectile-root-top-down
-                                                   projectile-root-top-down-recurring
-                                                   projectile-root-bottom-up
-                                                   projectile-root-local)))
+                                             projectile-root-top-down-recurring
+                                             projectile-root-bottom-up
+                                             projectile-root-local)))
 
 (use-package counsel-projectile
   :config
@@ -337,19 +337,19 @@ Alternatively, use `doom/window-enlargen'."
 ;; if you want to change prefix for lsp-mode keybindings.
 (setq lsp-keymap-prefix "C-c l")
 (use-package lsp-mode
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-            (go-mode . lsp)
-            (typescript-mode . lsp)
-            ;; if you want which-key integration
-            (lsp-mode . lsp-enable-which-key-integration))
-    :config
-    (setq lsp-completion-provider :capf)
-    (setq lsp-idle-delay 0.500)
-    (setq lsp-ui-doc-enable nil)
-    (setq lsp-lens-enable nil)
-    (setq lsp-headerline-breadcrumb-enable nil)
-    (setq lsp-signature-render-documentation nil)
-    :commands lsp)
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (go-mode . lsp)
+         (typescript-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :config
+  (setq lsp-completion-provider :capf)
+  (setq lsp-idle-delay 0.500)
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-lens-enable nil)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-signature-render-documentation nil)
+  :commands lsp)
 
 ;;; Yasnippets
 (use-package yasnippet
