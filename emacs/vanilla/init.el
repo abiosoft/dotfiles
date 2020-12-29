@@ -358,6 +358,13 @@ Alternatively, use `doom/window-enlargen'."
 (use-package yasnippet-snippets)
 
 
+;;; Better syntax highlighting with tree sitter
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+
+
 ;; display line numbers for programming modes
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
