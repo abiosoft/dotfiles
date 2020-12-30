@@ -38,6 +38,9 @@
                     :weight 'normal
                     :width 'normal)
 
+;; Ask "y" or "n" instead of "yes" or "no". Yes, laziness is great.
+(fset 'yes-or-no-p 'y-or-n-p)
+
 
 ;; add custom scripts to path
 (add-to-list 'load-path (expand-file-name "~/dotfiles/emacs/vanilla/libs"))
@@ -273,8 +276,11 @@ Alternatively, use `doom/window-enlargen'."
 (setq-default tab-width 4)
 
 
-;;; cleanup whitespace on save
+;;; Whitespaces
+;; cleanup whitespace on save
 (add-hook 'before-save-hook 'whitespace-cleanup)
+;; Show trailing white spaces
+(setq-default show-trailing-whitespace t)
 
 
 ;;; customize eshell prompt
@@ -305,9 +311,19 @@ Alternatively, use `doom/window-enlargen'."
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 
-;;; Disable backup files
+;;; General life improvements to emacs
+
+;; Disable backup files
 (setq make-backup-files nil) ; stop creating backup~ files
 (setq auto-save-default nil) ; stop creating #autosave# files
+
+;; Set locale to UTF8
+(set-language-environment 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(setq locale-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;; PATH
 (use-package exec-path-from-shell
@@ -324,6 +340,9 @@ Alternatively, use `doom/window-enlargen'."
 (use-package vue-mode)
 (use-package typescript-mode)
 (use-package graphql-mode)
+(use-package yaml-mode)
+(use-package json-mode)
+
 
 ;; prettier
 (use-package prettier-js
@@ -364,14 +383,25 @@ Alternatively, use `doom/window-enlargen'."
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 
-;; display line numbers for programming modes
+;; Programming life improvements
+
+;; display relative line numbers for programming modes
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; Auto-add parenthesis pair
+(add-hook 'prog-mode-hook 'electric-pair-local-mode)
+
 ;; highlight current line
 (global-hl-line-mode t)
 ;; focus help window
 (setq help-window-select t)
 
+;; multiple cursors
+(use-package multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;;; Magit
 ;; getting errors until I installed magit-popup and with-editor
@@ -579,13 +609,12 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-;;; better json experience
-(use-package json-mode)
 ;; counsel-jq for real time jq json filter
 (use-package counsel-jq
   :config
   (with-eval-after-load "json-mode"
-    (define-key json-mode-map (kbd "C-c C-j") #'counsel-jq)))
+    (define-key json-mode-map (kbd "C-c C-j") #'counsel-jq)
+    (define-key json-mode-map (kbd "C-c C-j") #'json-mode-beautify)))
 
 ;;; auto tail log files
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
@@ -599,6 +628,7 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-adapt-indentation nil)
 (setq org-log-done 'time)
 (setq org-log-done-with-time t)
+(setq org-imenu-depth 7)
 ;; improve visibility with indentations.
 (setq org-startup-indented t)
 ;;; improve bullets
