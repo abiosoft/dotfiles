@@ -46,28 +46,29 @@
 (add-to-list 'load-path (expand-file-name "~/dotfiles/emacs/vanilla/libs"))
 
 ;;; Functions
+
+;; lookup symbol under cursor
 (defun ab/help-symbol-lookup()
   "Lookup the symbol under cursor."
   (interactive)
-  (describe-symbol (symbol-at-point)))
+  (if (bound-and-true-p lsp-mode)
+      (lsp-describe-thing-at-point)
+    (describe-symbol (symbol-at-point))))
+
+;; split window right and move to it
 (defun ab/window-split-right ()
   "Split windows right and move to the new split"
   (interactive)
   (split-window-right)
   (windmove-right))
+
+;; split window down and move to it
 (defun ab/window-split-down ()
   "Split windows down and move to the new split"
   (interactive)
   (split-window-below)
   (windmove-down))
-;; tslint fix
-;; not used but leaving it for future references e.g. syntax for shell command
-(defun ab/tslint-fix-file ()
-  "Apply tslint --fix to the current file"
-  (interactive)
-  (message "tslint --fixing the file" (buffer-file-name))
-  (call-process-shell-command (concat "tslint --fix --config " (projectile-project-root) "tslint.json " (buffer-file-name) " &") nil 0))
-;; (revert-buffer t t))
+
 ;;; eshell helper functions
 (defun ab/eshell-insert-mode ()
   "jump to end of buffer i.e. the prompt before switching to insert mode"
@@ -75,12 +76,16 @@
   (end-of-buffer)
   (end-of-line)
   (evil-insert-state))
+
+;; new eshell
 (defun ab/new-eshell ()
   "create a new eshell"
   (interactive)
   (if (projectile-project-root)
       (projectile-run-eshell 'N)
     (eshell 'N)))
+
+;; new eshell in split
 (defun ab/new-eshell-in-split ()
   "create a new eshell in new split.
 if in eshell already; create a vertical split,
@@ -90,24 +95,31 @@ otherwise create a horizontal split"
       (ab/window-split-down)
     (ab/window-split-right))
   (ab/new-eshell))
-;;; found at https://stackoverflow.com/a/59236830
+
+;; customize eshell prompt
+;; found at https://stackoverflow.com/a/59236830
 (defun ab/eshell-prompt-function ()
   "use custom prompt for eshell that displays
 current directly and lambda in new line"
   (setq eshell-prompt-regexp "^λ: ")
   (format "%s\nλ: " (abbreviate-file-name (eshell/pwd))))
+
+;; close window on eshell exit
 (defun ab/eshell-kill-window-on-exit ()
   "delete window when eshell is terminated
 as long as the window is not the only window"
   (when (not (one-window-p))
     (delete-window)))
-;; helper function to choose between eshell windows
+
+;; choose between eshell windows
 (defun ab/select-or-create-eshell-name(name)
   "Select eshell by name or create a new eshell with name"
   (interactive)
   (if (string= name "new eshell")
       (ab/new-eshell)
     (switch-to-buffer name)))
+
+;; select or create eshell, used by the prior function.
 (defun ab/select-or-create-eshell()
   "Select or create eshell via a completing-read prompt"
   (interactive)
@@ -140,12 +152,15 @@ as long as the window is not the only window"
            (string-prefix-p "{" (buffer-substring 1 2)))
       (json-mode))
     (evil-motion-state)))
+
+;; custom configuration for org mode
 (defun ab/org-mode-config ()
   "To use with `org-mode-hook'"
   (git-gutter-mode -1) ;; attempt to explicity disable git-gutter.
   (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
 (add-hook 'org-mode-hook 'ab/org-mode-config)
-;; extra emacs
+
+;; launch new emacs instance
 (defun launch-new-emacs()
   "launch new emacs process.
 it will be launched as a child process of this,
@@ -153,7 +168,17 @@ therefore closing this emacs will close all extra emacs.
 "
   (interactive)
   (call-process-shell-command "emacs &"))
-;; extra vanilla emacs
+
+;; launch new debug emacs instance
+(defun launch-new-emacs-with-debug()
+  "launch new emacs process with --debug-init flag.
+it will be launched as a child process of this,
+therefore closing this emacs will close all extra emacs.
+"
+  (interactive)
+  (call-process-shell-command "emacs --debug-init &"))
+
+;; launch new vanilla emacs instance
 (defun launch-new-vanilla-emacs()
   "launch new emacs process.
 it will be launched as a child process of this,
@@ -325,6 +350,13 @@ Alternatively, use `doom/window-enlargen'."
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; Improving scrolling
+(setq redisplay-dont-pause t
+      scroll-margin 1
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+
 ;; PATH
 (use-package exec-path-from-shell
   :init
@@ -403,6 +435,13 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+;; more friendly search/replace
+(use-package anzu
+  :config
+  (global-anzu-mode +1))
+(global-set-key [remap query-replace] 'anzu-query-replace)
+(global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+
 ;;; Magit
 ;; getting errors until I installed magit-popup and with-editor
 (use-package magit-popup ; make sure it is installed
@@ -438,11 +477,18 @@ Alternatively, use `doom/window-enlargen'."
 (popwin-mode 1)
 
 
+;;; Undo
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode))
+
+
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
 (setq evil-lookup-func #'ab/help-symbol-lookup)
 (setq evil-toggle-key "C-z")
 (setq evil-want-C-i-jump nil)
+(setq evil-undo-system 'undo-tree)
 
 ;; change model texts
 (setq evil-normal-state-tag "<NORMAL>")
@@ -507,8 +553,6 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
 (define-key evil-visual-state-map (kbd "C-d") 'evil-scroll-down)
-(define-key evil-normal-state-map (kbd "C-g") 'counsel-imenu)
-(define-key evil-insert-state-map (kbd "C-g") 'counsel-imenu)
 (define-key evil-normal-state-map (kbd "C-p") 'counsel-projectile-find-file)
 (define-key evil-insert-state-map (kbd "C-p") 'counsel-projectile-find-file)
 ;; exit motion state with `q`. it's mainly for viewing contents
@@ -536,15 +580,18 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;; custom keybindings for window management. same as tmux
+
+
+;; custom keybindings for window management
 (global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
-(global-set-key (kbd "C-n h") 'evil-window-left)
-(global-set-key (kbd "C-n H") 'evil-window-move-far-left)
-(global-set-key (kbd "C-n l") 'evil-window-right)
-(global-set-key (kbd "C-n L") 'evil-window-move-far-right)
-(global-set-key (kbd "C-n j") 'evil-window-down)
-(global-set-key (kbd "C-n J") 'evil-window-move-very-bottom)
-(global-set-key (kbd "C-n k") 'evil-window-up)
-(global-set-key (kbd "C-n K") 'evil-window-move-very-top)
+(global-set-key (kbd "C-n h") 'windmove-left)
+(global-set-key (kbd "C-n H") 'windmove-swap-states-left)
+(global-set-key (kbd "C-n l") 'windmove-right)
+(global-set-key (kbd "C-n L") 'windmove-swap-states-right)
+(global-set-key (kbd "C-n j") 'windmove-down)
+(global-set-key (kbd "C-n J") 'windmove-swap-states-down)
+(global-set-key (kbd "C-n k") 'windmove-up)
+(global-set-key (kbd "C-n K") 'windmove-swap-states-up)
 (global-set-key (kbd "C-n %") 'ab/window-split-right)
 (global-set-key (kbd "C-n \"") 'ab/window-split-down)
 (global-set-key (kbd "C-n x") 'evil-window-delete)
@@ -564,6 +611,7 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-h .") 'ab/help-symbol-lookup)
 (global-set-key (kbd "C-c f") 'counsel-projectile-find-file)
 (global-set-key (kbd "C-c i") 'counsel-imenu)
+(global-set-key (kbd "C-c ;") 'comment-line)
 ;; ivy/counsel bindings
 (global-set-key (kbd "C-x :") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -590,6 +638,7 @@ Alternatively, use `doom/window-enlargen'."
   (setq company-quickhelp-delay 1.0)
   :config
   (company-quickhelp-mode 1))
+;; bind keys to company mode
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "C-j") #'company-select-next)
   (define-key company-active-map (kbd "C-k") #'company-select-previous)
@@ -614,7 +663,7 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (with-eval-after-load "json-mode"
     (define-key json-mode-map (kbd "C-c C-j") #'counsel-jq)
-    (define-key json-mode-map (kbd "C-c C-j") #'json-mode-beautify)))
+    (define-key json-mode-map (kbd "C-c C-f") #'json-mode-beautify)))
 
 ;;; auto tail log files
 (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
@@ -682,7 +731,7 @@ Alternatively, use `doom/window-enlargen'."
 ;; other org keybindings
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c s") 'org-store-link)
 (global-set-key (kbd "C-c t") 'org-tags-view)
 ;; exit edit mode with 'C-c C-c' to stay consistent with other places like magit
 (eval-after-load 'org-src
@@ -708,7 +757,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
