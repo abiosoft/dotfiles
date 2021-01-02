@@ -620,6 +620,9 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
 (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
+(evil-define-key '(insert normal) ivy-minibuffer-map
+  (kbd "C-j") 'ivy-next-line
+  (kbd "C-k") 'ivy-previous-line)
 ;; eshell terminal bindings
 (global-set-key (kbd "C-`") 'ab/new-eshell-in-split)
 (global-set-key (kbd "C-~") 'ab/select-or-create-eshell)
