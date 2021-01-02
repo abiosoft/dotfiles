@@ -139,6 +139,19 @@ as long as the window is not the only window"
             (selected-shell (completing-read "select eshell: " (cons "new eshell" eshell-buffer-names))))
         (ab/select-or-create-eshell-name selected-shell)))))
 
+;; eshell is somehow notorious and refusing to release C-n.
+;; binding only works by using hook
+(defun bind-eshell-keys()
+  (evil-define-key 'normal eshell-mode-map (kbd "C-n") nil)
+  (evil-define-key 'normal eshell-mode-map (kbd "i") 'ab/eshell-insert-mode)
+  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil)
+  (evil-collection-define-key 'insert 'eshell-mode-map (kbd "C-n") nil))
+
+;; customize eshell mode
+(defun ab/eshell-mode-config ()
+  (bind-eshell-keys)
+  (setq show-trailing-whitespace nil))
+
 ;; org-babel display results in new buffer
 ;; credit: https://emacs.stackexchange.com/a/27190
 (defun ab/org-babel-to-buffer ()
@@ -314,6 +327,9 @@ Alternatively, use `doom/window-enlargen'."
 (setq eshell-scroll-to-bottom-on-input t)
 ;;; terminate eshell window on exit
 (advice-add 'eshell-life-is-too-much :after 'ab/eshell-kill-window-on-exit)
+;;; customize eshell mode with configs and custom keybindings
+(add-hook 'eshell-mode-hook 'ab/eshell-mode-config)
+
 
 ;;; Projectile
 (use-package projectile
@@ -435,13 +451,6 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-;; more friendly search/replace
-(use-package anzu
-  :config
-  (global-anzu-mode +1))
-(global-set-key [remap query-replace] 'anzu-query-replace)
-(global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
-
 ;;; Magit
 ;; getting errors until I installed magit-popup and with-editor
 (use-package magit-popup ; make sure it is installed
@@ -488,6 +497,7 @@ Alternatively, use `doom/window-enlargen'."
 (setq evil-lookup-func #'ab/help-symbol-lookup)
 (setq evil-toggle-key "C-z")
 (setq evil-want-C-i-jump nil)
+(setq evil-want-minibuffer t)
 (setq evil-undo-system 'undo-tree)
 
 ;; change model texts
@@ -536,14 +546,6 @@ Alternatively, use `doom/window-enlargen'."
 (define-key evil-motion-state-map (kbd "C-n") nil)
 (global-set-key (kbd "C-n") nil)
 (global-set-key (kbd "<normal-state> C-n") nil)
-;; eshell is somehow notorious and refusing to release C-n
-;; binding only works by using hook
-(defun bind-eshell-keys()
-  (evil-define-key 'normal eshell-mode-map (kbd "C-n") nil)
-  (evil-define-key 'normal eshell-mode-map (kbd "i") 'ab/eshell-insert-mode)
-  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil)
-  (evil-collection-define-key 'insert 'eshell-mode-map (kbd "C-n") nil))
-(add-hook 'eshell-mode-hook 'bind-eshell-keys)
 
 ;; key bindings
 (define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
@@ -580,9 +582,6 @@ Alternatively, use `doom/window-enlargen'."
 
 
 ;; custom keybindings for window management. same as tmux
-
-
-;; custom keybindings for window management
 (global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
 (global-set-key (kbd "C-n h") 'windmove-left)
 (global-set-key (kbd "C-n H") 'windmove-swap-states-left)
