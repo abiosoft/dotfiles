@@ -81,7 +81,7 @@
        (headline `(:inherit default :foreground ,base-font-color))
        (primary-color (face-foreground 'mode-line nil))
        (secondary-color (face-background 'secondary-selection nil 'region))
-       (padding nil); `(:line-width 5 :color ,background-color))
+       (padding nil);
        (org-highlights `(:foreground ,base-font-color :background ,secondary-color)))
   (custom-theme-set-faces 'org-beautify
                           `(org-agenda-structure ((t (:inherit default ,@sans-font :height 1.40 :underline t))))
