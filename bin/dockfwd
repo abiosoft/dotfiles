@@ -57,9 +57,9 @@ forward(){
         "")             err "container '$container' does not exist" ;;
         *)              err unknown status $box_status ;;
     esac
-    
+
     network="dockfwd_net_$RANDOM"
-    
+
     docker network create "$network" > /dev/null || err error occured creating docker network for port forward
     trap cleanup_network INT TERM
 
@@ -76,4 +76,3 @@ forward(){
 [ -z "$1" ] && print_usage 1
 
 forward "$@"
-
