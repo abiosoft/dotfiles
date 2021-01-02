@@ -34,7 +34,7 @@
 ;; Set default font
 (set-face-attribute 'default nil
                     :family "JetBrains Mono"
-                    :height 140 ;; this is 1/10 pt e.g. 140 = 14pt
+                    :height 150 ;; this is 1/10 pt e.g. 140 = 14pt
                     :weight 'normal
                     :width 'normal)
 
@@ -268,7 +268,8 @@ Alternatively, use `doom/window-enlargen'."
   ;; tweak theme background a bit
   (setq modus-vivendi-theme-override-colors-alist
         '(("bg-main" . "#222222")
-          ("fg-main" . "#eeeeee")
+          ("fg-main" . "#dddddd")
+          ("fg-dim" . "#c0c6e0")
           ("bg-dim" . "#333333")
           ("bg-alt" . "#181732")
           ("bg-hl-line" . "#444444"))))
@@ -756,7 +757,7 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("1c8a2fcbda519bf4bca642f719042d174bd41477b3b70b5fa41c37134ece0b9e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
