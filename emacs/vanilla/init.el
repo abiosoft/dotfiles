@@ -742,6 +742,13 @@ Alternatively, use `doom/window-enlargen'."
      (kbd "C-c C-c") #'org-edit-src-exit))
 
 
+;;; Docker
+(use-package docker
+  :bind ("C-c d" . docker))
+(use-package dockerfile-mode
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile.*\\'" . dockerfile-mode)))
+
 ;;; fine tuning performance
 ;;; gotten from https://emacs-lsp.github.io/lsp-mode/page/performance/
 (setq gc-cons-threshold 100000000)
