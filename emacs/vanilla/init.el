@@ -200,6 +200,46 @@ therefore closing this emacs will close all extra emacs.
   (interactive)
   (call-process-shell-command "emacs -Q &"))
 
+;; process management
+(defun ab/start-command(&optional command)
+  "Start command as a background process"
+
+  (interactive)
+
+  ;; prompt for command if missing
+  (unless (bound-and-true-p command)
+    (setq command (read-string "Command: ")))
+
+  ;; exit if not a projectile project
+  (unless (projectile-project-name) (error "not in a projectile project"))
+
+  ;; initiate the list of running commands, if not set.
+  (unless (bound-and-true-p ab/command-list)
+    (setq ab/command-list (make-hash-table :test 'equal)))
+
+  ;; start process
+  (let ((process-name (ab/start-command--command-name)))
+    (puthash process-name command ab/command-list)
+    (with-current-buffer process-name
+      (goto-char (point-min))
+      (erase-buffer))
+    (start-process-shell-command process-name process-name command)))
+
+(defun ab/kill-command ()
+  "Kill previously started command"
+  (interactive)
+  (kill-process (ab/start-command--command-name)))
+
+(defun ab/restart-command ()
+  "Restart the command"
+  (interactive)
+  (when (ab/kill-command)
+    (ab/start-command (gethash (ab/start-command--command-name) ab/command-list))))
+
+(defun ab/start-command--command-name ()
+  "Get the command name, derived from projectile project name"
+  (concat (projectile-project-name) ":cmd"))
+
 
 ;; Toggle Window Maximize
 ;; Credit: https://github.com/hlissner/doom-emacs/blob/59a6cb72be1d5f706590208d2ca5213f5a837deb/core/autoload/ui.el#L106
@@ -626,6 +666,8 @@ Alternatively, use `doom/window-enlargen'."
 ;; eshell terminal bindings
 (global-set-key (kbd "C-`") 'ab/new-eshell-in-split)
 (global-set-key (kbd "C-~") 'ab/select-or-create-eshell)
+;; process management
+(global-set-key (kbd "C-n r") 'ab/restart-command)
 
 ;; autocomplete
 (use-package company
