@@ -8,6 +8,7 @@
 
 ;; This file is not part of GNU Emacs.
 ;; Released under the GPL v3.0
+
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
@@ -71,8 +72,8 @@
 
 (deftheme org-beautify "Sub-theme to beautify org mode")
 
-(let* ((sans-font (cond ((x-list-fonts "Helvetica Neue") '(:font "Helvetica Neue" :weight semi-bold))
-                        ((x-list-fonts "JetBrains Mono") '(:font "JetBrains Mono"))
+(let* ((sans-font (cond ((x-list-fonts "ETBembo") '(:family "ETBembo" :weight normal))
+                        ((x-list-fonts "JetBrains Mono") '(:font "JetBrains Mono" :weight semi-bold))
                         ((x-list-fonts "Menlo") '(:font "Menlo"))
                         ((x-family-fonts "Monospace") '(:family "Monospace"))
                         (nil (warn "Cannot find fonts.  Please report at: https://github.com/abiosoft/org-beautify-theme/issues"))))

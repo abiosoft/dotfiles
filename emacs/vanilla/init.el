@@ -172,6 +172,7 @@ as long as the window is not the only window"
   (git-gutter-mode -1) ;; attempt to explicity disable git-gutter.
   (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
 (add-hook 'org-mode-hook 'ab/org-mode-config)
+(add-hook 'org-mode-hook 'variable-pitch-mode)
 
 ;; launch new emacs instance
 (defun launch-new-emacs()
@@ -427,7 +428,9 @@ Alternatively, use `doom/window-enlargen'."
 (use-package rust-mode)
 (use-package web-mode)
 (use-package vue-mode)
-(use-package typescript-mode)
+(use-package typescript-mode
+  :config
+  (setq typescript-indent-level 2))
 (use-package graphql-mode)
 (use-package yaml-mode)
 (use-package json-mode)
@@ -463,13 +466,6 @@ Alternatively, use `doom/window-enlargen'."
 (use-package yasnippet
   :config (yas-global-mode 1))
 (use-package yasnippet-snippets)
-
-
-;;; Better syntax highlighting with tree sitter
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
-(global-tree-sitter-mode)
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 
 ;; Programming life improvements
@@ -620,6 +616,8 @@ Alternatively, use `doom/window-enlargen'."
   (setq evil-insert-state-cursor 'bar)  ; |
   (setq evil-emacs-state-cursor  'bar)) ; |
 
+;; prevent quitting emacs accidentally
+(evil-ex-define-cmd "q[uit]" 'kill-buffer-and-window)
 
 
 ;; custom keybindings for window management. same as tmux
@@ -653,6 +651,7 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key (kbd "C-c i") 'counsel-imenu)
 (global-set-key (kbd "C-c ;") 'comment-line)
 ;; ivy/counsel bindings
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
 (global-set-key (kbd "C-x :") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key "\C-s" 'swiper)
@@ -729,6 +728,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package org-superstar
   :after org
   :hook (org-mode . (lambda () (org-superstar-mode 1))))
+(setq inhibit-compacting-font-caches t) ; fix slowdowns
 ;;; add non-core languages
 ;; typescript
 (use-package ob-typescript)
@@ -747,8 +747,8 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-default-notes-file "~/org-agenda/notes.org")
 (setq org-default-tasks-file "~/org-agenda/tasks.org")
 (setq org-todo-keywords '((sequence "TODO(t)" "PREPARING(p)" "STARTED(s)" "|" "DONE(d)" "CANCELLED(c)")))
-(setq org-todo-keyword-faces '(("DONE" :foreground "forest green" :strike-through nil)
-                               ("CANCELLED" :foreground "red" :strike-through nil)))
+(setq org-todo-keyword-faces '(("DONE" :foreground "forest green" :strike-through nil :weight normal)
+                               ("CANCELLED" :strike-through nil :weight normal)))
 
 (use-package evil-org
   :after org
@@ -809,10 +809,11 @@ Alternatively, use `doom/window-enlargen'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("1c8a2fcbda519bf4bca642f719042d174bd41477b3b70b5fa41c37134ece0b9e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
+   '("bd3d7b95865b8e682e5430deff5faab7bc41f6e0d5a28579fb9ffc4523adb7eb" "2591cfb659603ba9cc99b9b2f2238f281fcf3f8823b0aba2f31dd52b6eef8edc" "58d29048aa67270b27b7afbcb9a9eace42b1aafddbda013644494ae9934690db" "fafb0a3a77899304acc3a082a02a12781bed6837c7600e79ee2374d279346379" "ed9fbb90a87a0fb1c37eff8e628f3650ec343b345e03ca0e1b3db59fc699c28b" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "ff033fc220db13c1cd967b81f739170a554876cd1f547d819a663d1791fad897" "b84a3db2fa5cbe4fd516881f023ca5917f31147e96b8ade3d1d813691cb38642" "1dcaaa474ba6d80fc929543181c4b2468bf308f0eb7f54a126635bfe069e5e64" "af9346fb0a4bdf621c160264d9c460caefbca374bb6721e729d35e2862a4604d" "05861f4edfd705aa24a165874b17355e2cd17cba89d82edd3b99e535b5568464" "f7496c0fa3211943e7d18936c59cecfd44e355e7e01d4699d992f6bd14a046ed" "2ecb9adb3204feb357967fac81bf8dfa3a15e5bb7245ea10927d49f18f4bda46" "fd3d27007141eca76454e0901f2b22bab9d09c302e71749593ad2943c92b4dbb" "c96763dfaa34d98a0a1b5dc66ad95213b8f2f69646a69f5d0d723eab1faac550" "40b17e99a562c1973767e05e3a626d946451f5058a66f163a12043b10bed490f" "93215b9969240166c3130ed927bca171ebebb32afebb04c78188c83835a83b39" "1c8a2fcbda519bf4bca642f719042d174bd41477b3b70b5fa41c37134ece0b9e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "bebf0a411225835c37feafbd29eca2d827cfb239f8407b4681143e2ad569b745" "2528fd9e96d9e95db04aee15c558b752d4716ebd622a4367ba7128d0fa8618e7" "31deed4ac5d0b65dc051a1da3611ef52411490b2b6e7c2058c13c7190f7e199b" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "711efe8b1233f2cf52f338fd7f15ce11c836d0b6240a18fffffc2cbd5bfe61b0" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "08a27c4cde8fcbb2869d71fdc9fa47ab7e4d31c27d40d59bf05729c4640ce834" "e72f5955ec6d8585b8ddb2accc2a4cb78d28629483ef3dcfee00ef3745e2292f" "e1ef2d5b8091f4953fe17b4ca3dd143d476c106e221d92ded38614266cea3c8b" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "7e22a8dcf2adcd8b330eab2ed6023fa20ba3b17704d4b186fa9c53f1fab3d4d2" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fixed-pitch ((t (:family "JetBrains Mono")))))
+ '(fixed-pitch ((t (:family "JetBrains Mono" :height 150))))
+ '(variable-pitch ((t (:family "ETBembo" :height 180)))))
