@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo powermetrics -s smc | grep -i "CPU die temperature"
+
