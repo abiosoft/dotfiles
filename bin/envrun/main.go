@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -35,7 +36,6 @@ func exitErr(err error) {
 }
 
 func getEnv() map[string]string {
-
 	for _, f := range envFiles {
 		stat, err := os.Stat(f)
 		if err == nil && !stat.IsDir() {
@@ -198,6 +198,13 @@ func run(args []string, vars map[string]string) (*exec.Cmd, func(), error) {
 	cmd.Stdout = &lineWriter{prefix: color.New(color.BgBlue, color.FgWhite).Sprint("stdout"), out: out}
 	cmd.Stderr = &lineWriter{prefix: color.New(color.BgRed, color.FgWhite).Sprint("stderr"), out: out}
 
+	dir, err := os.Getwd()
+	if err != nil {
+		return nil, cancel, fmt.Errorf("error getting current working directory: %w", err)
+	}
+	log.Println()
+	log.Println("project:", filepath.Base(dir))
+	log.Println("directory:", dir)
 	log.Println("running {", strings.Join(args, ", "), "}...")
 	log.Println()
 
