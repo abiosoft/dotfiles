@@ -19,10 +19,10 @@ else
     dirs+=( $desktop )
 fi
 
-echo setting up for $distro with $desktop...
+echo "setting up for $distro with $desktop..."
 
-for dir in ${dirs[@]}; do
-    echo setting up $dir...
+for dir in "${dirs[@]}"; do
+    echo setting up "$dir"...
     sh <<EOF
     cd $dir
     if [ -f deps-$distro.sh ]; then
@@ -38,5 +38,5 @@ EOF
         exit 1
     fi
 
-    echo done with $dir.
+    echo "done with $dir".
 done
