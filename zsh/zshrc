@@ -7,12 +7,13 @@ CASE_SENSITIVE="true"
 plugins=(
   git
   command-not-found
+  kubectl
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # personal scripts
-export PATH="$PATH:$HOME/bin:$HOME/dotfiles/bin"
+export PATH="$PATH:$HOME/bin"
 
 # aliases
 alias vim='nvim'
@@ -21,19 +22,20 @@ alias vim='nvim'
 # alias pbpaste='xclip -selection clipboard -o'
 # alias screenshot='grim -g "$(slurp)" screenshot.png'
 # alias enter='toolbox enter --container'
+alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
 
 # git commit editor
-export VISUAL=nvim
+export VISUAL=vim
 export EDITOR="$VISUAL"
 
 # GO
-export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin:$HOME/dotfiles/bin"
 
-# NPM
+# NODE/NPM
 # create a ~/.npmrc with
 #   prefix=/home/abiola/.npm-packages
 NPM_PACKAGES="$HOME/.npm-packages"
-PATH="$NPM_PACKAGES/bin:$PATH"
+PATH="/usr/local/node/bin:$NPM_PACKAGES/bin:$PATH"
 
 #fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -41,8 +43,13 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 # use python 3 by default
 alias python='python3'
 
+# I'm always cd-ing into some project directories
+alias cdcaddy='cd ~/projects/golang/caddy-plugins'
+alias cdwork='cd ~/projects/deimos'
+
 # gpg
 export GPG_TTY=$(tty)
+
 
 # bat
 # alias cat='bat'
