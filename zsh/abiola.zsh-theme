@@ -75,14 +75,18 @@ preexec() {
 }
 
 print_host() {
-    [ "$(hostname)" != "localhost" ] && echo "[$(hostname)] "
+    # [ "$(hostname)" != "localhost" ] && echo "[$(hostname)] "
+}
+
+print_nix() {
+    [ -n "$IN_NIX_SHELL" ] && echo "[nix-shell] "
 }
 
 # Output additional information about paths, repos and exec time
 #
 precmd() {
     vcs_info # Get version control info before we start outputting stuff
-    print -P "\n$(print_host)$(repo_information) %F{yellow}$(cmd_exec_time)%f"
+    print -P "\n$(print_host)$(print_nix)$(repo_information) %F{yellow}$(cmd_exec_time)%f"
 }
 
 # gnome builder terminal hack

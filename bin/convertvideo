@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
+set -eux
+
 old_extension=$1
 new_extension=$2
 
 mkdir -p ./converted
 
 for i in *."$old_extension"; do
-    ffmpeg -i "$i" "${i%.*}.$new_extension" \
+  echo converting "$1" to $new_extension...
+  echo
+  ffmpeg -i "$i" "${i%.*}.converted.${new_extension}" \
     && mv "$i" ./converted
+  echo done.
+  echo
 done
 
