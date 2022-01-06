@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -ex
 
 dirs=(
     "neovim"
@@ -33,10 +34,6 @@ for dir in "${dirs[@]}"; do
 
     [ $? -eq 0 ] && ./install.sh
 EOF
-
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
 
     echo "done with $dir".
 done

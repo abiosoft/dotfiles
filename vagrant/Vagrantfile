@@ -5,6 +5,14 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+#
+# personal variables
+#
+machine_name = `basename $PWD`.chomp
+
+# change accordingly for different git access
+ssh_key = "~/.ssh/id_rsa"
+
 Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -12,10 +20,11 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "archlinux/archlinux"
+  config.vm.box = "bento/ubuntu-21.10"
+  config.vm.hostname = machine_name
 
   # increase disk size
-  config.disksize.size = "80GB"
+  # config.disksize.size = "80GB"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -35,8 +44,8 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.33.10"
-  # config.vm.network "private_network", type: "dhcp"
+  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -53,13 +62,23 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  config.vm.provider "virtualbox" do |vb|
+  # config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-    vb.memory = "4096"
-    vb.cpus = 2
+    # vb.memory = "4096"
+    # vb.cpus = 2
+  # end
+
+  config.vm.provider "parallels" do |prl|
+    prl.name = machine_name
+    prl.memory = 8096
+    prl.cpus = 4
+
+    prl.check_guest_tools = false
+    prl.customize "post-import", ["set", :id, "--nested-virt", "on"]
+    # prl.customize ["set", :id, "--device-set=hdd0", "--size=150G"]
   end
   #
   # View the documentation for the provider you are using for more
@@ -72,20 +91,27 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+  # ssh key
+  config.vm.provision "file", source: ssh_key, destination: "/home/vagrant/id_rsa"
+  config.vm.provision "shell", inline: <<-SHELL
+    mv /home/vagrant/id_rsa /home/vagrant/.ssh/id_rsa
+    chmod 400 /home/vagrant/.ssh/id_rsa
+  SHELL
+
+  # dotfiles
+  config.vm.provision "shell", inline: "rm -rf /home/vagrant/dotfiles"
+  config.vm.provision "file", source: "~/dotfiles", destination: "/home/vagrant/dotfiles"
+
+  # packages
   config.vm.provision "shell", inline: <<-SHELL
     # packages
-    pacman -Sy --noconfirm htop tree docker buildah podman git gcc zsh neovim man-db tmux || echo 'package install failed, manually install in machine'
+    apt install -y htop tree docker.io git build-essential zsh neovim man-db tmux || echo 'package install failed, manually install in machine'
 
-    # podman rootless container requirements
-    mkdir -p /etc/sysctl.d
-    mkdir -p /etc/lxc
-    echo 'kernel.unprivileged_userns_clone=1' > /etc/sysctl.d/userns.conf
-    echo 'root:100000:65536' | tee -a /etc/subuid /etc/subgid > /dev/null
-    echo 'vagrant:100000:65536' | tee -a /etc/subuid /etc/subgid > /dev/null
-    echo 'session optional pam_cgfs.so -c freezer,memory,name=systemd,unified' >> /etc/pam.d/system-login
-    echo 'lxc.idmap = u 0 100000 65536' >> /etc/lxc/default.conf
-    echo 'lxc.idmap = g 0 100000 65536' >> /etc/lxc/default.conf
-
+    sudo usermod -aG docker vagrant
   SHELL
+
+  # for addition of user to docker group to take effect
+  config.vm.provision :reload
 
 end

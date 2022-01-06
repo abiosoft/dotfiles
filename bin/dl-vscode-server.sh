@@ -4,7 +4,7 @@ set -e
 # credit: https://gist.github.com/b01/0a16b6645ab7921b0910603dfb85e4fb
 
 # You can get the latest commit SHA by looking at the latest tagged commit here: https://github.com/microsoft/vscode/releases
-commit_sha="08a217c4d27a02a5bcde898fd7981bda5b49391b"
+commit_sha="899d46d82c4c95423fb7e10e68eba52050e30ba3"
 archive="vscode-server-linux-x64.tar.gz"
 owner='microsoft'
 repo='vscode'
@@ -39,7 +39,7 @@ get_latest_release() {
     printf "${sha}"
 }
 
-commit_sha=$(get_latest_release "${owner}/${repo}")
+# commit_sha=$(get_latest_release "${owner}/${repo}")
 
 echo "will attempt to download VS Code Server version = '${commit_sha}'"
 
