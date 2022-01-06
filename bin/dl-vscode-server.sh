@@ -39,7 +39,7 @@ get_latest_release() {
     printf "${sha}"
 }
 
-# commit_sha=$(get_latest_release "${owner}/${repo}")
+commit_sha=$(get_latest_release "${owner}/${repo}")
 
 echo "will attempt to download VS Code Server version = '${commit_sha}'"
 
