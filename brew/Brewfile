@@ -9,10 +9,8 @@ brew "automake"
 brew "autoconf"
 brew "autoconf-archive"
 brew "pkg-config"
-brew "gnumake"
 brew "cmake"
 brew "libtool"
-brew "net-tools"
 
 # utils
 brew "bat"
@@ -44,7 +42,7 @@ brew "node"
 brew "yarn"
 brew "openjdk"
 brew "rustup"
-brew "dotnet-sdk"
+cask "dotnet-sdk"
 
 # container/devops"
 brew "docker"
@@ -58,7 +56,7 @@ brew "kind"
 brew "terraform"
 brew "pulumi"
 brew "vault"
-brew "google-cloud-sdk"
+cask "google-cloud-sdk"
 brew "packer"
 
 # virtualization
