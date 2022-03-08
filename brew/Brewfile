@@ -3,6 +3,7 @@ tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
 tap "homebrew/cask-fonts"
+tap "buildpacks/tap"
 
 # build tools
 brew "automake"
@@ -58,8 +59,9 @@ brew "kind"
 brew "terraform"
 brew "pulumi"
 brew "vault"
-cask "google-cloud-sdk"
 brew "packer"
+brew "pack"
+cask "google-cloud-sdk"
 
 # virtualization
 cask "vagrant"
