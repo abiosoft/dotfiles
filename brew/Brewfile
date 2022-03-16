@@ -30,6 +30,7 @@ brew "git"
 brew "gnupg"
 brew "coreutils"
 brew "gh"
+brew "mkdocs"
 
 # internet
 brew "youtube-dl"
