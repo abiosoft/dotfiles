@@ -37,6 +37,7 @@ brew "youtube-dl"
 brew "wget"
 brew "axel"
 brew "curl"
+brew "speedtest-cli"
 
 # programming/sdks
 brew "python3"
