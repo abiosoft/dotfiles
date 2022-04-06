@@ -55,7 +55,7 @@
     # programming/sdks
     python3
 	ruby
-    go_1_17
+    go_1_18
     nodejs-16_x
     yarn
     jdk11
