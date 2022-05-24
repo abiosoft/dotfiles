@@ -54,7 +54,7 @@
 
     # programming/sdks
     python3
-	ruby
+    ruby
     go_1_18
     nodejs-16_x
     yarn
