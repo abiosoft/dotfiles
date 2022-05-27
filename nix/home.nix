@@ -176,7 +176,7 @@ in
 
   programs.git = {
     enable = true;
-    userName = "abiosoft";
+    userName = "Abiola Ibrahim";
     userEmail = "git@abiosoft.com";
     lfs.enable = true;
     extraConfig = ''
