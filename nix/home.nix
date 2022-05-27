@@ -151,7 +151,14 @@ in
       ls = "ls --color=auto";
     };
     initExtra = ''
-      export PATH="$PATH:$HOME/bin:$HOME/dotfiles/bin"
+      # private bin
+      export PATH="$PATH:$HOME/bin"
+
+      # dotfiles
+      export PATH="$PATH:$HOME/dotfiles/bin"
+
+      # dotnet tools
+      export PATH="$PATH:$HOME/.dotnet/tools"
 
       # git commit editor
       export VISUAL=vim
