@@ -50,6 +50,7 @@ let
     yarn
     jdk11
     rustup
+    dotnet-sdk
 
     # container/devops
     docker-client
@@ -80,7 +81,6 @@ let
 
   # Linux specific packages
   linuxPackages = with pkgs; [
-    dotnet-sdk
   ];
 
   customOhMyZshDir = pkgs.stdenv.mkDerivation {
