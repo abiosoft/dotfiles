@@ -1,26 +1,11 @@
 { config, pkgs, ... }:
 
-{
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "abiola";
-  home.homeDirectory =  if builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin" then "/Users/abiola" else "/home/abiola";
+let
+  user = builtins.getEnv "USER";
+  isMacOS = builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin";
 
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "22.05";
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  # packages
-  home.packages = with pkgs; [
+  # cross-platform packages
+  packages = with pkgs; [
     # things fail to build without these
     automake
     autoconf
@@ -29,7 +14,6 @@
     gnumake
     cmake
     libtool
-    nettools
 
     # utils
     bat
@@ -45,25 +29,33 @@
     git
     gnupg
     coreutils
+    nettools
+    gh
+    nixpkgs-fmt
+    # mkdocs breaking for whatever reason
 
     # internet
     youtube-dl
     wget
     axel
     curl
+    speedtest-cli
 
     # programming/sdks
-    python3
+    python310
     ruby
     go_1_18
-    nodejs-16_x
+    nodejs-18_x
     yarn
     jdk11
     rustup
-    dotnet-sdk # not supported on macOS
 
     # container/devops
     docker-client
+    docker-compose_2
+    docker-credential-gcr
+    docker-credential-helpers
+    buildkit
     kubectl
     kubectx
     kubernetes-helm
@@ -71,14 +63,50 @@
     terraform
     pulumi-bin
     vault
-    google-cloud-sdk
     packer
+    buildpack
+    google-cloud-sdk
 
     # virtualization
     vagrant
     qemu
-    vde2
   ];
+
+  # macOS specific packages
+  macosPackages = with pkgs; [
+    mas
+  ];
+
+  # Linux specific packages
+  linuxPackages = with pkgs; [
+    dotnet-sdk
+  ];
+
+in
+{
+  # Home Manager needs a bit of information about you and the
+  # paths it should manage.
+  home.username = user;
+  home.homeDirectory = if isMacOS then "/Users/${user}" else "/home/${user}";
+
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "22.05";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  # packages
+  home.packages =
+    if isMacOS
+    then packages ++ macosPackages
+    else packages ++ linuxPackages;
 
   # vim
   programs.neovim = {
