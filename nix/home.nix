@@ -2,8 +2,9 @@
 
 let
   user = builtins.getEnv "USER";
+  homeDir = builtins.getEnv "HOME";
   isMacOS = builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin";
-
+  link = config.lib.file.mkOutOfStoreSymlink;
   # cross-platform packages
   packages = with pkgs; [
     # things fail to build without these
@@ -82,6 +83,15 @@ let
     dotnet-sdk
   ];
 
+  customOhMyZshDir = pkgs.stdenv.mkDerivation {
+    name = "oh-my-zsh-custom-dir";
+    phases = [ "buildPhase" ];
+    buildPhase = ''
+      mkdir -p $out/themes
+      cp ${homeDir}/dotfiles/zsh/abiola.zsh-theme $out/themes/abiola.zsh-theme
+    '';
+  };
+
 in
 {
   # Home Manager needs a bit of information about you and the
@@ -108,6 +118,9 @@ in
     then packages ++ macosPackages
     else packages ++ linuxPackages;
 
+  # utils
+  programs.command-not-found.enable = true;
+
   # vim
   programs.neovim = {
     enable = true;
@@ -124,6 +137,53 @@ in
     extraConfig = "source-file ~/dotfiles/tmux/tmux.conf";
   };
 
-  # utils
-  programs.command-not-found.enable = true;
+  # zsh
+  # home.file.".oh-my-zsh/themes/abiola.zsh-theme".source = link "${homeDir}/dotfiles/zsh/abiola.zsh-theme";
+  programs.zsh = {
+    enable = true;
+    autocd = false;
+    shellAliases = {
+      krun = "kubectl run --namespace default --restart=Never -it --rm tmpbox --image";
+      nerd = "nerdctl";
+      c = "colima";
+    };
+    initExtra = ''
+      export PATH="$PATH:$HOME/bin:$HOME/dotfiles/bin"
+
+      # git commit editor
+      export VISUAL=vim
+      export EDITOR="$VISUAL"
+    '';
+    oh-my-zsh = {
+      enable = true;
+      theme = "abiola";
+      custom = "${customOhMyZshDir}";
+      plugins = [
+        "git"
+        "command-not-found"
+        "docker"
+        "docker-compose"
+        "kubectl"
+      ];
+      extraConfig = ''
+        CASE_SENSITIVE="true"
+      '';
+    };
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "abiosoft";
+    userEmail = "git@abiosoft.com";
+    lfs.enable = true;
+    extraConfig = ''
+      [url "ssh://git@github.com/abiosoft/"]
+        insteadOf = https://github.com/abiosoft/
+      [core]
+        autocrlf = input
+      [github]
+        user = abiosoft
+    '';
+  };
+
 }
