@@ -122,6 +122,9 @@ in
   programs.command-not-found.enable = true;
 
   # vim
+  home.file.".config/nvim/colors/tomorrow.vim".source = link "${homeDir}/dotfiles/neovim/tomorrow.vim";
+  home.file.".config/nvim/colors/tomorrow-night.vim".source = link "${homeDir}/dotfiles/neovim/tomorrow-night.vim";
+  home.file.".config/nvim/coc-settings.json".source = link "${homeDir}/dotfiles/neovim/coc-settings.json";
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -138,7 +141,6 @@ in
   };
 
   # zsh
-  # home.file.".oh-my-zsh/themes/abiola.zsh-theme".source = link "${homeDir}/dotfiles/zsh/abiola.zsh-theme";
   programs.zsh = {
     enable = true;
     autocd = false;
@@ -146,6 +148,7 @@ in
       krun = "kubectl run --namespace default --restart=Never -it --rm tmpbox --image";
       nerd = "nerdctl";
       c = "colima";
+      ls = "ls --color=auto";
     };
     initExtra = ''
       export PATH="$PATH:$HOME/bin:$HOME/dotfiles/bin"
