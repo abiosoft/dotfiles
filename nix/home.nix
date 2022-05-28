@@ -15,6 +15,7 @@ let
     gnumake
     cmake
     libtool
+    clang
 
     # utils
     bat
