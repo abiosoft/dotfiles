@@ -48,7 +48,7 @@ let
     go_1_18
     nodejs-18_x
     yarn
-    jdk11
+    jdk
     rustup
     dotnet-sdk
 
