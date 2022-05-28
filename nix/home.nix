@@ -29,7 +29,6 @@ let
     silver-searcher
     git
     gnupg
-    coreutils
     nettools
     gh
     nixpkgs-fmt
@@ -81,6 +80,7 @@ let
 
   # Linux specific packages
   linuxPackages = with pkgs; [
+    coreutils
   ];
 
   customOhMyZshDir = pkgs.stdenv.mkDerivation {
