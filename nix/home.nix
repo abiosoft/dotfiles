@@ -85,12 +85,14 @@ let
     coreutils
   ];
 
+  zshThemeFile = builtins.readFile "${homeDir}/dotfiles/zsh/abiola.zsh-theme";
   customOhMyZshDir = pkgs.stdenv.mkDerivation {
     name = "oh-my-zsh-custom-dir";
+    src = builtins.toFile "abiola.zsh-theme" "${zshThemeFile}";
     phases = [ "buildPhase" ];
     buildPhase = ''
       mkdir -p $out/themes
-      cp ${homeDir}/dotfiles/zsh/abiola.zsh-theme $out/themes/abiola.zsh-theme
+      cp $src $out/themes/abiola.zsh-theme
     '';
   };
 
