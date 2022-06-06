@@ -33,6 +33,7 @@ let
     nettools
     gh
     nixpkgs-fmt
+    ffmpeg
     # mkdocs breaking for whatever reason
 
     # internet
