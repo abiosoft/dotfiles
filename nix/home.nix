@@ -5,6 +5,7 @@ let
   homeDir = builtins.getEnv "HOME";
   isMacOS = builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin";
   link = config.lib.file.mkOutOfStoreSymlink;
+
   # cross-platform packages
   packages = with pkgs; [
     # things fail to build without these
@@ -86,6 +87,7 @@ let
     coreutils
   ];
 
+  # zsh theme
   zshThemeFile = builtins.readFile "${homeDir}/dotfiles/zsh/abiola.zsh-theme";
   customOhMyZshDir = pkgs.stdenv.mkDerivation {
     name = "oh-my-zsh-custom-dir";
@@ -96,6 +98,9 @@ let
       cp $src $out/themes/abiola.zsh-theme
     '';
   };
+
+  # dotnet env var
+  dotnetRoot = "${pkgs.dotnet-sdk}";
 
 in
 {
@@ -164,6 +169,7 @@ in
 
       # dotnet tools
       export PATH="$PATH:$HOME/.dotnet/tools"
+      export DOTNET_ROOT=${dotnetRoot}
 
       # git commit editor
       export VISUAL=vim
