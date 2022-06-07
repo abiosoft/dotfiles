@@ -102,6 +102,14 @@ let
   # dotnet env var
   dotnetRoot = "${pkgs.dotnet-sdk}";
 
+  extraPaths = builtins.concatStringsSep ":" [
+    "${homeDir}/bin"
+    "${homeDir}/dotfiles/bin"
+
+    # dotnet
+    "${homeDir}/dotnet/tools"
+  ];
+
 in
 {
   # Home Manager needs a bit of information about you and the
@@ -161,14 +169,9 @@ in
       ls = "ls --color=auto";
     };
     initExtra = ''
-      # private bin
-      export PATH="$PATH:$HOME/bin"
-
-      # dotfiles
-      export PATH="$PATH:$HOME/dotfiles/bin"
+      export PATH="$PATH:${extraPaths}"
 
       # dotnet tools
-      export PATH="$PATH:$HOME/.dotnet/tools"
       export DOTNET_ROOT=${dotnetRoot}
 
       # git commit editor
