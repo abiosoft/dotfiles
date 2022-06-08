@@ -99,6 +99,14 @@ let
     '';
   };
 
+  # bat theme
+  batTheme = builtins.readFile (pkgs.fetchFromGitHub {
+    owner = "chriskempson";
+    repo = "tomorrow-theme";
+    rev = "de38ebc802bdc611c4404b5cd8db941dd6d2c171";
+    sha256 = "sha256-9FDxDCObULfKGUDdvGTsbQMz+QSmGxG6e3IVaweUegA=";
+  } + "/textmate/Tomorrow-Night.tmTheme");
+
   # dotnet env var
   dotnetRoot = "${pkgs.dotnet-sdk}";
 
@@ -192,6 +200,17 @@ in
       extraConfig = ''
         CASE_SENSITIVE="true"
       '';
+    };
+  };
+
+  # bat
+  programs.bat = {
+    enable = true;
+    themes = {
+      tomorrow-night = "${batTheme}";
+    };
+    config = {
+      theme = "tomorrow-night";
     };
   };
 
