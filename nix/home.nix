@@ -98,12 +98,12 @@ let
       aarch64-darwin = { name = "apple_universal"; sha256 = "sha256:0456w2fjjqmq5l3ci95pqyp17n83yddhl16v5s2csvghhx1ynfgw"; ext = "pkg"; };
       x86_64-darwin = aarch64-darwin;
       aarch64-linux = { name = "linux_arm64"; sha256 = "sha256:0456w2fjjqmq5l3ci95pqyp17n83yddhl16v5s2csvghhx1ynfgw"; ext = "zip"; };
-      x86_64-linux = { name = "linux_amd64"; sha256 = "sha256:0456w2fjjqmq5l3ci95pqyp17n83yddhl16v5s2csvghhx1ynfgw"; ext = "zip"; };
+      x86_64-linux = { name = "linux_amd64"; sha256 = "sha256-axZ+XDIMJlAicnYTIXgcaoT+Zcg6xvHlchl/ng7V9GY="; ext = "zip"; };
     }.${builtins.currentSystem};
     url = "https://cache.agilebits.com/dist/1P/op2/pkg/v${version}/op_${platform.name}_v${version}.${platform.ext}";
     src =
       if isMacOS then builtins.fetchurl { url = url; sha256 = platform.sha256; }
-      else builtins.fetchzip { url = url; sha256 = platform.sha256; stripRoot = false; };
+      else pkgs.fetchzip { url = url; sha256 = platform.sha256; stripRoot = false; };
   };
   _1password = pkgs._1password.overrideAttrs (old: {
     src = _1p.src;
