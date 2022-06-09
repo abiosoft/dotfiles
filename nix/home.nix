@@ -201,6 +201,7 @@ in
       nerd = "nerdctl";
       c = "colima";
       ls = "ls --color=auto";
+      cat = "bat";
     };
     initExtra = ''
       export PATH="$PATH:${extraPaths}"
