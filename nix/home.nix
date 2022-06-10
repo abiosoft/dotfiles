@@ -246,14 +246,19 @@ in
     userName = "Abiola Ibrahim";
     userEmail = "git@abiosoft.com";
     lfs.enable = true;
-    extraConfig = ''
-      [url "ssh://git@github.com/abiosoft/"]
-        insteadOf = https://github.com/abiosoft/
-      [core]
-        autocrlf = input
-      [github]
-        user = abiosoft
-    '';
+    delta = {
+      enable = true;
+      options = {
+        side-by-side = false;
+        line-numbers = true;
+        syntax-theme = "tomorrow-night";
+      };
+    };
+    extraConfig = {
+      pull.rebase = false;
+      core.autocrlf = "input";
+      github.user = "abiosoft";
+      url."ssh://git@github.com/abiosoft/".insteadOf = "https://github.com/abiosoft/";
+    };
   };
-
 }
