@@ -56,7 +56,7 @@ let
 
     # container/devops
     docker-client
-    docker-compose_2
+    docker-compose
     docker-buildx
     docker-credential-gcr
     docker-credential-helpers
