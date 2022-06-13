@@ -17,6 +17,7 @@ let
     cmake
     libtool
     clang
+    ctags
 
     # utils
     bat
