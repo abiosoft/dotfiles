@@ -32,7 +32,7 @@ let
     silver-searcher
     git
     gnupg
-    nettools
+    # nettools
     gh
     nixpkgs-fmt
     ffmpeg
@@ -67,7 +67,7 @@ let
     kubernetes-helm
     kind
     terraform
-    pulumi-bin
+    # pulumi-bin
     vault
     packer
     buildpack
