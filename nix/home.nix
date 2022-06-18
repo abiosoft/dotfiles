@@ -174,6 +174,18 @@ in
   # utils
   programs.command-not-found.enable = true;
 
+  # sublime text
+  home.file."bin/subl".source =
+    if isMacOS
+    then link "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl"
+    else link "/opt/sublime_text/sublime_text";
+
+  # sublime merge
+  home.file."bin/smerge".source =
+    if isMacOS
+    then link "/Applications/Sublime Merge.app/Contents/SharedSupport/bin/smerge"
+    else link "/opt/sublime_merge/sublime_merge";
+
   # vim
   home.file.".config/nvim/colors/tomorrow.vim".source = link "${homeDir}/dotfiles/neovim/tomorrow.vim";
   home.file.".config/nvim/colors/tomorrow-night.vim".source = link "${homeDir}/dotfiles/neovim/tomorrow-night.vim";
