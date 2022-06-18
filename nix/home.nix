@@ -30,6 +30,7 @@ let
     watch
     ripgrep
     silver-searcher
+    shellcheck
     git
     gnupg
     # nettools
@@ -137,6 +138,9 @@ let
   extraPaths = builtins.concatStringsSep ":" [
     "${homeDir}/bin"
     "${homeDir}/dotfiles/bin"
+
+    # go
+    "${homeDir}/go/bin"
 
     # dotnet
     "${homeDir}/dotnet/tools"
