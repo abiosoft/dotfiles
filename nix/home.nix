@@ -5,6 +5,11 @@ let
   homeDir = builtins.getEnv "HOME";
   isMacOS = builtins.currentSystem == "x86_64-darwin" || builtins.currentSystem == "aarch64-darwin";
   link = config.lib.file.mkOutOfStoreSymlink;
+  nixpkgs-unstable = import <nixpkgs-unstable> {
+    # Include the nixos config when importing nixos-unstable
+    # But remove packageOverrides to avoid infinite recursion
+    config = removeAttrs config.nixpkgs.config [ "packageOverrides" ];
+  };
 
   # cross-platform packages
   packages = with pkgs; [
@@ -68,14 +73,11 @@ let
     kubernetes-helm
     kind
     terraform
-    # pulumi-bin
     vault
-    packer
     buildpack
     google-cloud-sdk
 
     # virtualization
-    vagrant
     qemu
   ];
 
@@ -168,6 +170,11 @@ in
 
   # allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Override select packages to use the unstable channel
+  nixpkgs.config.packageOverrides = pkgs: {
+    go_1_18 = nixpkgs-unstable.go_1_18;
+  };
 
   # packages
   home.packages =
