@@ -60,6 +60,7 @@ let
     jdk
     rustup
     dotnet-sdk
+    postgresql
 
     # container/devops
     docker-client
