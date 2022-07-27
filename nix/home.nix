@@ -61,6 +61,9 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # packages
+  home.packages = import ./packages.nix { inherit pkgs; };
+
   # utils
   programs.command-not-found.enable = true;
 

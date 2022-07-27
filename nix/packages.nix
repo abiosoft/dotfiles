@@ -1,11 +1,12 @@
-# uncomment as needed
+{ pkgs }:
 
-with import <nixpkgs> { }; [
-  # nix
+with pkgs; [
+  ### uncomment as needed
+
+  ## nix
   nixpkgs-fmt
-  home-manager
 
-  # things fail to build without these
+  ## things fail to build without these
   # automake
   # autoconf
   # autoconf-archive
@@ -16,7 +17,7 @@ with import <nixpkgs> { }; [
   # clang
   # ctags
 
-  # utils
+  ## utils
   # bat
   # tmux
   # zsh
@@ -35,14 +36,14 @@ with import <nixpkgs> { }; [
   # ffmpeg
   # mkdocs breaking for whatever reason
 
-  # internet
+  ## internet
   # youtube-dl
   # wget
   # axel
   # curl
   # speedtest-cli
 
-  # programming/sdks
+  ## programming/sdks
   python310
   ruby
   go_1_18
@@ -53,7 +54,7 @@ with import <nixpkgs> { }; [
   dotnet-sdk
   postgresql
 
-  # container/devops
+  ## container/devops
   docker-client
   docker-compose
   docker-buildx
