@@ -39,12 +39,12 @@ in
     watch
     ripgrep
     silver-searcher
-    shellcheck
     git
     delta
-    gh
-    gnupg
-    mkdocs
+    # gh
+    # gnupg
+    # mkdocs
+    # shellcheck
 
     ## internet
     # youtube-dl
@@ -54,15 +54,15 @@ in
     # speedtest-cli
 
     ## programming/sdks
-    python310
-    ruby
+    # python310
+    # ruby
     go_1_18
     nodejs-18_x
     yarn
-    jdk
-    rustup
-    dotnet-sdk
-    postgresql
+    # jdk
+    # rustup
+    # dotnet-sdk
+    # postgresql
 
     ## container/devops
     docker-client
@@ -74,10 +74,10 @@ in
     kubectl
     # kubectx
     kubernetes-helm
-    kind
-    terraform
-    vault
-    buildpack
+    # kind
+    # terraform
+    # vault
+    # buildpack
     google-cloud-sdk
   ]
 )
