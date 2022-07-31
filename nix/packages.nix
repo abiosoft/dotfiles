@@ -1,6 +1,4 @@
-{ pkgs }:
-
-with pkgs; [
+with import <nixpkgs> { }; [
   ### uncomment as needed
 
   ## nix
@@ -18,23 +16,22 @@ with pkgs; [
   # ctags
 
   ## utils
-  # bat
-  # tmux
-  # zsh
+  bat
+  tmux
+  zsh
   jq
   tree
   htop
-  # fzf
-  # watch
-  # ripgrep
-  # silver-searcher
-  # shellcheck
-  # git
-  # gnupg
-  # nettools
-  # gh
-  # ffmpeg
-  # mkdocs breaking for whatever reason
+  fzf
+  watch
+  ripgrep
+  silver-searcher
+  shellcheck
+  git
+  gh
+  gnupg
+  nettools
+  mkdocs # breaking for whatever reason
 
   ## internet
   # youtube-dl
@@ -49,8 +46,8 @@ with pkgs; [
   go_1_18
   nodejs-18_x
   yarn
-  # jdk
-  # rustup
+  jdk
+  rustup
   dotnet-sdk
   postgresql
 
@@ -60,13 +57,13 @@ with pkgs; [
   docker-buildx
   docker-credential-gcr
   docker-credential-helpers
-  # buildkit
+  buildkit
   kubectl
-  # kubectx
+  kubectx
   kubernetes-helm
-  # kind
-  # terraform
-  # vault
-  # buildpack
+  kind
+  terraform
+  vault
+  buildpack
   google-cloud-sdk
 ]

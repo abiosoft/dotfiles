@@ -27,8 +27,6 @@ let
       sha256 = "sha256-9FDxDCObULfKGUDdvGTsbQMz+QSmGxG6e3IVaweUegA=";
     } + "/textmate/Tomorrow-Night.tmTheme");
 
-  # dotnet env var
-  dotnetRoot = "${pkgs.dotnet-sdk}";
 
   extraPaths = builtins.concatStringsSep ":" [
     "${homeDir}/bin"
@@ -61,8 +59,6 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # packages
-  home.packages = import ./packages.nix { inherit pkgs; };
 
   # utils
   programs.command-not-found.enable = true;
