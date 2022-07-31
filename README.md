@@ -27,6 +27,12 @@ Setup dotfiles
 stow bat bin git nix tmux neovim zsh
 ```
 
+Install all packages
+
+```
+nix-env -irf ~/.packages.nix
+```
+
 ## Modifying declarative Nix packages
 
 ```sh
