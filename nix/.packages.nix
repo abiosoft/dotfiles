@@ -1,4 +1,7 @@
-with import <nixpkgs> { }; [
+let
+  pkgs = import <nixpkgs> { };
+in
+with pkgs ; [
   ### uncomment as needed
 
   ## nix
@@ -15,12 +18,17 @@ with import <nixpkgs> { }; [
   # clang
   # ctags
 
-  ## utils
+  ## shell
+  stow
   bat
   tmux
   zsh
-  jq
+  neovim
+  oh-my-zsh
   tree
+
+  ## utils
+  jq
   htop
   fzf
   watch
@@ -28,10 +36,10 @@ with import <nixpkgs> { }; [
   silver-searcher
   shellcheck
   git
+  delta
   gh
   gnupg
-  nettools
-  mkdocs # breaking for whatever reason
+  mkdocs
 
   ## internet
   # youtube-dl
@@ -59,7 +67,7 @@ with import <nixpkgs> { }; [
   docker-credential-helpers
   buildkit
   kubectl
-  kubectx
+  # kubectx
   kubernetes-helm
   kind
   terraform
@@ -67,3 +75,4 @@ with import <nixpkgs> { }; [
   buildpack
   google-cloud-sdk
 ]
+

@@ -1,0 +1,30 @@
+[core]
+autocrlf = "input"
+pager = "delta"
+
+[delta]
+line-numbers = true
+side-by-side = true
+syntax-theme = "tomorrow-night"
+
+[filter "lfs"]
+clean = "git-lfs clean -- %f"
+process = "git-lfs filter-process"
+required = true
+smudge = "git-lfs smudge -- %f"
+
+[github]
+user = "abiosoft"
+
+[interactive]
+diffFilter = "delta --color-only"
+
+[pull]
+rebase = false
+
+[url "ssh://git@github.com/abiosoft/"]
+insteadOf = "https://github.com/abiosoft/"
+
+[user]
+email = "git@abiosoft.com"
+name = "Abiola Ibrahim"

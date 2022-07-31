@@ -44,14 +44,15 @@ git_dirty() {
     # Check if we're in a git repo
     command git rev-parse --is-inside-work-tree &>/dev/null || return
     # Check if it's dirty
-    command git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "*"
+    command git diff --quiet --ignore-submodules HEAD &>/dev/null
+    [ $? -eq 1 ] && echo "*"
 }
 
 # Display information about the current repository
 #
 repo_information() {
-    git_info="%F{$(color)}${vcs_info_msg_0_%%/.} %F{$(color)}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_3_%f"
-    info=`echo $git_info`
+    git_info="%F{$(color)}${vcs_info_msg_0_%%/.} %F{$(color)}$vcs_info_msg_1_$(git_dirty) $vcs_info_msg_3_%f"
+    info=$(echo $git_info)
     if [ "$vcs_info_msg_1_" = "" ]; then
         echo "%~"
     else
@@ -62,7 +63,7 @@ repo_information() {
 # Displays the exec time of the last command if set threshold was exceeded
 #
 cmd_exec_time() {
-    local stop=`date +%s`
+    local stop=$(date +%s)
     local start=${cmd_timestamp:-$stop}
     let local elapsed=$stop-$start
     [ $elapsed -gt 5 ] && echo ${elapsed}s
@@ -71,7 +72,7 @@ cmd_exec_time() {
 # Get the intial timestamp for cmd_exec_time
 #
 preexec() {
-    cmd_timestamp=`date +%s`
+    cmd_timestamp=$(date +%s)
 }
 
 print_host() {
@@ -102,7 +103,7 @@ color() {
 #
 PROMPT="%(?.%F{$(color)}.%F{red})$%f " # Display a red prompt char on failure
 #PROMPT="`cprp`❯ " # Display a red prompt char on failure
-RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
+RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f" # Display username if connected via SSH
 
 # ------------------------------------------------------------------------------
 #

@@ -47,6 +47,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'LnL7/vim-nix'
 
 " debugging
 Plug 'puremourning/vimspector'
