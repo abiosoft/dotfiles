@@ -18,7 +18,7 @@ plugins=(
   kubectl
 )
 
-source $ZSH/oh-my-zsh.sh
+[ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 
 # personal scripts
 export PATH="$PATH:$HOME/bin"
