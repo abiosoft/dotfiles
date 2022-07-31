@@ -27,18 +27,19 @@ Setup dotfiles
 stow bat bin git nix tmux neovim zsh
 ```
 
-Install all packages
+Install packages
 
 ```
-nix-env -irf ~/.packages.nix
+nix-env -if ~/.packages.nix
 ```
 
 ## Modifying declarative Nix packages
 
+**NOTE**: only works in multi-user mode, running `nix-env -irf ...` in single user mode would remove and break `nix`.
+
 ```sh
 # edit ~/.packages.nix
-nix-switch
-# nix-switch is a zsh alias for 'nix-env -irf ~/.packages.nix'
+nix-env -irf ~/.packages.nix
 ```
 
 ## Why not Home-Manager since this is based Nix?
