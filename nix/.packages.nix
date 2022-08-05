@@ -42,6 +42,7 @@ in
     git
     delta
     # gh
+    pass # used by docker-compose on Linux
     # gnupg
     # mkdocs
     # shellcheck
@@ -79,6 +80,7 @@ in
     # vault
     # buildpack
     google-cloud-sdk
+    cloud-sql-proxy
   ]
 )
 
