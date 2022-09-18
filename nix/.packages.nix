@@ -1,9 +1,20 @@
 let
   homeDir = builtins.getEnv "HOME";
   pkgs = import <nixpkgs> { };
+  unstable = import <nixpkgs-unstable> { };
 in
 ## uncomment after cloning source as I am actively working on the source.
   # let colima = import "${homeDir}/projects/golang/colima"; in [ colima ] ++
+
+  # unstable packages
+(
+  with unstable;
+  [
+    go_1_19
+  ]
+) ++
+
+  # stable packages
 (
   with pkgs;
   [
