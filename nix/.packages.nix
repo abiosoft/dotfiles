@@ -24,15 +24,15 @@ in
     nixpkgs-fmt
 
     ## things fail to build without these
-    # automake
-    # autoconf
-    # autoconf-archive
-    # pkg-config
-    # gnumake
-    # cmake
-    # libtool
-    # clang
-    # ctags
+    automake
+    autoconf
+    autoconf-archive
+    pkg-config
+    gnumake
+    cmake
+    libtool
+    clang
+    ctags
 
     ## shell
     stow
@@ -54,27 +54,27 @@ in
     delta
     # gh
     pass # used by docker-compose on Linux
-    # gnupg
-    # mkdocs
-    # shellcheck
+    gnupg
+    mkdocs
+    shellcheck
 
     ## internet
-    # youtube-dl
-    # wget
-    # axel
-    # curl
-    # speedtest-cli
+    youtube-dl
+    wget
+    axel
+    curl
+    speedtest-cli
 
     ## programming/sdks
-    # python310
-    # ruby
+    python310
+    ruby
     go_1_18
     nodejs-18_x
     yarn
-    # jdk
-    # rustup
-    # dotnet-sdk
-    # postgresql
+    jdk
+    rustup
+    dotnet-sdk
+    postgresql
 
     ## container/devops
     docker-client
@@ -86,10 +86,10 @@ in
     kubectl
     # kubectx
     kubernetes-helm
-    # kind
+    kind
     # terraform
     # vault
-    # buildpack
+    buildpack
     google-cloud-sdk
     cloud-sql-proxy
   ]
