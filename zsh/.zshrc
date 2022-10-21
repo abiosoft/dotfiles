@@ -26,7 +26,7 @@ export PATH="$PATH:$HOME/bin"
 # aliases
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
-alias nix-switch='nix-env -if ~/.packages.nix'
+alias nix-switch='nix-env -if ~/.config/nix/core.nix'
 
 # git commit editor
 export VISUAL=vim

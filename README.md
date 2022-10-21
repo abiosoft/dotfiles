@@ -30,7 +30,7 @@ stow bat bin git nix tmux neovim zsh ideavim
 Install packages
 
 ```
-nix-env -if ~/.packages.nix
+nix-env -if ~/.config/nix/core.nix
 ```
 
 ## Modifying declarative Nix packages
@@ -38,8 +38,8 @@ nix-env -if ~/.packages.nix
 **NOTE**: only works in multi-user mode, running `nix-env -irf ...` in single user mode would remove and break `nix`.
 
 ```sh
-# edit ~/.packages.nix
-nix-env -irf ~/.packages.nix
+# edit ~/.config/nix/packages.nix to add extra packages
+nix-env -irf ~/.config/nix/core.nix
 ```
 
 ## Why not Home-Manager since this is based Nix?
