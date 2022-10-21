@@ -26,7 +26,8 @@ export PATH="$PATH:$HOME/bin"
 # aliases
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
-alias nix-switch='nix-env -if ~/.config/nix/core.nix'
+alias nix-switch='nix-env -irf ~/.config/nix/core.nix'
+alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 
 # git commit editor
 export VISUAL=vim
