@@ -143,6 +143,8 @@ let NERDTreeAutoDeleteBuffer = 1
 " other customizations
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+" keep open when opening file
+let NERDTreeCustomOpenArgs = {'file': {'reuse': 'all', 'where': 'p', 'keepopen': 1}, 'dir': {}}
 " " open nerdtree on launch if there are no file as args
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif

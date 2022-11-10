@@ -48,6 +48,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'LnL7/vim-nix'
+Plug 'fatih/vim-hclfmt'
+Plug 'hashivim/vim-nomadproject'
+Plug 'hashivim/vim-terraform'
 
 " debugging
 Plug 'puremourning/vimspector'
