@@ -7,6 +7,7 @@
   with import <nixpkgs-unstable> { };
   [
     go_1_19
+    qemu
   ]
 )
 ++
@@ -21,8 +22,8 @@
     gnumake
     cmake
     libtool
-    clang
     ctags
+    gcc
 
     ## programming/sdks
     python310
@@ -39,13 +40,16 @@
     docker-credential-gcr
     docker-credential-helpers
     buildkit
-    # kubectx
+    kubectx
     kubernetes-helm
     kind
-    # terraform
-    # vault
+    terraform
+    vault
     buildpack
     google-cloud-sdk
     cloud-sql-proxy
+
+    # others
+    caddy
   ]
 )
