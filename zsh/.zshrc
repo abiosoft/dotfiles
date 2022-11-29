@@ -30,7 +30,7 @@ alias nix-switch='nix-env -irf ~/.config/nix/core.nix'
 alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 
 # git commit editor
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # GO
