@@ -42,6 +42,12 @@ nix-env -if ~/.config/nix/core.nix
 nix-env -irf ~/.config/nix/core.nix
 ```
 
+## Adding unstable channel
+
+```
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
+```
+
 ## Why not Home-Manager since this is based Nix?
 
 After wasting tangible time battling with errors like the following,
