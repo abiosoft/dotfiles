@@ -1,0 +1,123 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "command": "cursorPageDown",
+    "key": "cmd+d",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "cursorPageUp",
+    "key": "cmd+u",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "workbench.action.navigateBack",
+    "key": "cmd+o",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+j",
+    "command": "cursorDown",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+k",
+    "command": "cursorUp",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+k",
+    "command": "-workbench.action.terminal.clear",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+j",
+    "command": "-workbench.action.togglePanel"
+  },
+  {
+    "key": "cmd+j",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+  },
+  {
+    "key": "shift+cmd+c",
+    "command": "workbench.action.terminal.copySelection",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "shift+cmd+v",
+    "command": "workbench.action.terminal.paste",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+c",
+    "command": "-workbench.action.terminal.copy",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+c",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0003"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+d",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0004"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+a",
+    "command": "-workbench.action.terminal.selectAll",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+a",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0001"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+e",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0005"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+l",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u000c"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+r",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0012"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+s",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u0013"
+    },
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+k",
+    "command": "selectPrevSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+  }
+]

@@ -1,0 +1,306 @@
+{
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Darcula Theme from IntelliJ",
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.fontWeight": "400",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontWeight": "400",
+  "scm.inputFontFamily": "JetBrains Mono",
+  "debug.console.fontFamily": "JetBrains Mono",
+  "terminal.integrated.fontFamily": "JetBrains Mono",
+  "debug.console.fontSize": 14,
+  "editor.cursorBlinking": "solid",
+  "editor.fontLigatures": true,
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.inlayHints.enabled": "on",
+  "editor.semanticTokenColorCustomizations": {
+    "enabled": true,
+    "rules": {
+      "*": {
+        "bold": false,
+      },
+      "modifier": {
+        "bold": true,
+      },
+      "keyword": {
+        "bold": true,
+      },
+      "*.static": {
+        "bold": true,
+      },
+    },
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true,
+    "source.fixAll.eslint": true
+  },
+  "workbench.colorCustomizations": {
+    "[Default Light+]": {
+      "editor.background": "#efefef",
+      "tab.activeBackground": "#eeeeee",
+      "tab.inactiveBackground": "#dddddd",
+      "activityBar.background": "#E6E6E6",
+      "activityBar.inactiveForeground": "#333333",
+      "activityBar.foreground": "#111111",
+      "activityBar.activeBackground": "#F1F1F1",
+      "editorBracketMatch.border": "#00000000",
+      "sideBar.background": "#eeeeee"
+    },
+    "[Default Dark+]": {
+      "activityBar.activeBackground": "#252526",
+      "editorBracketMatch.background": "#7f302b",
+      "editorBracketMatch.border": "#00000000"
+    },
+    "[GitHub Light High Contrast]": {
+      "editor.background": "#fafafa",
+      "sideBar.background": "#fafafa",
+      "activityBar.background": "#fafafa"
+    }
+  },
+  "go.useLanguageServer": true,
+  "terminal.integrated.fontWeightBold": "normal",
+  "vsicons.dontShowNewVersionMessage": true,
+  "workbench.editor.showTabs": true,
+  "go.addTags": {
+    "tags": "json",
+    "options": "json=omitempty",
+    "promptForTags": true,
+    "transform": "snakecase"
+  },
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "eslint.validate": [
+    "vue",
+    "html",
+    "javascript",
+    "typescript"
+  ],
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "debug.allowBreakpointsEverywhere": true,
+  "yaml.completion": true,
+  "yaml.hover": true,
+  "[yaml]": {
+    "editor.fontLigatures": true,
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "go.toolsManagement.checkForUpdates": "off",
+  "codespaces.accountProvider": "GitHub",
+  "go.delveConfig": {
+    "dlvLoadConfig": {
+      "followPointers": true,
+      "maxVariableRecurse": 1,
+      "maxStringLen": 1000,
+      "maxArrayValues": 64,
+      "maxStructFields": -1
+    },
+    "apiVersion": 2,
+    "showGlobalVariables": false
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "window.nativeTabs": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "editor.lineNumbers": "relative",
+  "[caddyfile]": {
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+  "telemetry.telemetryLevel": "off",
+  "window.title": "${rootName}${separator}${activeEditorShort}",
+  "vim.leader": ",",
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        "j",
+        "j"
+      ],
+      "after": [
+        "<Esc>"
+      ]
+    }
+  ],
+  "vim.visualModeKeyBindings": [
+    {
+      "before": [
+        "<leader>",
+        "c",
+        "c"
+      ],
+      "commands": [
+        {
+          "command": "editor.action.commentLine",
+          "args": []
+        }
+      ]
+    }
+  ],
+  "vim.normalModeKeyBindings": [
+    {
+      "before": [
+        "<leader>",
+        "c",
+        "c"
+      ],
+      "commands": [
+        {
+          "command": "editor.action.commentLine",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "K"
+      ],
+      "commands": [
+        {
+          "command": "editor.action.showHover",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "g",
+        "d"
+      ],
+      "commands": [
+        {
+          "command": "editor.action.goToDeclaration",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "g",
+        "f"
+      ],
+      "commands": [
+        {
+          "command": "editor.action.navigateBack",
+          "args": []
+        }
+      ]
+    }
+  ],
+  "vim.useSystemClipboard": true,
+  "terminal.integrated.tabs.enabled": true,
+  "terminal.integrated.copyOnSelection": true,
+  "csharp.referencesCodeLens.enabled": false,
+  "docker.containers.label": "ContainerName",
+  "editor.suggestSelection": "first",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "redhat.telemetry.enabled": false,
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml",
+    "editor.formatOnSave": false
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "java.debug.settings.showQualifiedNames": false,
+  "java.debug.settings.showStaticVariables": false,
+  "java.debug.settings.showLogicalStructure": true,
+  "java.debug.settings.showToString": true,
+  "java.format.settings.url": "https://gist.githubusercontent.com/abiosoft/9bb21b35748dbc18865eef5639bf5192/raw/9b5e79cef6c10d983de570bed57ab87e772e105f/intellij-format-2tab.xml",
+  "java.format.settings.profile": "psequeira_eclipse",
+  "xml.format.splitAttributes": true,
+  "xml.format.preserveAttributeLineBreaks": true,
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "editor.tokenColorCustomizations": {
+    "[Darcula Theme from IntelliJ]": {
+      "keywords": {
+        "fontStyle": ""
+      },
+      "functions": {
+        "fontStyle": ""
+      },
+      "types": {
+        "fontStyle": ""
+      },
+      "textMateRules": [
+        {
+          "scope": [
+            "emphasis",
+            "strong",
+            "keyword",
+            "keyword.control",
+            "keyword.operator",
+            "keyword.other",
+            "variable.language",
+            "variable.parameter",
+            "variable.name",
+            "variable.other",
+            "support.variable",
+            "variable.parameter",
+            "storage.modifier",
+            "constant",
+            "constant.language",
+            "entity.name.function",
+            "support.function",
+            "support.constant.handlebars",
+            "meta.function-call"
+          ],
+          "settings": {
+            "fontStyle": ""
+          }
+        }
+      ]
+    }
+  },
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/Users/abiola/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+"window.titleBarStyle": "custom",
+  "[dockercompose]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.editorAssociations": {
+    "*.md": "default"
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "svelte.enable-ts-plugin": true,
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "rebornix.ruby",
+    "editor.formatOnType": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.formatOnSave": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.rulers": [
+    120
+  ],
+  "editor.wordWrap": "off",
+  "workbench.colorTheme": "Default Light+"
+}
