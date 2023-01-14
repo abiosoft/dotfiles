@@ -16,6 +16,10 @@ smudge = "git-lfs smudge -- %f"
 [format]
 signOff = yes
 
+[sendmail]
+verify = "off"
+annotate = "yes"
+
 [github]
 user = "abiosoft"
 
