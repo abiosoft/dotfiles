@@ -35,3 +35,7 @@ insteadOf = "https://github.com/abiosoft/"
 [user]
 email = "git@abiosoft.com"
 name = "Abiola Ibrahim"
+
+[credential]
+helper = store # placeholder. e.g. change to osxkeychain for macOS
+
