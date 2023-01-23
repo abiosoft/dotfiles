@@ -31,7 +31,7 @@ in
     watch
     ripgrep
     silver-searcher
-    git
+    gitFull
     delta
     gh
     pass

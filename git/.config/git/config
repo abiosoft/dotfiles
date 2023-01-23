@@ -16,9 +16,14 @@ smudge = "git-lfs smudge -- %f"
 [format]
 signOff = yes
 
-[sendmail]
+[sendemail]
 verify = "off"
 annotate = "yes"
+smtpserver = smtp.fastmail.com
+smtpuser = abiosoft@fastmail.com
+smtpencryption = ssl
+smtpserverport = 465
+smtpsslcertpath = ""
 
 [github]
 user = "abiosoft"
