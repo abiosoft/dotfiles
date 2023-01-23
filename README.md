@@ -24,7 +24,7 @@ nix-env -iA nixpkgs.stow
 Setup dotfiles
 
 ```
-stow bat bin git nix tmux neovim zsh ideavim
+stow aerc bat bin git ideavim neovim nix tmux zsh
 ```
 
 Install packages
