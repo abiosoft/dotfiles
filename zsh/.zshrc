@@ -36,6 +36,9 @@ export EDITOR="$VISUAL"
 # GO
 export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin:$HOME/dotfiles/bin"
 
+# Rust
+export PATH="$PATH:$HOME/.cargo/bin"
+
 # dotNet
 export PATH="$PATH:$HOME/.dotnet/tools"
 export DOTNET_ROOT="$(nix-path dotnet-sdk)"
