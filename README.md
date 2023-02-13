@@ -3,7 +3,7 @@ dotfiles
 
 Dotfiles managed with Nix and Stow
 
-![Vim](screenshots/vim.png)
+![Screenshot](screenshots/screenshot.png)
 
 ## Prerequisite
 
