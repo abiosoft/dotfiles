@@ -44,27 +44,17 @@ Plug 'majutsushi/tagbar'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go'
 Plug 'LnL7/vim-nix'
 Plug 'fatih/vim-hclfmt'
 Plug 'hashivim/vim-nomadproject'
 Plug 'hashivim/vim-terraform'
-
-" debugging
-Plug 'puremourning/vimspector'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/completion-nvim'
 endif
 
-
-"darcula theme
-Plug 'doums/darcula'
-" solarized theme
-Plug 'lifepillar/vim-solarized8'
-" gruvbox theme
-Plug 'lifepillar/vim-gruvbox8'
 
 let g:make = 'gmake'
 if exists('make')
@@ -85,7 +75,7 @@ endif
 "*****************************************************************************
 
 " file search
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 "*****************************************************************************
