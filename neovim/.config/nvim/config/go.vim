@@ -53,9 +53,6 @@ let g:go_highlight_extra_types = 0
 " use floating neovim window for doc
 let g:go_doc_popup_window = 1
 
-" disable K for lookup, due to coc.nvim
-let g:go_doc_keywordprg_enabled = 0
-
 " metalinter - not needed, now handled by ALE
 " let g:go_metalinter_autosave = 1
 " let g:go_metalinter_autosave_enabled = ['vet', 'golint']
