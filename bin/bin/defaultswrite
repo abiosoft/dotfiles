@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+defaults write com.jetbrains.intellij ApplePressAndHoldEnabled -bool false
+defaults write com.jetbrains.goland ApplePressAndHoldEnabled -bool false
+defaults write com.jetbrains.clion ApplePressAndHoldEnabled -bool false
+defaults write com.jetbrains.datagrip ApplePressAndHoldEnabled -bool false
 defaults write com.sublimetext.3 ApplePressAndHoldEnabled -bool false
 defaults write com.insomnia.app ApplePressAndHoldEnabled -bool false
 
