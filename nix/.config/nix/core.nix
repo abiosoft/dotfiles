@@ -37,6 +37,7 @@ in
     pass
     gnupg
     shellcheck
+    sqlite
 
     ## internet
     youtube-dl
