@@ -6,7 +6,7 @@
 (
   with import <nixpkgs-unstable> { };
   [
-    go_1_19
+    go_1_20
     qemu
   ]
 )
@@ -26,13 +26,13 @@
     gcc
 
     ## programming/sdks
-    python310
+    python311
     ruby_3_1
-    nodejs-18_x
+    nodejs-19_x
     yarn
     jdk
     rustup
-    dotnet-sdk
+    dotnet-sdk_7
     postgresql
 
     ## container/devops
