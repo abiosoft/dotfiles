@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-cd ~/vm
-vagrant status | grep "running (virtualbox)" &> /dev/null || vagrant up
-vagrant ssh -c zsh
-

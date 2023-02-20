@@ -1,9 +1,0 @@
-PackageKit-command-not-found ctags dconf-editor docker docker-compose file-roller fuse-exfat gnome-screenshot gnome-tweaks golang h264enc htop neofetch neovim nodejs pv python-pip screenfetch tmux xclip zsh
-
-# local RPMs
-rpmfusion-free-release-30-1.noarch rpmfusion-nonfree-release-30-1.noarch
-google-chrome-stable-73.0.3683.103-1.x86_64
-code-1.33.1-1554971173.el7.x86_64
-
-# vscode link
-https://go.microsoft.com/fwlink/?LinkID=760867 rpm
