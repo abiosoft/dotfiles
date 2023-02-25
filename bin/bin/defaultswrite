@@ -7,4 +7,5 @@ defaults write com.jetbrains.clion ApplePressAndHoldEnabled -bool false
 defaults write com.jetbrains.datagrip ApplePressAndHoldEnabled -bool false
 defaults write com.sublimetext.3 ApplePressAndHoldEnabled -bool false
 defaults write com.insomnia.app ApplePressAndHoldEnabled -bool false
+defaults write com.utmapp.UTM ApplePressAndHoldEnabled -bool false
 
