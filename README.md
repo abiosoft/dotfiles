@@ -10,7 +10,8 @@ Dotfiles managed with Nix and Stow
 Nix
 
 ```sh
-sh <(curl -L https://nixos.org/nix/install)
+export NIX_VERSION=2.13.3
+sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install)
 ```
 
 ## Installation
