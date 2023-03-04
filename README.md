@@ -11,7 +11,7 @@ Nix
 
 ```sh
 export NIX_VERSION=2.13.3
-sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install)
+sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 ```
 
 ## Installation
