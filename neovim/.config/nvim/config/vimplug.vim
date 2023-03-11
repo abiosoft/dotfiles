@@ -49,6 +49,7 @@ Plug 'LnL7/vim-nix'
 Plug 'fatih/vim-hclfmt'
 Plug 'hashivim/vim-nomadproject'
 Plug 'hashivim/vim-terraform'
+Plug 'ziglang/zig.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
