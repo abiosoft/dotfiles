@@ -1,15 +1,16 @@
 {
   "window.autoDetectColorScheme": true,
-  "workbench.preferredDarkColorTheme": "Darcula Theme from IntelliJ",
+  "workbench.preferredDarkColorTheme": "Default Dark+ Experimental",
+  "workbench.preferredLightColorTheme": "Default Light+ Experimental",
   "editor.fontFamily": "JetBrains Mono",
-  "editor.fontSize": 14,
+  "editor.fontSize": 15,
   "editor.fontWeight": "400",
-  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontSize": 15,
   "terminal.integrated.fontWeight": "400",
   "scm.inputFontFamily": "JetBrains Mono",
   "debug.console.fontFamily": "JetBrains Mono",
   "terminal.integrated.fontFamily": "JetBrains Mono",
-  "debug.console.fontSize": 14,
+  "debug.console.fontSize": 15,
   "editor.cursorBlinking": "solid",
   "editor.fontLigatures": true,
   "editor.minimap.enabled": false,
@@ -38,27 +39,13 @@
     "source.fixAll.eslint": true
   },
   "workbench.colorCustomizations": {
-    "[Default Light+]": {
-      "editor.background": "#efefef",
-      "tab.activeBackground": "#eeeeee",
-      "tab.inactiveBackground": "#dddddd",
-      "activityBar.background": "#E6E6E6",
+    "[Default Light+ Experimental]": {
+      "editor.background": "#f5f5f5",
       "activityBar.inactiveForeground": "#333333",
       "activityBar.foreground": "#111111",
-      "activityBar.activeBackground": "#F1F1F1",
-      "editorBracketMatch.border": "#00000000",
-      "sideBar.background": "#eeeeee"
+      "activityBar.activeBorder": "#111111",
+      "sideBar.background": "#f5f5f5"
     },
-    "[Default Dark+]": {
-      "activityBar.activeBackground": "#252526",
-      "editorBracketMatch.background": "#7f302b",
-      "editorBracketMatch.border": "#00000000"
-    },
-    "[GitHub Light High Contrast]": {
-      "editor.background": "#fafafa",
-      "sideBar.background": "#fafafa",
-      "activityBar.background": "#fafafa"
-    }
   },
   "go.useLanguageServer": true,
   "terminal.integrated.fontWeightBold": "normal",
@@ -69,19 +56,6 @@
     "options": "json=omitempty",
     "promptForTags": true,
     "transform": "snakecase"
-  },
-  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-  "eslint.validate": [
-    "vue",
-    "html",
-    "javascript",
-    "typescript"
-  ],
-  "[vue]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "debug.allowBreakpointsEverywhere": true,
   "yaml.completion": true,
@@ -115,7 +89,7 @@
   },
   "window.nativeTabs": true,
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -222,61 +196,12 @@
     "editor.formatOnSave": false
   },
   "terminal.integrated.defaultProfile.osx": "zsh",
-  "java.debug.settings.showQualifiedNames": false,
-  "java.debug.settings.showStaticVariables": false,
-  "java.debug.settings.showLogicalStructure": true,
-  "java.debug.settings.showToString": true,
-  "java.format.settings.url": "https://gist.githubusercontent.com/abiosoft/9bb21b35748dbc18865eef5639bf5192/raw/9b5e79cef6c10d983de570bed57ab87e772e105f/intellij-format-2tab.xml",
-  "java.format.settings.profile": "psequeira_eclipse",
-  "xml.format.splitAttributes": true,
-  "xml.format.preserveAttributeLineBreaks": true,
+  "terminal.integrated.defaultProfile.linux": "zsh",
   "[dockerfile]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
-  "editor.tokenColorCustomizations": {
-    "[Darcula Theme from IntelliJ]": {
-      "keywords": {
-        "fontStyle": ""
-      },
-      "functions": {
-        "fontStyle": ""
-      },
-      "types": {
-        "fontStyle": ""
-      },
-      "textMateRules": [
-        {
-          "scope": [
-            "emphasis",
-            "strong",
-            "keyword",
-            "keyword.control",
-            "keyword.operator",
-            "keyword.other",
-            "variable.language",
-            "variable.parameter",
-            "variable.name",
-            "variable.other",
-            "support.variable",
-            "variable.parameter",
-            "storage.modifier",
-            "constant",
-            "constant.language",
-            "entity.name.function",
-            "support.function",
-            "support.constant.handlebars",
-            "meta.function-call"
-          ],
-          "settings": {
-            "fontStyle": ""
-          }
-        }
-      ]
-    }
-  },
-  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/Users/abiola/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
   "terminal.integrated.persistentSessionReviveProcess": "never",
-"window.titleBarStyle": "custom",
+  "window.titleBarStyle": "custom",
   "[dockercompose]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -302,5 +227,6 @@
     120
   ],
   "editor.wordWrap": "off",
-  "workbench.colorTheme": "Default Light+"
+  "workbench.colorTheme": "Default Dark+ Experimental",
 }
+
