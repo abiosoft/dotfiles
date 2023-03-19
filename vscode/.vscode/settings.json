@@ -44,7 +44,8 @@
       "activityBar.inactiveForeground": "#333333",
       "activityBar.foreground": "#111111",
       "activityBar.activeBorder": "#111111",
-      "sideBar.background": "#f5f5f5"
+      "sideBar.background": "#f5f5f5",
+      "terminal.background": "#f5f5f5",
     },
   },
   "go.useLanguageServer": true,
