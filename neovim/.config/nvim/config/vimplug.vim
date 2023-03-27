@@ -50,6 +50,7 @@ Plug 'fatih/vim-hclfmt'
 Plug 'hashivim/vim-nomadproject'
 Plug 'hashivim/vim-terraform'
 Plug 'ziglang/zig.vim'
+Plug 'github/copilot.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
