@@ -19,7 +19,7 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 Install Stow
 
 ```
-nix-env -iA nixpkgs.stow
+nix-shell -p stow
 ```
 
 Setup dotfiles
