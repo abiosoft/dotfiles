@@ -56,3 +56,9 @@ export GPG_TTY=$(tty)
 alias cat='bat'
 export BAT_THEME="tomorrow-night"
 export PAGER="bat"
+
+# mac VMs
+if uname -a | grep VMAPPLE >/dev/null; then
+  DOCKER_HOST="$(ifconfig en0 | grep "inet " | awk -F' ' '{print $2}' | awk -F'.' '{print $1"."$2"."$3".1"}')"
+  export DOCKER_HOST="tcp://$DOCKER_HOST:5100"
+fi
