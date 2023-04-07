@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if uname -a | grep VMAPPLE >/dev/null; then
+    sudo sntp -sS time.apple.com
+fi

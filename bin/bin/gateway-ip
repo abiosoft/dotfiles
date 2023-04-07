@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-ifconfig en0 | grep "inet " | awk -F' ' '{print $2}' | awk -F'.' '{print $1"."$2"."$3".1"}'
+if uname -a | grep VMAPPLE >/dev/null; then
+    ifconfig en0 | grep "inet " | awk -F' ' '{print $2}' | awk -F'.' '{print $1"."$2"."$3".1"}'
+fi

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# fix for electron apps in macOS VM
+
+if ! uname -a | grep VMAPPLE >/dev/null; then
+  echo not a macOS VM
+  exit 1
+fi
+
+LIB="Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libGLESv2.dylib"
+for app in /Applications/*/; do
+    file="${app}${LIB}"
+    if [ -f "$file" ]; then
+        echo found "$file", moving ...
+        mv "$file" "${file}.tmp"
+    fi
+done
