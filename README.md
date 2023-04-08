@@ -1,17 +1,16 @@
 dotfiles
 ========
 
-Dotfiles managed with Nix and Stow
+Dotfiles managed with Brew and Stow
 
 ![Screenshot](screenshots/screenshot.png)
 
 ## Prerequisite
 
-Nix
+Homebrew
 
 ```sh
-export NIX_VERSION=2.13.3
-sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 ## Installation
@@ -19,45 +18,26 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 Install Stow
 
 ```
-nix-shell -p stow
+brew install stow
 ```
 
 Setup dotfiles
 
 ```
-stow aerc bat bin git ideavim neovim nix tmux zsh
+stow aerc bat brew bin git ideavim neovim tmux zsh
 ```
 
 Install packages
 
 ```
-nix-env -if ~/.config/nix/core.nix
+brew bundle -v --file ~/.config/brew/Brewfile
 ```
 
-## Modifying declarative Nix packages
-
-**NOTE**: only works in multi-user mode, running `nix-env -irf ...` in single user mode would remove and break `nix`.
+## Declarative brew packages
 
 ```sh
-# edit ~/.config/nix/packages.nix to add extra packages
-nix-env -irf ~/.config/nix/core.nix
+# edit ~/.config/brew/packages.rb to add extra packages
+# run the brew-switch alias
+brew-switch
 ```
 
-## Adding unstable channel
-
-```
-nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
-```
-
-## Why not Home-Manager since this is based Nix?
-
-After wasting tangible time battling with errors like the following,
-I chose to dump Home-Manager and manage dotfiles normally i.e. via the config files.
-
-```console
-building '/nix/store/v0ga03g14dvqrw1qmq2accrd5g6j1fvl-user-environment.drv'...
-error: files '/nix/store/9qxkblnxyizg5fbq0g1g53r02fl9nqch-home-manager-path/share/zsh/site-functions/_nix' and '/nix/store/6qw3r57nra08ars8j8zyj3fl8lz4cvnd-nix-2.10.3/share/zsh/site-functions/_nix' have the same priority 5; use 'nix-env --set-flag priority NUMBER INSTALLED_PKGNAME' or type 'nix profile install --help' if using 'nix profile' to find out howto change the priority of one of the conflicting packages (0 being the highest priority)
-error: builder for '/nix/store/v0ga03g14dvqrw1qmq2accrd5g6j1fvl-user-environment.drv' failed with exit code 1
-```
-
-I am fond of reproducing my dev setup (usually in virtual machines) and intermittently facing obscure errors makes Home-Manager unappealing.

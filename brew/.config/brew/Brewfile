@@ -1,0 +1,56 @@
+# core packages always needed regardless of development environment.
+#
+# for more packages, create ~/.config/brew/packages.rb.
+# a template exists at ~/.config/brew/packages.sample.rb
+
+# check if a program exists in PATH
+def in_path?(command)
+    system("which #{ command} > /dev/null 2>&1")
+end
+
+tap "homebrew/bundle"
+
+# shell
+brew "bat"
+brew "tmux"
+brew "neovim"
+brew "tree"
+brew "stow"
+brew "zsh" unless in_path? "zsh"
+
+# utils
+brew "jq"
+brew "yq"
+brew "tree"
+brew "htop"
+brew "fzf"
+brew "watch"
+brew "ripgrep"
+brew "the_silver_searcher"
+brew "git" unless in_path? "git"
+brew "git-delta"
+brew "gnupg"
+
+# internet
+brew "youtube-dl"
+brew "wget"
+brew "axel"
+brew "curl" unless in_path? "curl"
+
+# container/devops"
+brew "docker"
+brew "docker-compose"
+brew "kubectl"
+brew "kubectx"
+
+# load extra packages if exists
+packages_file = "packages.rb"
+require_relative packages_file if File.exists? packages_file
+
+# custom packages
+
+# oh-my-zsh
+unless system("(cd ~/.oh-my-zsh && git status) > /dev/null 2>&1")
+    system("git clone https://github.com/ohmyzsh/ohmyzsh --depth=1 ~/.oh-my-zsh")
+end
+

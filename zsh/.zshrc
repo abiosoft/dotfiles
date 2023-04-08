@@ -1,10 +1,5 @@
-# helpers
-nix-path() (
-  nix-env -q --out-path ${1} 2>/dev/null | awk -F' ' '{print $2}'
-)
-
 # ZSH
-export ZSH="$(nix-path oh-my-zsh)/share/oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_CUSTOM="$HOME/.config/my-zsh"
 ZSH_THEME="abiola"
@@ -26,8 +21,7 @@ export PATH="$PATH:$HOME/bin"
 # aliases
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
-alias nix-switch='nix-env -irf ~/.config/nix/core.nix'
-alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
+alias brew-switch='brew bundle -v --file ~/.config/brew/Brewfile && brew bundle --force cleanup --file ~/.config/brew/Brewfile'
 
 # git commit editor
 export VISUAL=nvim
@@ -41,7 +35,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 # dotNet
 export PATH="$PATH:$HOME/.dotnet/tools"
-export DOTNET_ROOT="$(nix-path dotnet-sdk)"
+# export DOTNET_ROOT="$(nix-path dotnet-sdk)"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
