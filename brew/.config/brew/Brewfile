@@ -44,8 +44,11 @@ brew "kubectl"
 brew "kubectx"
 
 # load extra packages if exists
-packages_file = "packages.rb"
-require_relative packages_file if File.exists? packages_file
+packages_file = File.join(ENV["HOME"], ".config/brew/packages.rb")
+if File.exists? packages_file
+    p = File.open(packages_file, 'r').read
+    eval(p)
+end
 
 # custom packages
 
@@ -53,4 +56,3 @@ require_relative packages_file if File.exists? packages_file
 unless system("(cd ~/.oh-my-zsh && git status) > /dev/null 2>&1")
     system("git clone https://github.com/ohmyzsh/ohmyzsh --depth=1 ~/.oh-my-zsh")
 end
-
