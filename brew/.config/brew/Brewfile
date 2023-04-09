@@ -8,8 +8,6 @@ def in_path?(command)
     system("which #{ command} > /dev/null 2>&1")
 end
 
-tap "homebrew/bundle"
-
 # shell
 brew "bat"
 brew "tmux"
