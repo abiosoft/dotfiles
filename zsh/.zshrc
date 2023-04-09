@@ -35,7 +35,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 # dotNet
 export PATH="$PATH:$HOME/.dotnet/tools"
-# export DOTNET_ROOT="$(nix-path dotnet-sdk)"
+export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
