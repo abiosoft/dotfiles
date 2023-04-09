@@ -35,5 +35,6 @@ brew "qemu"
 # misc
 brew "gh"
 brew "telnet"
+brew "overmind"
 brew "neofetch"
 brew "caddy"
