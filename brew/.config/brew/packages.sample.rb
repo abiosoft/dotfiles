@@ -17,7 +17,7 @@ brew "yarn"
 brew "openjdk"
 brew "rustup"
 brew "zig"
-cask "dotnet-sdk"
+brew "dotnet"
 
 # container/devops"
 brew "docker-credential-helper"
