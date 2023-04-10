@@ -29,7 +29,6 @@ brew "pack"
 cask "google-cloud-sdk"
 
 # virtualization
-cask "vagrant"
 brew "qemu"
 
 # misc
