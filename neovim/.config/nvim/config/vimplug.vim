@@ -51,6 +51,7 @@ Plug 'hashivim/vim-nomadproject'
 Plug 'hashivim/vim-terraform'
 Plug 'ziglang/zig.vim'
 Plug 'github/copilot.vim'
+Plug 'ojroques/vim-oscyank'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'

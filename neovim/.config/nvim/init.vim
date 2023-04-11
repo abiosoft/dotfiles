@@ -8,5 +8,6 @@ else
     source ~/.config/nvim/config/hcl.vim
     source ~/.config/nvim/config/fzf.vim
     source ~/.config/nvim/config/theme.vim
+    source ~/.config/nvim/config/yank.vim
 endif
 
