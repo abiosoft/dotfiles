@@ -5,19 +5,6 @@ Dotfiles managed with Stow for Nix or Brew
 
 ![Screenshot](screenshots/screenshot.png)
 
-
-- [dotfiles](#dotfiles)
-  - [Nix](#nix)
-    - [Prerequisite](#prerequisite)
-    - [Installation](#installation)
-    - [Adding unstable channel](#adding-unstable-channel)
-    - [Declarative Nix packages](#declarative-nix-packages)
-  - [Brew](#brew)
-    - [Prerequisite](#prerequisite-1)
-    - [Installation](#installation-1)
-    - [Declarative Brew packages](#declarative-brew-packages)
-
-
 ## Nix
 
 ### Prerequisite
