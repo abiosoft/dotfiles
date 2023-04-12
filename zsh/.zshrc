@@ -1,11 +1,6 @@
-# helpers
-nix-path() (
-  nix-env -q --out-path ${1} 2>/dev/null | awk -F' ' '{print $2}'
-)
-
 # ZSH
 if [ -z "$HOMEBREW_PREFIX" ]; then
-  export ZSH="$(nix-path oh-my-zsh)/share/oh-my-zsh"
+  export ZSH="$HOME/.nix-profile/share/oh-my-zsh"
 else
   export ZSH="$HOME/.oh-my-zsh"
 fi
@@ -47,7 +42,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 # dotNet
 export PATH="$PATH:$HOME/.dotnet/tools"
 if [ -z "$HOMEBREW_PREFIX" ]; then
-  export DOTNET_ROOT="$(nix-path dotnet-sdk)"
+  export DOTNET_ROOT="$(dirname $(realpath $HOME/.nix-profile/bin/dotnet))"
 else
   export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
 fi
