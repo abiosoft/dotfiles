@@ -1,1 +1,2 @@
-packages.sh
+packages.nix
+flake.lock

@@ -30,20 +30,20 @@ nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
 Install packages.
 
 ```
-~/.config/nix/install.sh
+nix profile install path:$HOME/.config/nix/
 ```
 
 ### Declarative Nix packages
 
 ```sh
 # create a copy of sample packages file
-cp ~/.config/nix/packages.sample.sh ~/.config/nix/packages.sh
+cp ~/.config/nix/packages.sample.nix ~/.config/nix/packages.nix
 
 # edit packages file to add extra packages
-vim ~/.config/nix/packages.sh
+vim ~/.config/nix/packages.nix
 
-# install
-~/.config/nix/install.sh # or run the `nix-switch` alias
+# run the `nix-switch` alias
+nix-switch
 ```
 
 ## Brew
