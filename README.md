@@ -9,7 +9,7 @@ Dotfiles managed with Stow for Nix or Brew
 
 ### Prerequisite
 
-Nix
+Install Nix
 
 ```sh
 export NIX_VERSION=2.15.0
@@ -18,40 +18,31 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 
 ### Installation
 
-Install Stow
+`cd` into repository and setup dotfiles
 
 ```
-nix-shell -p stow
-```
-
-Setup dotfiles
-
-```
-stow aerc bat bin git ideavim neovim nix tmux zsh
+nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
+    aerc bat bin git ideavim neovim nix tmux zsh
 ```
 
 Install packages
 
 ```
-nix-env -if ~/.config/nix/core.nix
-```
-### Adding unstable channel
-
-```
-nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
-nix-channel --update
+~/.config/nix/install.sh
 ```
 
 ### Declarative Nix packages
 
-**NOTE**: only works in multi-user mode, running `nix-env -irf ...` in single user mode would remove and break `nix`.
-
 ```sh
-# edit ~/.config/nix/packages.nix to add extra packages
-nix-env -irf ~/.config/nix/core.nix
-# or run the `nix-switch` alias
-```
+# create a copy of sample packages file
+cp ~/.config/nix/packages.sample.sh ~/.config/nix/packages.sh
 
+# edit packages file to add extra packages
+vim ~/.config/nix/packages.sh
+
+# install
+~/.config/nix/install.sh # or run the `nix-switch` alias
+```
 
 ## Brew
 
