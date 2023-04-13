@@ -9,7 +9,9 @@ Dotfiles managed with Stow for Nix or Brew
 
 ### Prerequisite
 
-Install Nix
+Install Nix.
+
+**NOTE:** Nix must be installed in multi-user mode.
 
 ```sh
 export NIX_VERSION=2.15.0
@@ -25,7 +27,7 @@ nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
     aerc bat bin git ideavim neovim nix tmux zsh
 ```
 
-Install packages
+Install packages.
 
 ```
 ~/.config/nix/install.sh
