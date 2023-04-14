@@ -42,7 +42,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 # dotNet
 export PATH="$PATH:$HOME/.dotnet/tools"
 if [ -z "$HOMEBREW_PREFIX" ]; then
-  export DOTNET_ROOT="$(dirname $(realpath $HOME/.nix-profile/bin/dotnet))"
+  [ -f $HOME/.nix-profile/bin/dotnet ] && export DOTNET_ROOT="$(dirname $(realpath $HOME/.nix-profile/bin/dotnet))"
 else
   export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
 fi
