@@ -11,20 +11,17 @@
       name = "abiola";
       build = { system }: (
         let
-          pkgs = import nixpkgs { system = "${system}"; };
-          pkgs-unstable = import nixpkgs-unstable { system = "${system}"; };
+          pkgs = import nixpkgs { inherit system; };
+          pkgs-unstable = import nixpkgs-unstable { inherit system; };
           env = pkgs.buildEnv {
             name = "${name}";
             paths = import ./core.nix { nixpkgs = pkgs; nixpkgs-unstable = pkgs-unstable; };
           };
         in
-        { ${name} = env; default = env; }
+        { "${name}" = env; default = env; }
       );
+      systems = [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      list = map (system: { name = "${system}"; value = (build { inherit system; }); }) systems;
     in
-    {
-      packages.aarch64-linux = build { system = "aarch64-linux"; };
-      packages.x86_64-linux = build { system = "x86_64-linux"; };
-      packages.aarch64-darwin = build { system = "aarch64-darwin"; };
-      packages.x86_64-darwin = build { system = "x86_64-darwin"; };
-    };
+    { packages = builtins.listToAttrs list; };
 }
