@@ -3,7 +3,8 @@
 
 let $FZF_DEFAULT_OPTS="--ansi --layout reverse --margin=0,4"
 
-let $FZF_DEFAULT_COMMAND='ag -g ""'
+let $FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
+
 " autocmd VimEnter * command! -bang -nargs=? GFiles call fzf#vim#gitfiles(<q-args>, {'options': '--no-preview'}, <bang>0)
 "
 " Preview window on the right side of the window,
