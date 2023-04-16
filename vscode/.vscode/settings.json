@@ -229,5 +229,5 @@
   ],
   "editor.wordWrap": "off",
   "workbench.colorTheme": "Default Dark+ Experimental",
+  "editor.renderWhitespace": "boundary"
 }
-
