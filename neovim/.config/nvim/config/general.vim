@@ -379,3 +379,6 @@ if has('nvim')
     set inccommand=nosplit
 endif
 
+" highlight current line
+set cursorline
+
