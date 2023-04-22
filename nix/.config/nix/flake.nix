@@ -12,7 +12,7 @@
       build = { system }: (
         let
           pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; }; };
-          pkgs-unstable = import nixpkgs-unstable { inherit system; };
+          pkgs-unstable = import nixpkgs-unstable { inherit system; config = { allowUnfree = true; }; };
           env = pkgs.buildEnv {
             name = "${name}";
             paths = import ./core.nix { nixpkgs = pkgs; nixpkgs-unstable = pkgs-unstable; };
