@@ -1,7 +1,7 @@
 {
   "window.autoDetectColorScheme": true,
-  "workbench.preferredDarkColorTheme": "Default Dark+ Experimental",
-  "workbench.preferredLightColorTheme": "Default Light+ Experimental",
+  "workbench.preferredDarkColorTheme": "Default Dark Modern",
+  "workbench.preferredLightColorTheme": "Default Light Modern",
   "editor.fontFamily": "JetBrains Mono",
   "editor.fontSize": 15,
   "editor.fontWeight": "400",
@@ -39,7 +39,7 @@
     "source.fixAll.eslint": true
   },
   "workbench.colorCustomizations": {
-    "[Default Light+ Experimental]": {
+    "[Default Light Modern]": {
       "editor.background": "#f5f5f5",
       "activityBar.inactiveForeground": "#333333",
       "activityBar.foreground": "#111111",
