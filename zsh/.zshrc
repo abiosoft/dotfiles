@@ -26,7 +26,7 @@ export PATH="$PATH:$HOME/bin"
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
 alias brew-switch='brew bundle -v --file ~/.config/brew/Brewfile && brew bundle --force cleanup --file ~/.config/brew/Brewfile'
-alias nix-switch='DRV="$(nix build path:$HOME/.config/nix/ --print-out-paths --no-link)" && nix profile remove 0 2>/dev/null && nix profile install "$DRV"'
+alias nix-switch='DRV="$(nix build path:$HOME/dotfiles/nix/.config/nix --print-out-paths --no-link)" && nix profile remove 0 2>/dev/null && nix profile install "$DRV"'
 alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 
 # git commit editor

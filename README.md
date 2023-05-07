@@ -36,7 +36,7 @@ nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
 Install packages.
 
 ```
-nix profile install path:$HOME/.config/nix/
+nix profile install path:$HOME/dotfiles/nix/.config/nix
 ```
 
 ### Declarative Nix packages
