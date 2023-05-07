@@ -20,6 +20,12 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 
 ### Installation
 
+Pin the current nixpkgs version to avoid repetitive registry downloads
+
+```
+nix --experimental-features 'nix-command flakes' registry pin nixpkgs
+```
+
 `cd` into repository and setup dotfiles
 
 ```
