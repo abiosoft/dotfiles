@@ -1,2 +1,4 @@
 packages.nix
 flake.lock
+registry.json
+
