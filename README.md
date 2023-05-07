@@ -20,12 +20,6 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 
 ### Installation
 
-Pin the current nixpkgs version to avoid repetitive registry downloads
-
-```
-nix --experimental-features 'nix-command flakes' registry pin nixpkgs
-```
-
 `cd` into repository and setup dotfiles
 
 ```
@@ -33,10 +27,16 @@ nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
     aerc bat bin git ideavim neovim nix tmux zsh
 ```
 
+Pin the current nixpkgs version to avoid repetitive registry downloads
+
+```
+nix --experimental-features 'nix-command flakes' registry pin nixpkgs
+```
+
 Install packages.
 
 ```
-nix profile install path:$HOME/dotfiles/nix/.config/nix
+nix profile install path:$HOME/.config/nix/
 ```
 
 ### Declarative Nix packages
