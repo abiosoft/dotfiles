@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 
 dark() (
-    [ "$(uname)" = "Linux" ] && gsettings set org.gnome.Terminal.Legacy.Settings theme-variant dark
-    tmux set -g pane-border-style fg="#555555"
-    tmux set -g pane-active-border-style fg="#aaaaaa"
-    tmux set -g status-style bg="#3d3f43",fg="#c5c8c6"
+    if [ "$(uname)" = "Linux" ]; then
+      gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+      gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    fi
 )
 
 light() (
-    [ "$(uname)" = "Linux" ] && gsettings set org.gnome.Terminal.Legacy.Settings theme-variant light
-    tmux set -g pane-border-style fg="#aaaaaa"
-    tmux set -g pane-active-border-style fg="#555555"
-    tmux set -g status-style fg="#3d3f43",bg="#c5c8c6"
+    if [ "$(uname)" = "Linux" ]; then
+      gsettings set org.gnome.desktop.interface color-scheme prefer-light
+      gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+    fi
 )
 
 [ "$1" = "dark" ] && dark && exit 0
 [ "$1" = "light" ] && light && exit 0
-
 
