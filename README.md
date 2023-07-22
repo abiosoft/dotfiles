@@ -14,7 +14,7 @@ Install Nix.
 **NOTE:** Nix must be installed in multi-user mode.
 
 ```sh
-export NIX_VERSION=2.15.0
+export NIX_VERSION=2.16.1
 sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 ```
 
