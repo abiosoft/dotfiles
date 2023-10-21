@@ -29,9 +29,9 @@
     gcc
 
     ## programming/sdks
-    python311
+    python312
     ruby_3_1
-    nodejs-19_x
+    nodejs_20
     yarn
     jdk
     rustup
