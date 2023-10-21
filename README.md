@@ -31,6 +31,9 @@ Pin the current nixpkgs version to avoid repetitive registry downloads
 
 ```
 nix --experimental-features 'nix-command flakes' registry pin nixpkgs
+
+# to update the pinned nix version later on
+#   nix flake update path:$HOME/.config/nix/
 ```
 
 Install packages.
