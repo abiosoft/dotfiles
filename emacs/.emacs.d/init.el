@@ -43,7 +43,7 @@
                     :weight 'normal
                     :width 'normal)
 (set-face-attribute 'variable-pitch nil
-                    :family "BlinkMacSystemFont"
+                    :family "Inter"
                     :height 170 ;; this is 1/10 pt e.g. 140 = 14pt
                     :weight 'normal
                     :width 'normal)
@@ -704,10 +704,9 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-imenu-depth 7)
 ;; improve visibility with indentations.
 (setq org-startup-indented t)
-;;; improve bullets
-(use-package org-superstar
-  :after org
-  :hook (org-mode . (lambda () (org-superstar-mode 1))))
+;; Hide leading stars
+(setq org-startup-indented t
+      org-hide-leading-stars 1)
 (setq inhibit-compacting-font-caches t) ; fix slowdowns
 ;;; add non-core languages
 ;; typescript
@@ -782,7 +781,7 @@ Alternatively, use `doom/window-enlargen'."
 ;; set font again
 (custom-theme-set-faces
  'user
- '(variable-pitch ((t (:family "BlinkMacSystemFont" :height 170 :weight normal))))
+ '(variable-pitch ((t (:family "Inter" :height 170 :weight normal))))
  '(fixed-pitch ((t ( :family "JetBrains Mono" :height 150))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-block-begin-line ((t (:inherit (shadow fixed-pitch)))))
