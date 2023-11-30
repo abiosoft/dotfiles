@@ -340,7 +340,7 @@ Alternatively, use `doom/window-enlargen'."
 ;; cleanup whitespace on save
 (add-hook 'before-save-hook 'whitespace-cleanup)
 ;; Show trailing white spaces
-(setq-default show-trailing-whitespace t)
+(setq-default show-trailing-whitespace nil)
 
 
 ;;; customize eshell prompt
@@ -527,6 +527,7 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; terminal
 (use-package vterm)
+(use-package multi-vterm)
 
 ;;; rest client
 ;; restclient package
