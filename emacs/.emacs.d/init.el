@@ -648,6 +648,12 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile.*\\'" . dockerfile-mode)))
 
+;; Terminal clipboard
+(use-package clipetty
+  :ensure t
+  :hook (after-init . global-clipetty-mode))
+
+
 ;;; EVIL mode
 ;; Configs that must be set before loading evil mode.
 (setq evil-lookup-func #'ab/help-symbol-lookup)
