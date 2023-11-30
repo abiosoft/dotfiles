@@ -696,7 +696,7 @@ Alternatively, use `doom/window-enlargen'."
   (setq evil-insert-state-cursor 'bar)  ; |
   (setq evil-emacs-state-cursor  'box)) ; █
 
-;; recover my keys
+;; recover default emacs keys
 (evil-define-key
   '(normal insert visual replace operator motion emacs)
   'global
@@ -715,6 +715,7 @@ Alternatively, use `doom/window-enlargen'."
   (kbd "C-b") 'backward-char)
 (define-key evil-normal-state-map (kbd ",cc") 'comment-line)
 (define-key evil-visual-state-map (kbd ",cc") 'comment-line)
+(evil-set-initial-state 'dired-mode 'emacs)
 
 ;;; startup
 (setq inhibit-startup-screen +1)
