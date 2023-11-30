@@ -705,6 +705,14 @@ Alternatively, use `doom/window-enlargen'."
   '(normal insert visual replace operator motion emacs)
   'global
   (kbd "C-p") 'previous-line)
+(evil-define-key
+  '(normal insert visual replace operator motion emacs)
+  'global
+  (kbd "C-f") 'forward-char)
+(evil-define-key
+  '(normal insert visual replace operator motion emacs)
+  'global
+  (kbd "C-b") 'backward-char)
 (define-key evil-normal-state-map (kbd ",cc") 'comment-line)
 (define-key evil-visual-state-map (kbd ",cc") 'comment-line)
 
