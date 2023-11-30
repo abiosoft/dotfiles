@@ -441,7 +441,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package graphql-mode)
 (use-package yaml-mode)
 (use-package json-mode)
-
+(use-package svelte-mode)
 
 ;; prettier
 (use-package prettier-js
