@@ -647,6 +647,65 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile.*\\'" . dockerfile-mode)))
 
+;;; EVIL mode
+;; Configs that must be set before loading evil mode.
+(setq evil-lookup-func #'ab/help-symbol-lookup)
+(setq evil-toggle-key "C-S-n")
+(setq evil-want-C-i-jump nil)
+(setq evil-want-minibuffer t)
+(setq evil-undo-system 'undo-tree)
+
+;; change model texts
+(setq evil-normal-state-tag "<NORMAL>")
+(setq evil-insert-state-tag "<INSERT>")
+(setq evil-visual-state-tag "<VISUAL>")
+(setq evil-emacs-state-tag "<EMACS>")
+(setq evil-motion-state-tag "<MOTION>")
+(setq evil-replace-state-tag "<REPLACE>")
+(setq evil-operator-state-tag "<OPERATOR>")
+(setq evil-normal-state-message nil)
+(setq evil-insert-state-message nil)
+(setq evil-emacs-state-message nil)
+(setq evil-visual-state-message nil)
+(setq evil-motion-state-message nil)
+(setq evil-replace-state-message nil)
+(setq evil-operator-state-message nil)
+
+
+;; setup package
+(use-package evil
+  :init
+  (setq evil-want-integration nil) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+(elpaca-wait)
+
+;; specify cursor types for modes
+;; insert mode disabled, therefore cursor not set
+;; (use-package evil-terminal-cursor-changer
+;;   :hook (after-init . (lambda()
+;;                         (unless (display-graphic-p)
+;;                          (evil-terminal-cursor-changer-activate))))
+(use-package evil-terminal-cursor-changer
+  :hook (after-init . (lamda() (evil-terminal-cursor-changer-activate)))
+  :init
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; |
+  (setq evil-emacs-state-cursor  'bar)) ; |
+;; recover my keys
+(evil-define-key
+  '(normal insert visual replace operator motion emacs)
+  'global
+  (kbd "C-n") 'next-line)
+(evil-define-key
+  '(normal insert visual replace operator motion emacs)
+  'global
+  (kbd "C-p") 'previous-line)
+
+
 ;;; startup
 (setq inhibit-startup-screen +1)
 (setq initial-major-mode 'org-mode)
