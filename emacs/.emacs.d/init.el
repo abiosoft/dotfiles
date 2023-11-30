@@ -76,14 +76,6 @@
   (split-window-below)
   (windmove-down))
 
-;;; eshell helper functions
-(defun ab/eshell-insert-mode ()
-  "jump to end of buffer i.e. the prompt before switching to insert mode"
-  (interactive)
-  (end-of-buffer)
-  (end-of-line)
-  (evil-insert-state))
-
 ;; new eshell
 (defun ab/new-eshell ()
   "create a new eshell"
@@ -146,14 +138,6 @@ as long as the window is not the only window"
             (selected-shell (completing-read "select eshell: " (cons "new eshell" eshell-buffer-names))))
         (ab/select-or-create-eshell-name selected-shell)))))
 
-;; eshell is somehow notorious and refusing to release C-n.
-;; binding only works by using hook
-(defun bind-eshell-keys()
-  (evil-define-key 'normal eshell-mode-map (kbd "C-n") nil)
-  (evil-define-key 'normal eshell-mode-map (kbd "i") 'ab/eshell-insert-mode)
-  (evil-collection-define-key 'normal 'eshell-mode-map (kbd "C-n") nil)
-  (evil-collection-define-key 'insert 'eshell-mode-map (kbd "C-n") nil))
-
 ;; customize eshell mode
 (defun ab/eshell-mode-config ()
   (bind-eshell-keys)
@@ -170,8 +154,7 @@ as long as the window is not the only window"
     (when (and
            (> (length (buffer-string)) 2)
            (string-prefix-p "{" (buffer-substring 1 2)))
-      (json-mode))
-    (evil-motion-state)))
+      (json-mode))))
 
 ;; custom configuration for org mode
 (defun ab/org-mode-config ()
@@ -508,123 +491,6 @@ Alternatively, use `doom/window-enlargen'."
   :config
   (global-undo-tree-mode))
 
-
-;;; EVIL mode
-;; Configs that must be set before loading evil mode.
-(setq evil-lookup-func #'ab/help-symbol-lookup)
-(setq evil-toggle-key "C-z")
-(setq evil-want-C-i-jump nil)
-(setq evil-want-minibuffer t)
-(setq evil-undo-system 'undo-tree)
-
-;; change model texts
-(setq evil-normal-state-tag "<NORMAL>")
-(setq evil-insert-state-tag "<INSERT>")
-(setq evil-visual-state-tag "<VISUAL>")
-(setq evil-emacs-state-tag "<EMACS>")
-(setq evil-motion-state-tag "<MOTION>")
-(setq evil-replace-state-tag "<REPLACE>")
-(setq evil-operator-state-tag "<OPERATOR>")
-(setq evil-normal-state-message nil)
-(setq evil-insert-state-message nil)
-(setq evil-emacs-state-message nil)
-(setq evil-visual-state-message nil)
-(setq evil-motion-state-message nil)
-(setq evil-replace-state-message nil)
-(setq evil-operator-state-message nil)
-
-;; setup package
-(use-package evil
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
-;; evil everywhere
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-
-
-;; free C-p for personal use except in emacs mode. I use it for file selection in other editors.
-(define-key evil-normal-state-local-map (kbd "C-p") nil)
-(define-key evil-normal-state-map (kbd "C-p") nil)
-(define-key evil-insert-state-map (kbd "C-p") nil)
-(define-key evil-visual-state-map (kbd "C-p") nil)
-(define-key evil-motion-state-map (kbd "C-p") nil)
-(global-set-key (kbd "C-p") nil)
-(global-set-key (kbd "<normal-state> C-p") nil)
-;; free C-n for personal use except in emacs mode. my favourite tmux mapping
-(define-key evil-normal-state-local-map (kbd "C-n") nil)
-(define-key evil-normal-state-map (kbd "C-n") nil)
-(define-key evil-insert-state-map (kbd "C-n") nil)
-(define-key evil-visual-state-map (kbd "C-n") nil)
-(define-key evil-motion-state-map (kbd "C-n") nil)
-(global-set-key (kbd "C-n") nil)
-(global-set-key (kbd "<normal-state> C-n") nil)
-
-;; key bindings
-(define-key evil-normal-state-map (kbd ", SPC") 'evil-ex-nohighlight)
-(define-key evil-normal-state-map (kbd ",cc") 'comment-line)
-(define-key evil-visual-state-map (kbd ",cc") 'comment-line)
-(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-(define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
-(define-key evil-normal-state-map (kbd "C-d") 'evil-scroll-down)
-(define-key evil-visual-state-map (kbd "C-d") 'evil-scroll-down)
-(define-key evil-normal-state-map (kbd "C-p") 'counsel-projectile-find-file)
-(define-key evil-insert-state-map (kbd "C-p") 'counsel-projectile-find-file)
-;; exit motion state with `q`. it's mainly for viewing contents
-(define-key evil-motion-state-map (kbd "q") 'kill-buffer-and-window)
-;; always escape to normal mode including emacs mode
-(define-key evil-emacs-state-map [escape] 'evil-normal-state)
-;; always start in evil state https://github.com/noctuid/evil-guide#make-evil-normal-state-the-initial-state-always
-(setq evil-emacs-state-modes nil)
-(setq evil-insert-state-modes nil)
-(setq evil-motion-state-modes nil)
-
-;; specify cursor types for modes
-;; insert mode disabled, therefore cursor not set
-(use-package evil-terminal-cursor-changer
-  :hook (after-init . (lambda()
-                        (unless (display-graphic-p)
-                          (evil-terminal-cursor-changer-activate))))
-  :init
-  (setq evil-motion-state-cursor 'box)  ; █
-  (setq evil-visual-state-cursor 'box)  ; █
-  (setq evil-normal-state-cursor 'box)  ; █
-  (setq evil-insert-state-cursor 'bar)  ; |
-  (setq evil-emacs-state-cursor  'bar)) ; |
-
-;; prevent quitting emacs accidentally
-(evil-ex-define-cmd "q[uit]" 'kill-buffer-and-window)
-
-
-;; custom keybindings for window management. same as tmux
-(global-set-key (kbd "C-n z") 'doom/window-maximize-buffer)
-(global-set-key (kbd "C-n h") 'windmove-left)
-(global-set-key (kbd "C-n H") 'windmove-swap-states-left)
-(global-set-key (kbd "C-n l") 'windmove-right)
-(global-set-key (kbd "C-n L") 'windmove-swap-states-right)
-(global-set-key (kbd "C-n j") 'windmove-down)
-(global-set-key (kbd "C-n J") 'windmove-swap-states-down)
-(global-set-key (kbd "C-n k") 'windmove-up)
-(global-set-key (kbd "C-n K") 'windmove-swap-states-up)
-(global-set-key (kbd "C-n %") 'ab/window-split-right)
-(global-set-key (kbd "C-n \"") 'ab/window-split-down)
-(global-set-key (kbd "C-n x") 'evil-window-delete)
-(global-set-key (kbd "C-n b b") 'projectile-switch-to-buffer)
-(global-set-key (kbd "C-n b n") 'projectile-next-project-buffer)
-(global-set-key (kbd "C-n b p") 'projectile-previous-project-buffer)
-(global-set-key (kbd "C-n b x") 'kill-buffer)
-(global-set-key (kbd "C-n b r") 'rename-buffer)
-(global-set-key (kbd "C-n :") 'counsel-M-x)
-(global-set-key (kbd "C-n s") 'tab-bar-select-tab-by-name)
-(global-set-key (kbd "C-n c") 'tab-new)
-(global-set-key (kbd "C-n $") 'tab-rename)
-(global-set-key (kbd "C-n n") 'tab-next)
-(global-set-key (kbd "C-n p") 'tab-previous)
-(global-set-key (kbd "C-n X") 'tab-close)
 ;; custom keybindings for code editing
 (global-set-key (kbd "C-h .") 'ab/help-symbol-lookup)
 (global-set-key (kbd "C-c f") 'counsel-projectile-find-file)
@@ -637,16 +503,9 @@ Alternatively, use `doom/window-enlargen'."
 (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
-(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
-(define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
-(evil-define-key '(insert normal) ivy-minibuffer-map
-  (kbd "C-j") 'ivy-next-line
-  (kbd "C-k") 'ivy-previous-line)
 ;; eshell terminal bindings
 (global-set-key (kbd "C-`") 'ab/new-eshell-in-split)
 (global-set-key (kbd "C-~") 'ab/select-or-create-eshell)
-;; process management
-(global-set-key (kbd "C-n r") 'ab/restart-command)
 
 ;; autocomplete
 (use-package company
@@ -664,9 +523,6 @@ Alternatively, use `doom/window-enlargen'."
   (company-quickhelp-mode 1))
 ;; bind keys to company mode
 (with-eval-after-load 'company
-  (define-key company-active-map (kbd "C-j") #'company-select-next)
-  (define-key company-active-map (kbd "C-k") #'company-select-previous)
-  (evil-define-key 'insert company-active-map (kbd "<return>") #'company-complete)
   (define-key company-active-map (kbd "<return>") #'company-complete))
 
 ;; terminal
@@ -731,12 +587,6 @@ Alternatively, use `doom/window-enlargen'."
 (setq org-todo-keyword-faces '(("DONE" :foreground "forest green" :strike-through nil :weight normal)
                                ("CANCELLED" :strike-through nil :weight normal)))
 
-(use-package evil-org
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
 ;;; org code executions
 (setq org-babel-python-command "python3")
 (org-babel-do-load-languages 'org-babel-load-languages
@@ -789,7 +639,6 @@ Alternatively, use `doom/window-enlargen'."
  '(org-block-begin-line ((t (:inherit (shadow fixed-pitch)))))
  '(org-block-end-line ((t (:inherit (shadow fixed-pitch)))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
- ;; '(org-document-info ((t (:foreground "dark orange"))))
  '(org-date ((t (:inherit (shadow fixed-pitch)))))
  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
  '(org-footnote ((t (:inherit (shadow fixed-pitch)))))
