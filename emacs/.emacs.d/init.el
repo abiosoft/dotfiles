@@ -683,18 +683,18 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; specify cursor types for modes
 ;; insert mode disabled, therefore cursor not set
-;; (use-package evil-terminal-cursor-changer
-;;   :hook (after-init . (lambda()
-;;                         (unless (display-graphic-p)
-;;                          (evil-terminal-cursor-changer-activate))))
 (use-package evil-terminal-cursor-changer
-  :hook (after-init . (lamda() (evil-terminal-cursor-changer-activate)))
+  :hook (after-init . (lambda()
+                        (unless (display-graphic-p)
+                         (evil-terminal-cursor-changer-activate))))
+  :hook (tty-setup . evil-terminal-cursor-changer-activate)
   :init
   (setq evil-motion-state-cursor 'box)  ; █
   (setq evil-visual-state-cursor 'box)  ; █
   (setq evil-normal-state-cursor 'box)  ; █
   (setq evil-insert-state-cursor 'bar)  ; |
-  (setq evil-emacs-state-cursor  'bar)) ; |
+  (setq evil-emacs-state-cursor  'box)) ; █
+
 ;; recover my keys
 (evil-define-key
   '(normal insert visual replace operator motion emacs)
@@ -704,7 +704,8 @@ Alternatively, use `doom/window-enlargen'."
   '(normal insert visual replace operator motion emacs)
   'global
   (kbd "C-p") 'previous-line)
-
+(define-key evil-normal-state-map (kbd ",cc") 'comment-line)
+(define-key evil-visual-state-map (kbd ",cc") 'comment-line)
 
 ;;; startup
 (setq inhibit-startup-screen +1)
