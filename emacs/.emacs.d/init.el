@@ -312,10 +312,10 @@ Alternatively, use `doom/window-enlargen'."
 (setq modus-themes-vivendi-theme-syntax 'faint)
 ;; tweak theme background a bit
 (setq modus-themes-vivendi-color-overrides
-    '((bg-main . "#222222")
+    '((bg-main . "#121212")
       (fg-main . "#dddddd")
       (fg-dim . "#c0c6e0")
-      (bg-dim . "#333333")
+      (bg-dim . "#232323")
       (bg-alt . "#181732")
       (bg-hl-line . "#444444")))
 (load-theme 'modus-vivendi t)
@@ -669,6 +669,8 @@ Alternatively, use `doom/window-enlargen'."
   (evil-define-key 'insert company-active-map (kbd "<return>") #'company-complete)
   (define-key company-active-map (kbd "<return>") #'company-complete))
 
+;; terminal
+(use-package vterm)
 
 ;;; rest client
 ;; restclient package
