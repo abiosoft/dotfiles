@@ -160,6 +160,7 @@ as long as the window is not the only window"
 (defun ab/org-mode-config ()
   "To use with `org-mode-hook'"
   (git-gutter-mode -1) ;; attempt to explicity disable git-gutter.
+  (company-mode -1)
   (local-set-key (kbd "C-c C-S-c") 'ab/org-babel-to-buffer))
 (add-hook 'org-mode-hook 'ab/org-mode-config)
 (add-hook 'org-mode-hook 'variable-pitch-mode)
