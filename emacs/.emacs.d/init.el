@@ -506,6 +506,9 @@ Alternatively, use `doom/window-enlargen'."
 
 ;;; improve dired
 (setq dired-dwim-target t)
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar))
 
 
 ;;; Undo
@@ -719,8 +722,13 @@ Alternatively, use `doom/window-enlargen'."
   '(normal insert visual replace operator motion emacs)
   'global
   (kbd "C-b") 'backward-char)
+(evil-define-key
+  '(normal insert visual replace operator motion emacs)
+  dired-mode-map
+  (kbd "<tab>") 'dired-subtree-toggle)
 (define-key evil-normal-state-map (kbd ",cc") 'comment-line)
 (define-key evil-visual-state-map (kbd ",cc") 'comment-line)
+(define-key evil-normal-state-map (kbd ",O") 'dired-sidebar-toggle-sidebar)
 (evil-set-initial-state 'dired-mode 'emacs)
 
 ;;; startup
