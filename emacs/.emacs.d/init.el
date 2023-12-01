@@ -741,7 +741,7 @@ Alternatively, use `doom/window-enlargen'."
 (custom-theme-set-faces
  'user
  '(variable-pitch ((t (:family "Inter" :height 170 :weight normal))))
- '(fixed-pitch ((t ( :family "JetBrains Mono" :height 150))))
+ '(fixed-pitch ((t (:family "JetBrains Mono" :height 150))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-block-begin-line ((t (:inherit (shadow fixed-pitch)))))
  '(org-block-end-line ((t (:inherit (shadow fixed-pitch)))))
