@@ -507,6 +507,7 @@ Alternatively, use `doom/window-enlargen'."
 ;;; improve dired
 (setq dired-dwim-target t)
 (use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
   :ensure t
   :commands (dired-sidebar-toggle-sidebar))
 
