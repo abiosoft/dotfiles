@@ -519,7 +519,7 @@ Alternatively, use `doom/window-enlargen'."
 
 ;; custom keybindings for code editing
 (global-set-key (kbd "C-h .") 'ab/help-symbol-lookup)
-(global-set-key (kbd "C-c f") 'counsel-projectile-find-file)
+(global-set-key (kbd "C-c p") 'counsel-projectile-find-file)
 (global-set-key (kbd "C-c i") 'counsel-imenu)
 (global-set-key (kbd "C-c ;") 'comment-line)
 ;; ivy/counsel bindings
