@@ -442,6 +442,7 @@ Alternatively, use `doom/window-enlargen'."
 (use-package yaml-mode)
 (use-package json-mode)
 (use-package svelte-mode)
+(use-package nix-mode)
 
 ;; prettier
 (use-package prettier-js
