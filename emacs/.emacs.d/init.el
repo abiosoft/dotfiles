@@ -633,9 +633,6 @@ Alternatively, use `doom/window-enlargen'."
                                (sql . t)
                                (awk . t)
                                (graphql . t)))
-;; org roam
-(use-package org-roam)
-
 ;; other org keybindings
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -657,6 +654,13 @@ Alternatively, use `doom/window-enlargen'."
 (use-package clipetty
   :ensure t
   :hook (after-init . global-clipetty-mode))
+
+;; Other useful packages
+(use-package denote)
+(use-package beframe)
+(elpaca-wait)
+(beframe-mode 1)
+(global-set-key (kbd "C-x b") 'beframe-switch-buffer)
 
 
 ;;; EVIL mode
