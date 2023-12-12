@@ -88,8 +88,13 @@ brew bundle -v --file ~/.config/brew/Brewfile
 ### Declarative Brew packages
 
 ```sh
-# edit ~/.config/brew/packages.rb to add extra packages
-# run the brew-switch alias
+# create a copy of the sample packages file
+cp ~/.config/brew/packages.sample.rb ~/.config/brew/packages.rb
+
+# edit packages file to add extra packages
+vim ~/.config/brew/packages.rb
+
+# run the `brew-switch` alias
 brew-switch
 ```
 
