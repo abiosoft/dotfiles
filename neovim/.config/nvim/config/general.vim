@@ -354,7 +354,7 @@ endif
 
 hi Normal guibg=NONE ctermbg=NONE
 
-set shell=~/.nix-profile/bin/zsh
+set shell=/bin/zsh
 
 " commentary
 noremap <leader>cc :Commentary<cr>
