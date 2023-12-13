@@ -354,7 +354,7 @@ endif
 
 hi Normal guibg=NONE ctermbg=NONE
 
-set shell=/bin/zsh
+set shell=~/bin/myzsh
 
 " commentary
 noremap <leader>cc :Commentary<cr>
