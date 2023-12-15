@@ -3,6 +3,7 @@ if [ -z "$HOMEBREW_PREFIX" ]; then
   export ZSH="$HOME/.nix-profile/share/oh-my-zsh"
 else
   export ZSH="$HOME/.oh-my-zsh"
+  export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
 ZSH_CUSTOM="$HOME/.config/my-zsh"
