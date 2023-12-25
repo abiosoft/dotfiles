@@ -20,3 +20,6 @@ defaults write com.insomnia.app ApplePressAndHoldEnabled -bool false
 # utm
 defaults write com.utmapp.UTM ApplePressAndHoldEnabled -bool false
 
+# or global disable
+# defaults write -g ApplePressAndHoldEnabled -bool false
+
