@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -z "$1" ]; then
+    >&2 echo port missing.
+    >&2 echo
+    >&2 echo Usage: forward-docker-port PORT_NUMBER
+    >&2 echo "  e.g. forward-docker-port 8080"
+    exit 1
+fi
+
+
+GATEWAY_IP="$(gateway-ip)"
+if [ -z "$GATEWAY_IP" ]; then
+   >&2 echo gateway ip could not be retrieved.
+   >&2 echo
+fi
+
+set -x
+socat "TCP-LISTEN:${1},reuseaddr,fork,reuseaddr" "TCP:${GATEWAY_IP}:${1}"
+
