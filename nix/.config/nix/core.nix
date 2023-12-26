@@ -37,6 +37,7 @@ in
     gnupg
     shellcheck
     sqlite
+    socat
 
     ## internet
     youtube-dl
