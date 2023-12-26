@@ -28,6 +28,7 @@ brew "the_silver_searcher"
 brew "git" unless in_path? "git"
 brew "git-delta"
 brew "gnupg"
+brew "socat"
 
 # internet
 brew "youtube-dl"
