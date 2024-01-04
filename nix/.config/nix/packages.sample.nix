@@ -9,7 +9,7 @@
 (
   with nixpkgs-unstable;
   [
-    go_1_20
+    go
     qemu
   ]
 )
@@ -31,7 +31,7 @@
     ## programming/sdks
     python312
     ruby_3_1
-    nodejs_20
+    nodejs_21
     yarn
     jdk
     rustup
@@ -50,7 +50,7 @@
     vault
     buildpack
     google-cloud-sdk
-    cloud-sql-proxy
+    google-cloud-sql-proxy
 
     # others
     caddy
