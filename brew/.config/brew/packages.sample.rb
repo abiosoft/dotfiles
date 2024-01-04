@@ -15,7 +15,7 @@ brew "go"
 brew "node"
 brew "yarn"
 brew "openjdk"
-brew "rustup"
+brew "rustup-init"
 brew "zig"
 brew "dotnet"
 
