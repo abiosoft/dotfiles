@@ -24,7 +24,7 @@ sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
 
 ```
 nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
-    aerc bat bin git ideavim neovim nix tmux zsh
+    bat bin git ideavim neovim nix tmux zsh
 ```
 
 Pin the current nixpkgs version to avoid repetitive registry downloads
@@ -76,7 +76,7 @@ brew install stow
 Setup dotfiles
 
 ```
-stow aerc bat brew bin git ideavim neovim tmux zsh
+stow bat brew bin git ideavim neovim tmux zsh
 ```
 
 Install packages
