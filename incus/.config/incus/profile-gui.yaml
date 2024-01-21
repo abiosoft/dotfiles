@@ -1,0 +1,90 @@
+config:
+  raw.idmap: both 1001 1000
+  security.nesting: "true"
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - pulseaudio-utils
+      - curl
+      - wget
+      - openssh-server
+    users:
+      - name: abiola
+        plain_text_passwd: 'abiola'
+        home: /home/abiola
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: Abiola
+        groups: [adm, cdrom, dip, sudo, video]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - SSHKEY
+    write_files:
+    - path: /usr/local/bin/mystartup.sh
+      permissions: 0755
+      content: |
+        #!/bin/sh
+        uid=$(id -u)
+        run_dir=/run/user/$uid
+        mkdir -p $run_dir && chmod 700 $run_dir && chown $uid:$uid $run_dir
+        mkdir -p $run_dir/pulse && chmod 700 $run_dir/pulse && chown $uid:$uid $run_dir/pulse
+        ln -sf /mnt/.container_pulseaudio_socket $run_dir/pulse/native
+        ln -sf /mnt/.container_wayland_socket $run_dir/wayland-0
+        tmp_dir=/tmp/.X11-unix
+        mkdir -p $tmp_dir
+        ln -sf /mnt/.container_x11_socket $tmp_dir/X0
+    - path: /usr/local/etc/mystartup.service
+      content: |
+        [Unit]
+        After=local-fs.target
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/local/bin/mystartup.sh
+        [Install]
+        WantedBy=default.target
+    runcmd:
+    - mkdir -p /home/abiola/.config/systemd/user/default.target.wants
+    - ln -s /usr/local/etc/mystartup.service /home/abiola/.config/systemd/user/default.target.wants/mystartup.service
+    - ln -s /usr/local/etc/mystartup.service /home/abiola/.config/systemd/user/mystartup.service
+    - chown -R abiola:abiola /home/abiola/.config
+    - echo 'export DISPLAY=:0' >> /home/abiola/.profile
+    - echo 'export WAYLAND_DISPLAY=wayland-0' >> /home/abiola/.profile
+    - echo 'export XDG_SESSION_TYPE=wayland' >> /home/abiola/.profile
+    - echo 'export QT_QPA_PLATFORM=wayland' >> /home/abiola/.profile
+    - chown abiola:abiola /home/abiola/.profile
+    - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
+description: Ubuntu with cloud-init and Wayland/X sharing
+devices:
+  downloads:
+    path: /downloads
+    source: /home/abiola/Downloads
+    type: disk
+  mic:
+    gid: "44"
+    path: /dev/snd/controlC0
+    required: "false"
+    source: /dev/snd/controlC0
+    type: unix-char
+  gpu:
+    gid: "44"
+    type: gpu
+  pulseaudio-socket:
+    path: /mnt/.container_pulseaudio_socket
+    source: /run/user/1001/pulse/native
+    type: disk
+  wayland-socket:
+    path: /mnt/.container_wayland_socket
+    source: /run/user/1001/wayland-0
+    type: disk
+  webcam:
+    gid: "44"
+    path: /dev/video0
+    required: "false"
+    source: /dev/video0
+    type: unix-char
+  x11-socket:
+    path: /mnt/.container_x11_socket
+    source: /tmp/.X11-unix/X0
+    type: disk
+name: gui
+
