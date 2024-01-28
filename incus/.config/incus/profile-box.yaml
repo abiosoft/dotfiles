@@ -1,5 +1,4 @@
 config:
-  raw.idmap: both 1001 1000
   security.nesting: "true"
   user.user-data: |-
     #cloud-config
@@ -17,8 +16,6 @@ config:
         gecos: Abiola
         groups: [adm, cdrom, dip, sudo, video]
         sudo: ALL=(ALL) NOPASSWD:ALL
-        ssh_authorized_keys:
-          - SSHKEY
     write_files:
     - path: /usr/local/bin/mystartup.sh
       permissions: 0755
@@ -55,6 +52,11 @@ config:
     - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
 description: Ubuntu with cloud-init and Wayland/X sharing
 devices:
+  dotfiles:
+    path: /dotfiles
+    source: /home/abiola/dotfiles
+    type: disk
+    readonly: true
   downloads:
     path: /downloads
     source: /home/abiola/Downloads
@@ -72,10 +74,17 @@ devices:
     path: /mnt/.container_pulseaudio_socket
     source: /run/user/1001/pulse/native
     type: disk
+    shift: true
+  ssh:
+    path: /ssh-keys
+    source: /home/abiola/.ssh
+    type: disk
+    readonly: true
   wayland-socket:
     path: /mnt/.container_wayland_socket
     source: /run/user/1001/wayland-0
     type: disk
+    shift: true
   webcam:
     gid: "44"
     path: /dev/video0
@@ -86,5 +95,6 @@ devices:
     path: /mnt/.container_x11_socket
     source: /tmp/.X11-unix/X0
     type: disk
-name: gui
+    shift: true
+name: box
 
