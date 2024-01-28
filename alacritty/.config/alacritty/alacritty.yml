@@ -131,7 +131,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: Ubuntu Mono
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
     style: Medium
@@ -177,7 +177,7 @@ font:
   # spacing.
   offset:
     x: 0
-    y: 5
+    y: 0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the
