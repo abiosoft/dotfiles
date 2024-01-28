@@ -72,7 +72,7 @@ devices:
     type: gpu
   pulseaudio-socket:
     path: /mnt/.container_pulseaudio_socket
-    source: /run/user/1001/pulse/native
+    source: /run/user/1000/pulse/native
     type: disk
     shift: true
   ssh:
@@ -82,7 +82,7 @@ devices:
     readonly: true
   wayland-socket:
     path: /mnt/.container_wayland_socket
-    source: /run/user/1001/wayland-0
+    source: /run/user/1000/wayland-0
     type: disk
     shift: true
   webcam:
