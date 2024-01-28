@@ -3,14 +3,14 @@
 dark() (
     if [ "$(uname)" = "Linux" ]; then
       gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-      gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+      gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-dark'
     fi
 )
 
 light() (
     if [ "$(uname)" = "Linux" ]; then
       gsettings set org.gnome.desktop.interface color-scheme prefer-light
-      gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+      gsettings set org.gnome.desktop.interface gtk-theme 'Yaru'
     fi
 )
 
