@@ -11,11 +11,8 @@ Dotfiles managed with Stow for Nix or Brew
 
 Install Nix.
 
-**NOTE:** Nix must be installed in multi-user mode.
-
 ```sh
-export NIX_VERSION=2.16.1
-sh <(curl -L https://releases.nixos.org/nix/nix-${NIX_VERSION}/install) --daemon
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
 ### Installation
@@ -33,13 +30,13 @@ Pin the current nixpkgs version to avoid repetitive registry downloads
 nix --experimental-features 'nix-command flakes' registry pin nixpkgs
 
 # to update the pinned nix version later on
-#   nix flake update path:$HOME/.config/nix/
+#   nix flake update path:$HOME/dotfiles/nix/.config/nix/
 ```
 
 Install packages.
 
 ```
-nix profile install path:$HOME/.config/nix/
+nix profile install path:$HOME/dotfiles/nix/.config/nix/
 ```
 
 ### Declarative Nix packages
