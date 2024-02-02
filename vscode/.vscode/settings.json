@@ -1,5 +1,6 @@
 {
   "window.autoDetectColorScheme": true,
+  "window.customTitleBarVisibility": "never",
   "workbench.preferredDarkColorTheme": "Default Dark Modern",
   "workbench.preferredLightColorTheme": "Default Light Modern",
   "editor.fontFamily": "JetBrains Mono",
