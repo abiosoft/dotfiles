@@ -44,7 +44,7 @@ brew "kubectx"
 
 # load extra packages if exists
 packages_file = File.join(ENV["HOME"], ".config/brew/packages.rb")
-if File.exists? packages_file
+if File.exist? packages_file
     p = File.open(packages_file, 'r').read
     eval(p)
 end
