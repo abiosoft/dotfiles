@@ -20,14 +20,13 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 `cd` into repository and setup dotfiles
 
 ```
-nix --experimental-features 'nix-command flakes' run nixpkgs#stow \
-    bat bin git ideavim neovim nix tmux zsh
+nix run nixpkgs#stow bat bin git ideavim neovim nix tmux zsh
 ```
 
 Pin the current nixpkgs version to avoid repetitive registry downloads
 
 ```
-nix --experimental-features 'nix-command flakes' registry pin nixpkgs
+nix registry pin nixpkgs
 
 # to update the pinned nix version later on
 #   nix flake update path:$HOME/dotfiles/nix/.config/nix/
