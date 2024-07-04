@@ -30,3 +30,6 @@ vmap > >gv
 set selectmode+=refactoring
 set idearefactormode=visual
 
+" relative line number
+set number relativenumber
+
