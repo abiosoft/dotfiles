@@ -40,7 +40,7 @@ in
     socat
 
     ## internet
-    youtube-dl
+    yt-dlp
     wget
     axel
     curl
