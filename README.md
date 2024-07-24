@@ -29,7 +29,7 @@ Pin the current nixpkgs version to avoid repetitive registry downloads
 nix registry pin nixpkgs
 
 # to update the pinned nix version later on
-#   nix flake update path:$HOME/dotfiles/nix/.config/nix/
+#   nix flake update --flake path:$HOME/dotfiles/nix/.config/nix/
 ```
 
 Install packages.
