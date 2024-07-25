@@ -39,16 +39,16 @@ description: Ubuntu personal image
 devices:
   dotfiles:
     path: /dotfiles
-    source: /home/abiola/dotfiles
+    source: /Users/abiola/dotfiles
     type: disk
     readonly: true
   downloads:
     path: /downloads
-    source: /home/abiola/Downloads
+    source: /Users/abiola/Downloads
     type: disk
   ssh:
     path: /ssh-keys
-    source: /home/abiola/.ssh
+    source: /Users/abiola/.ssh
     type: disk
     readonly: true
 name: cli
