@@ -1,0 +1,55 @@
+config:
+  security.nesting: "true"
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - curl
+      - git
+      - htop
+      - openssh-server
+      - stow
+      - vim
+    users:
+      - name: abiola
+        plain_text_passwd: 'abiola'
+        home: /home/abiola
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: Abiola
+        groups: [docker, sudo, wheel]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys: # to be replaced by actual key
+          - ssh-ed25519 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    write_files:
+    - path: /usr/local/bin/mystartup.sh
+      permissions: 0755
+      content: |
+        #!/bin/sh
+        cp -r /dotfiles /home/abiola/dotfiles
+        rm -rf /home/abiola/dotfiles/nix/.config/nix/packages.nix
+        sh -c "cd /home/abiola/dotfiles && stow bin bat git ideavim neovim nix tmux zsh"
+        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+        nix profile install path:/home/abiola/dotfiles/nix/.config/nix/
+        nix registry pin nixpkgs
+    runcmd:
+      - curl -fsSL https://get.docker.com | sh
+      - sudo -u abiola sh /usr/local/bin/mystartup.sh
+description: Ubuntu personal image
+devices:
+  dotfiles:
+    path: /dotfiles
+    source: /home/abiola/dotfiles
+    type: disk
+    readonly: true
+  downloads:
+    path: /downloads
+    source: /home/abiola/Downloads
+    type: disk
+  ssh:
+    path: /ssh-keys
+    source: /home/abiola/.ssh
+    type: disk
+    readonly: true
+name: cli
+
