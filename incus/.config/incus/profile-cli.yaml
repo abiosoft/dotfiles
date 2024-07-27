@@ -9,6 +9,7 @@ config:
       - openssh-server
       - stow
       - vim
+    timezone: Africa/Lagos # change accordingly if needed
     users:
       - name: abiola
         plain_text_passwd: 'abiola'
