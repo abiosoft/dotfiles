@@ -1,6 +1,6 @@
 config:
   security.nesting: "true"
-  user.user-data: |-
+  cloud-init.user-data: |
     #cloud-config
     packages:
       - curl
@@ -13,7 +13,6 @@ config:
     users:
       - name: abiola
         plain_text_passwd: 'abiola'
-        home: /home/abiola
         shell: /bin/bash
         lock_passwd: True
         gecos: Abiola
@@ -25,7 +24,7 @@ config:
     - path: /usr/local/bin/mystartup.sh
       permissions: 0755
       content: |
-        #!/bin/sh
+        #!/usr/bin/env bash
         cp -r /dotfiles /home/abiola/dotfiles
         rm -rf /home/abiola/dotfiles/nix/.config/nix/packages.nix
         sh -c "cd /home/abiola/dotfiles && stow bin bat git ideavim neovim nix tmux zsh"
