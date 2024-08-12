@@ -1,0 +1,5 @@
+
+/* left-align all content in Slides */
+.reveal .slides {
+    text-align: left;
+}
