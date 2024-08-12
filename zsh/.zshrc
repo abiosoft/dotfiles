@@ -29,6 +29,7 @@ alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --im
 alias brew-switch='brew bundle install -v --cleanup --file ~/.config/brew/Brewfile'
 alias nix-switch='DRV="$(nix build path:$HOME/dotfiles/nix/.config/nix/ --print-out-paths --no-link)" && nix profile remove ".*" 2>/dev/null && nix profile install "$DRV"'
 alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
+alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 
 # git commit editor
 export VISUAL=nvim
