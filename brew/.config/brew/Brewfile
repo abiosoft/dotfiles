@@ -31,7 +31,7 @@ brew "gnupg"
 brew "socat"
 
 # internet
-brew "youtube-dl"
+brew "yt-dlp"
 brew "wget"
 brew "axel"
 brew "curl" unless in_path? "curl"
