@@ -42,12 +42,13 @@ export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin:$HOME/dotfiles/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # dotNet
-export PATH="$PATH:$HOME/.dotnet/tools"
+export DOTNET_ROOT="$HOME/.dotnet"
 if [ -z "$HOMEBREW_PREFIX" ]; then
   [ -f $HOME/.nix-profile/bin/dotnet ] && export DOTNET_ROOT="$(dirname $(realpath $HOME/.nix-profile/bin/dotnet))"
 else
   export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
 fi
+export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
