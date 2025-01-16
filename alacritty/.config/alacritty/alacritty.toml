@@ -23,4 +23,5 @@ hide_when_typing = true
 
 [window]
 decorations = "none"
+startup_mode = "Maximized"
 
