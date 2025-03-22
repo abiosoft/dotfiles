@@ -2,6 +2,9 @@
 autocrlf = "input"
 pager = "delta"
 
+[commit]
+template = "~/dotfiles/git/.config/git/template.txt"
+
 [delta]
 line-numbers = true
 side-by-side = false
