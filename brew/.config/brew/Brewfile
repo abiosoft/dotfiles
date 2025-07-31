@@ -39,6 +39,7 @@ brew "curl" unless in_path? "curl"
 # container/devops"
 brew "docker"
 brew "docker-compose"
+brew "docker-buildx"
 brew "kubectl"
 brew "kubectx"
 
@@ -55,3 +56,4 @@ end
 unless system("(cd ~/.oh-my-zsh && git status) > /dev/null 2>&1")
     system("git clone https://github.com/ohmyzsh/ohmyzsh --depth=1 ~/.oh-my-zsh")
 end
+
