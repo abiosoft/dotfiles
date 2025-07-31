@@ -48,6 +48,7 @@ in
 
     ## container/devops
     docker-client
+    docker-buildx
     docker-compose
     kubectl
   ]
