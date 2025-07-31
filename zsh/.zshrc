@@ -30,6 +30,7 @@ alias brew-switch='brew bundle install -v --cleanup --file ~/.config/brew/Brewfi
 alias nix-switch='DRV="$(nix build path:$HOME/dotfiles/nix/.config/nix/ --print-out-paths --no-link)" && nix profile remove --all 2>/dev/null && nix profile install "$DRV"'
 alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
+[[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor
 export VISUAL=nvim
