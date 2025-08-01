@@ -1,0 +1,1222 @@
+#compdef container
+local context state state_descr line
+_container_commandname=$words[1]
+typeset -A opt_args
+
+_container() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'create:Create a new container'
+                'delete:Delete one or more containers'
+                'exec:Run a new command in a running container'
+                'inspect:Display information about one or more containers'
+                'kill:Kill one or more running containers'
+                'list:List containers'
+                'logs:Fetch container stdio or boot logs'
+                'run:Run a container'
+                'start:Start a container'
+                'stop:Stop one or more running containers'
+                'build:Build an image from a Dockerfile'
+                'images:Manage images'
+                'registry:Manage registry configurations'
+                'builder:Manage an image builder instance'
+                'network:Manage container networks'
+                'system:Manage system components'
+                'help:Show subcommand help information.'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (create)
+                    _container_create
+                    ;;
+                (delete)
+                    _container_delete
+                    ;;
+                (exec)
+                    _container_exec
+                    ;;
+                (inspect)
+                    _container_inspect
+                    ;;
+                (kill)
+                    _container_kill
+                    ;;
+                (list)
+                    _container_list
+                    ;;
+                (logs)
+                    _container_logs
+                    ;;
+                (run)
+                    _container_run
+                    ;;
+                (start)
+                    _container_start
+                    ;;
+                (stop)
+                    _container_stop
+                    ;;
+                (build)
+                    _container_build
+                    ;;
+                (images)
+                    _container_images
+                    ;;
+                (registry)
+                    _container_registry
+                    ;;
+                (builder)
+                    _container_builder
+                    ;;
+                (network)
+                    _container_network
+                    ;;
+                (system)
+                    _container_system
+                    ;;
+                (help)
+                    _container_help
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_create() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':image:'
+        ':arguments:'
+        '(--cwd -w --workdir)'{--cwd,-w,--workdir}'[Current working directory for the container]:cwd:'
+        '*'{--env,-e}'[Set environment variables]:env:'
+        '*--env-file[Read in a file of environment variables]:env-file:'
+        '--uid[Set the uid for the process]:uid:'
+        '--gid[Set the gid for the process]:gid:'
+        '(--interactive -i)'{--interactive,-i}'[Keep Stdin open even if not attached]'
+        '(--tty -t)'{--tty,-t}'[Open a tty with the process]'
+        '(--user -u)'{--user,-u}'[Set the user for the process]:user:'
+        '(--cpus -c)'{--cpus,-c}'[Number of CPUs to allocate to the container]:cpus:'
+        '(--memory -m)'{--memory,-m}'[Amount of memory in bytes, kilobytes (K), megabytes (M), or gigabytes (G) for the container, with MB granularity (for example, 1024K will result in 1MB being allocated for the container)]:memory:'
+        '(--detach -d)'{--detach,-d}'[Run the container and detach from the process]'
+        '--entrypoint[Override the entrypoint of the image]:entrypoint:'
+        '*--mount[Add a mount to the container (type=<>,source=<>,target=<>,readonly)]:mount:'
+        '*'{--publish,-p}'[Publish a port from container to host (format: \[host-ip:\]host-port:container-port\[/protocol\])]:publish:'
+        '*--publish-socket[Publish a socket from container to host (format: host_path:container_path)]:publish-socket:'
+        '*--tmpfs[Add a tmpfs mount to the container at the given path]:tmpfs:'
+        '--name[Assign a name to the container. If excluded will be a generated UUID]:name:'
+        '(--remove --rm)'{--remove,--rm}'[Remove the container after it stops]'
+        '--os[Set OS if image can target multiple operating systems]:os:'
+        '(--arch -a)'{--arch,-a}'[Set arch if image can target multiple architectures]:arch:'
+        '*'{--volume,-v}'[Bind mount a volume into the container]:volume:'
+        '(--kernel -k)'{--kernel,-k}'[Set a custom kernel path]:kernel:_files'
+        '*--network[Attach the container to a network]:network:'
+        '--cidfile[Write the container ID to the path provided]:cidfile:'
+        '--no-dns[Do not configure DNS in the container]'
+        '*--dns[DNS nameserver IP address]:dns:'
+        '--dns-domain[Default DNS domain]:dns-domain:'
+        '*--dns-search[DNS search domains]:dns-search:'
+        '*--dns-option[DNS options]:dns-option:'
+        '*'{--label,-l}'[Add a key=value label to the container]:label:'
+        '--virtualization[Expose virtualization capabilities to the container. (Host must have nested virtualization support, and guest kernel must have virtualization capabilities enabled)]'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_delete() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--force -f)'{--force,-f}'[Force the removal of one or more running containers]'
+        '(--all -a)'{--all,-a}'[Remove all containers]'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':container-i-ds:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_exec() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--cwd -w --workdir)'{--cwd,-w,--workdir}'[Current working directory for the container]:cwd:'
+        '*'{--env,-e}'[Set environment variables]:env:'
+        '*--env-file[Read in a file of environment variables]:env-file:'
+        '--uid[Set the uid for the process]:uid:'
+        '--gid[Set the gid for the process]:gid:'
+        '(--interactive -i)'{--interactive,-i}'[Keep Stdin open even if not attached]'
+        '(--tty -t)'{--tty,-t}'[Open a tty with the process]'
+        '(--user -u)'{--user,-u}'[Set the user for the process]:user:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':container-id:'
+        ':arguments:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_inspect() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':containers:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_kill() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--signal -s)'{--signal,-s}'[Signal to send the container(s)]:signal:'
+        '(--all -a)'{--all,-a}'[Kill all running containers]'
+        ':container-i-ds:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_list() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--all -a)'{--all,-a}'[Show stopped containers as well]'
+        '(--quiet -q)'{--quiet,-q}'[Only output the container ID]'
+        '--format[Format of the output]:format:(json table)'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_logs() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '(--follow -f)'{--follow,-f}'[Follow log output]'
+        '--boot[Display the boot log for the container instead of stdio]'
+        '-n[Number of lines to show from the end of the logs. If not provided this will print all of the logs]:n:'
+        ':container:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_run() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--cwd -w --workdir)'{--cwd,-w,--workdir}'[Current working directory for the container]:cwd:'
+        '*'{--env,-e}'[Set environment variables]:env:'
+        '*--env-file[Read in a file of environment variables]:env-file:'
+        '--uid[Set the uid for the process]:uid:'
+        '--gid[Set the gid for the process]:gid:'
+        '(--interactive -i)'{--interactive,-i}'[Keep Stdin open even if not attached]'
+        '(--tty -t)'{--tty,-t}'[Open a tty with the process]'
+        '(--user -u)'{--user,-u}'[Set the user for the process]:user:'
+        '(--cpus -c)'{--cpus,-c}'[Number of CPUs to allocate to the container]:cpus:'
+        '(--memory -m)'{--memory,-m}'[Amount of memory in bytes, kilobytes (K), megabytes (M), or gigabytes (G) for the container, with MB granularity (for example, 1024K will result in 1MB being allocated for the container)]:memory:'
+        '(--detach -d)'{--detach,-d}'[Run the container and detach from the process]'
+        '--entrypoint[Override the entrypoint of the image]:entrypoint:'
+        '*--mount[Add a mount to the container (type=<>,source=<>,target=<>,readonly)]:mount:'
+        '*'{--publish,-p}'[Publish a port from container to host (format: \[host-ip:\]host-port:container-port\[/protocol\])]:publish:'
+        '*--publish-socket[Publish a socket from container to host (format: host_path:container_path)]:publish-socket:'
+        '*--tmpfs[Add a tmpfs mount to the container at the given path]:tmpfs:'
+        '--name[Assign a name to the container. If excluded will be a generated UUID]:name:'
+        '(--remove --rm)'{--remove,--rm}'[Remove the container after it stops]'
+        '--os[Set OS if image can target multiple operating systems]:os:'
+        '(--arch -a)'{--arch,-a}'[Set arch if image can target multiple architectures]:arch:'
+        '*'{--volume,-v}'[Bind mount a volume into the container]:volume:'
+        '(--kernel -k)'{--kernel,-k}'[Set a custom kernel path]:kernel:_files'
+        '*--network[Attach the container to a network]:network:'
+        '--cidfile[Write the container ID to the path provided]:cidfile:'
+        '--no-dns[Do not configure DNS in the container]'
+        '*--dns[DNS nameserver IP address]:dns:'
+        '--dns-domain[Default DNS domain]:dns-domain:'
+        '*--dns-search[DNS search domains]:dns-search:'
+        '*--dns-option[DNS options]:dns-option:'
+        '*'{--label,-l}'[Add a key=value label to the container]:label:'
+        '--virtualization[Expose virtualization capabilities to the container. (Host must have nested virtualization support, and guest kernel must have virtualization capabilities enabled)]'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--disable-progress-updates[Disable progress bar updates]'
+        ':image:'
+        ':arguments:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_start() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--attach -a)'{--attach,-a}'[Attach STDOUT/STDERR]'
+        '(--interactive -i)'{--interactive,-i}'[Attach container'"'"'s STDIN]'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':container-id:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_stop() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--all -a)'{--all,-a}'[Stop all running containers]'
+        '(--signal -s)'{--signal,-s}'[Signal to send the container(s)]:signal:'
+        '(--time -t)'{--time,-t}'[Seconds to wait before killing the container(s)]:time:'
+        ':container-i-ds:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_build() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--cpus -c)'{--cpus,-c}'[Number of CPUs to allocate to the container]:cpus:'
+        '(--memory -m)'{--memory,-m}'[Amount of memory in bytes, kilobytes (K), megabytes (M), or gigabytes (G) for the container, with MB granularity (for example, 1024K will result in 1MB being allocated for the container)]:memory:'
+        '*--build-arg[Set build-time variables]:key=val:'
+        ':context-dir:'
+        '(--file -f)'{--file,-f}'[Path to Dockerfile]:path:'
+        '*'{--label,-l}'[Set a label]:key=val:'
+        '--no-cache[Do not use cache]'
+        '*'{--output,-o}'[Output configuration for the build]:value:'
+        '*--arch[set the build architecture]:value:'
+        '*--os[set the build os]:value:'
+        '--progress[Progress type - one of \[auto|plain|tty\]]:type:'
+        '--vsock-port[Builder-shim vsock port]:port:'
+        '(-t --tag)'{-t,--tag}'[Name for the built image]:name:'
+        '--target[Set the target build stage]:stage:'
+        '(--quiet -q)'{--quiet,-q}'[Suppress build output]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'inspect:Display information about one or more images'
+                'list:List images'
+                'load:Load images from an OCI compatible tar archive'
+                'prune:Remove unreferenced and dangling images'
+                'pull:Pull an image'
+                'push:Push an image'
+                'delete:Remove one or more images'
+                'save:Save an image as an OCI compatible tar archive'
+                'tag:Tag an image'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (inspect)
+                    _container_images_inspect
+                    ;;
+                (list)
+                    _container_images_list
+                    ;;
+                (load)
+                    _container_images_load
+                    ;;
+                (prune)
+                    _container_images_prune
+                    ;;
+                (pull)
+                    _container_images_pull
+                    ;;
+                (push)
+                    _container_images_push
+                    ;;
+                (delete)
+                    _container_images_delete
+                    ;;
+                (save)
+                    _container_images_save
+                    ;;
+                (tag)
+                    _container_images_tag
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_images_inspect() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':images:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_list() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--quiet -q)'{--quiet,-q}'[Only output the image name]'
+        '(--verbose -v)'{--verbose,-v}'[Verbose output]'
+        '--format[Format of the output]:format:(json table)'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_load() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '(--input -i)'{--input,-i}'[Path to the tar archive to load images from]:input:_files'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_prune() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_pull() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        '--disable-progress-updates[Disable progress bar updates]'
+        '--platform[Platform string in the form '"'"'os/arch/variant'"'"'. Example '"'"'linux/arm64/v8'"'"', '"'"'linux/amd64'"'"']:platform:'
+        ':reference:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_push() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        '--disable-progress-updates[Disable progress bar updates]'
+        '--platform[Platform string in the form '"'"'os/arch/variant'"'"'. Example '"'"'linux/arm64/v8'"'"', '"'"'linux/amd64'"'"']:platform:'
+        ':reference:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_delete() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--all -a)'{--all,-a}'[Remove all images]'
+        ':images:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_save() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--platform[Platform string in the form '"'"'os/arch/variant'"'"'. Example '"'"'linux/arm64/v8'"'"', '"'"'linux/amd64'"'"']:platform:'
+        '(--output -o)'{--output,-o}'[Path to save the image tar archive]:output:_files'
+        ':reference:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_images_tag() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':source:'
+        ':target:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_registry() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'login:Login to a registry'
+                'logout:Log out from a registry'
+                'default:Manage the default image registry'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (login)
+                    _container_registry_login
+                    ;;
+                (logout)
+                    _container_registry_logout
+                    ;;
+                (default)
+                    _container_registry_default
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_registry_login() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--username -u)'{--username,-u}'[Username]:username:'
+        '--password-stdin[Take the password from stdin]'
+        ':server:'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_registry_logout() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':registry:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_registry_default() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'set:Set the default registry'
+                'unset:Unset the default registry'
+                'inspect:Display the default registry domain'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (set)
+                    _container_registry_default_set
+                    ;;
+                (unset)
+                    _container_registry_default_unset
+                    ;;
+                (inspect)
+                    _container_registry_default_inspect
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_registry_default_set() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--scheme[Scheme to use when connecting to the container registry. One of (http, https, auto)]:scheme:'
+        ':host:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_registry_default_unset() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_registry_default_inspect() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_builder() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'start:Start builder'
+                'status:Print builder status'
+                'stop:Stop builder'
+                'delete:Delete builder'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (start)
+                    _container_builder_start
+                    ;;
+                (status)
+                    _container_builder_status
+                    ;;
+                (stop)
+                    _container_builder_stop
+                    ;;
+                (delete)
+                    _container_builder_delete
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_builder_start() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--cpus -c)'{--cpus,-c}'[Number of CPUs to allocate to the container]:cpus:'
+        '(--memory -m)'{--memory,-m}'[Amount of memory in bytes, kilobytes (K), megabytes (M), or gigabytes (G) for the container, with MB granularity (for example, 1024K will result in 1MB being allocated for the container)]:memory:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_builder_status() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--json[Display detailed status in json format]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_builder_stop() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_builder_delete() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--force -f)'{--force,-f}'[Force delete builder even if it is running]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_network() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'create:Create a new network'
+                'delete:Delete one or more networks'
+                'list:List networks'
+                'inspect:Display information about one or more networks'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (create)
+                    _container_network_create
+                    ;;
+                (delete)
+                    _container_network_delete
+                    ;;
+                (list)
+                    _container_network_list
+                    ;;
+                (inspect)
+                    _container_network_inspect
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_network_create() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':name:'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_network_delete() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--all -a)'{--all,-a}'[Remove all networks]'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':network-names:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_network_list() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--quiet -q)'{--quiet,-q}'[Only output the network name]'
+        '--format[Format of the output]:format:(json table)'
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_network_inspect() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        ':networks:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'dns:Manage local DNS domains'
+                'logs:Fetch system logs for `container` services'
+                'start:Start `container` services'
+                'stop:Stop all `container` services'
+                'status:Show the status of `container` services'
+                'kernel:Manage the default kernel configuration'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (dns)
+                    _container_system_dns
+                    ;;
+                (logs)
+                    _container_system_logs
+                    ;;
+                (start)
+                    _container_system_start
+                    ;;
+                (stop)
+                    _container_system_stop
+                    ;;
+                (status)
+                    _container_system_status
+                    ;;
+                (kernel)
+                    _container_system_kernel
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_system_dns() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'create:Create a local DNS domain for containers (must run as an administrator)'
+                'delete:Delete a local DNS domain (must run as an administrator)'
+                'list:List local DNS domains'
+                'default:Set or unset the default local DNS domain'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (create)
+                    _container_system_dns_create
+                    ;;
+                (delete)
+                    _container_system_dns_delete
+                    ;;
+                (list)
+                    _container_system_dns_list
+                    ;;
+                (default)
+                    _container_system_dns_default
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_system_dns_create() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':domain-name:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_dns_delete() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':domain-name:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_dns_list() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_dns_default() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'set:Set the default local DNS domain'
+                'unset:Unset the default local DNS domain'
+                'inspect:Display the default local DNS domain'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (set)
+                    _container_system_dns_default_set
+                    ;;
+                (unset)
+                    _container_system_dns_default_unset
+                    ;;
+                (inspect)
+                    _container_system_dns_default_inspect
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_system_dns_default_set() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':domain-name:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_dns_default_unset() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_dns_default_inspect() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_logs() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--debug[Enable debug output \[environment: CONTAINER_DEBUG\]]'
+        '--last[Fetch logs starting from the specified time period (minus the current time); supported formats: m, h, d]:last:'
+        '(--follow -f)'{--follow,-f}'[Follow log output]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_start() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--path -p)'{--path,-p}'[Path to the `container-apiserver` binary]:path:'
+        '--debug[Enable debug logging for the runtime daemon.]'
+        '--enable-kernel-install[Specify whether the default kernel should be installed or not. The default behavior is to prompt the user for a response.]'
+        '--disable-kernel-install[Specify whether the default kernel should be installed or not. The default behavior is to prompt the user for a response.]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_stop() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--prefix -p)'{--prefix,-p}'[Launchd prefix for `container` services]:prefix:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_status() {
+    integer ret=1
+    local -a args
+    args+=(
+        '(--prefix -p)'{--prefix,-p}'[Launchd prefix for `container` services]:prefix:'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_system_kernel() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+        '(-): :->command'
+        '(-)*:: :->arg'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+    case $state in
+        (command)
+            local subcommands
+            subcommands=(
+                'set:Set the default kernel'
+            )
+            _describe "subcommand" subcommands
+            ;;
+        (arg)
+            case ${words[1]} in
+                (set)
+                    _container_system_kernel_set
+                    ;;
+            esac
+            ;;
+    esac
+
+    return ret
+}
+
+_container_system_kernel_set() {
+    integer ret=1
+    local -a args
+    args+=(
+        '--binary[Path to the binary to set as the default kernel. If used with --tar, this points to a location inside the tar]:binary:'
+        '--tar[Filesystem path or remote URL to a tar ball that contains the kernel to use]:tar:'
+        '--arch[The architecture of the kernel binary. One of (amd64, arm64)]:arch:'
+        '--recommended[Download and install the recommended kernel as the default. This flag ignores any other arguments]'
+        '--version[Show the version.]'
+        '(-h --help)'{-h,--help}'[Show help information.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+_container_help() {
+    integer ret=1
+    local -a args
+    args+=(
+        ':subcommands:'
+        '--version[Show the version.]'
+    )
+    _arguments -w -s -S $args[@] && ret=0
+
+    return ret
+}
+
+
+_custom_completion() {
+    local completions=("${(@f)$($*)}")
+    _describe '' completions
+}
+
+_container
