@@ -9,5 +9,5 @@ if [ -z "$1" ]; then
 fi
 
 
-lsof -nP -iTCP:"$1" | grep LISTEN
+lsof -nP -iTCP:"$1" -iUDP:"$1" | grep "$1"
 
