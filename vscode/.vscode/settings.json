@@ -257,13 +257,14 @@
     "a11y-distracting-elements": "ignore",
     "a11y-structure": "ignore",
     "a11y-mouse-events-have-key-events": "ignore",
-    "a11y-missing-content": "ignore",
-    "dotnet.codeLens.enableReferencesCodeLens": true,
-    "dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
-    "dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
-    "dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
-    "dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
-    "dotnet.inlayHints.enableInlayHintsForParameters": true,
-    "dotnet.automaticallySyncWithActiveItem": true
-  }
+    "a11y-missing-content": "ignore"
+  },
+  "dotnet.codeLens.enableReferencesCodeLens": true,
+  "dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
+  "dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
+  "dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
+  "dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
+  "dotnet.inlayHints.enableInlayHintsForParameters": true,
+  "dotnet.automaticallySyncWithActiveItem": true
 }
+
