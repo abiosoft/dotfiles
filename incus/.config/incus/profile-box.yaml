@@ -52,15 +52,6 @@ config:
     - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
 description: Ubuntu with cloud-init and Wayland/X sharing
 devices:
-  dotfiles:
-    path: /dotfiles
-    source: /home/abiola/dotfiles
-    type: disk
-    readonly: true
-  downloads:
-    path: /downloads
-    source: /home/abiola/Downloads
-    type: disk
   mic:
     gid: "44"
     path: /dev/snd/controlC0
