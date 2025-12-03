@@ -44,12 +44,11 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 # dotNet
 export DOTNET_ROOT="$HOME/.dotnet"
-if [ -z "$HOMEBREW_PREFIX" ]; then
-  [ -f $HOME/.nix-profile/bin/dotnet ] && export DOTNET_ROOT="$(dirname $(realpath $HOME/.nix-profile/bin/dotnet))"
-else
-  export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
-fi
 export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
+if [ -n "$HOMEBREW_PREFIX" ]; then
+  export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet/libexec"
+  export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
+fi
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
