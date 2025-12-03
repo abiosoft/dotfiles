@@ -1,55 +1,9 @@
 dotfiles
 ========
 
-Dotfiles managed with Stow for Nix or Brew
+Dotfiles managed with Stow for Brew
 
 ![Screenshot](screenshots/screenshot.png)
-
-## Nix
-
-### Prerequisite
-
-Install Nix.
-
-```sh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-### Installation
-
-`cd` into repository and setup dotfiles
-
-```
-nix run nixpkgs#stow bat bin git ideavim neovim nix tmux zsh
-```
-
-Pin the current nixpkgs version to avoid repetitive registry downloads
-
-```
-nix registry pin nixpkgs
-
-# to update the pinned nix version later on
-#   nix flake update --flake path:$HOME/dotfiles/nix/.config/nix/
-```
-
-Install packages.
-
-```
-nix profile install path:$HOME/dotfiles/nix/.config/nix/
-```
-
-### Declarative Nix packages
-
-```sh
-# create a copy of sample packages file
-cp ~/.config/nix/packages.sample.nix ~/.config/nix/packages.nix
-
-# edit packages file to add extra packages
-vim ~/.config/nix/packages.nix
-
-# run the `nix-switch` alias
-nix-switch
-```
 
 ## Brew
 
