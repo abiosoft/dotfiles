@@ -73,3 +73,8 @@ fi
 if uname -a | grep VMAPPLE >/dev/null; then
   export DOCKER_HOST="ssh://colima"
 fi
+
+# vpns
+# vpn
+alias vpn='sudo openvpn ~/vpns/"$(ls ~/vpns | fzf)"'
+
