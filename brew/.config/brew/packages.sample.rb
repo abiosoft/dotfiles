@@ -20,20 +20,25 @@ brew "zig"
 brew "dotnet"
 
 # container/devops"
+brew "docker"
+brew "docker-compose"
+brew "docker-buildx"
+brew "kubectl"
+brew "kubectx"
 brew "docker-credential-helper"
 brew "docker-credential-helper-ecr"
 brew "buildkit"
 brew "helm"
 brew "kind"
 brew "pack"
-cask "google-cloud-sdk"
+cask "gcloud-cli"
 
 # virtualization
 brew "qemu"
 
 # misc
+brew "yt-dlp"
 brew "gh"
-brew "telnet"
-brew "overmind"
 brew "neofetch"
 brew "caddy"
+

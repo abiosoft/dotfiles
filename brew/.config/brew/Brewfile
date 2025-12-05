@@ -13,7 +13,7 @@ brew "bat"
 brew "tmux"
 brew "neovim"
 brew "tree"
-brew "stow"
+brew "stow" unless in_path? "stow"
 brew "zsh" unless in_path? "zsh"
 
 # utils
@@ -27,21 +27,10 @@ brew "ripgrep"
 brew "the_silver_searcher"
 brew "git" unless in_path? "git"
 brew "git-delta"
-brew "gnupg"
 brew "socat"
 
 # internet
-brew "yt-dlp"
-brew "wget"
-brew "axel"
 brew "curl" unless in_path? "curl"
-
-# container/devops"
-brew "docker"
-brew "docker-compose"
-brew "docker-buildx"
-brew "kubectl"
-brew "kubectx"
 
 # load extra packages if exists
 packages_file = File.join(ENV["HOME"], ".config/brew/packages.rb")
@@ -49,8 +38,6 @@ if File.exist? packages_file
     p = File.open(packages_file, 'r').read
     eval(p)
 end
-
-# custom packages
 
 # oh-my-zsh
 unless system("(cd ~/.oh-my-zsh && git status) > /dev/null 2>&1")
