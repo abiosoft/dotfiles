@@ -12,6 +12,10 @@
   "debug.console.fontFamily": "JetBrains Mono",
   "terminal.integrated.fontFamily": "JetBrains Mono",
   "debug.console.fontSize": 15,
+  "chat.fontSize": 15,
+  "chat.editor.fontSize": 15,
+  "chat.editor.fontFamily": "JetBrains Mono",
+  "chat.disableAIFeatures": true,
   "editor.cursorBlinking": "solid",
   "editor.fontLigatures": true,
   "editor.minimap.enabled": false,
@@ -265,6 +269,8 @@
   "dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
   "dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
   "dotnet.inlayHints.enableInlayHintsForParameters": true,
-  "dotnet.automaticallySyncWithActiveItem": true
+  "dotnet.automaticallySyncWithActiveItem": true,
+  "java.inlayHints.parameterNames.enabled": "all",
+  "claudeCode.preferredLocation": "panel"
 }
 
