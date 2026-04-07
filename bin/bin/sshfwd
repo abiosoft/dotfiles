@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Usage: ./forward.sh <REMOTE_USER@SERVER> <LOCAL_PORT> <REMOTE_IP:PORT>
+
+SSH_SERVER=$1
+LOCAL_PORT=$2
+DESTINATION=$3
+
+# Check if all three arguments are present
+if [[ -z "$SSH_SERVER" || -z "$LOCAL_PORT" || -z "$DESTINATION" ]]; then
+    echo "Usage: $0 <ssh_user@server> <local_port> <destination_ip:port>"
+    echo "Example: $0 user@myserver.com 8080 127.0.0.1:3000"
+    exit 1
+fi
+
+echo "Connecting to $SSH_SERVER..."
+echo "Tunneling: localhost:$LOCAL_PORT ===> $SSH_SERVER ===> $DESTINATION"
+echo "Press Ctrl+C to terminate the connection."
+
+# -N: No remote command (blocking mode)
+# -L: [local_port]:[remote_ip]:[remote_port]
+ssh -N -L "$LOCAL_PORT:$DESTINATION" "$SSH_SERVER"
+
