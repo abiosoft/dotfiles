@@ -14,10 +14,11 @@ if [[ -z "$SSH_SERVER" || -z "$LOCAL_PORT" || -z "$DESTINATION" ]]; then
 fi
 
 echo "Connecting to $SSH_SERVER..."
-echo "Tunneling: localhost:$LOCAL_PORT ===> $SSH_SERVER ===> $DESTINATION"
+echo "Tunneling: $LOCAL_PORT ===> $SSH_SERVER ===> $DESTINATION"
 echo "Press Ctrl+C to terminate the connection."
 
 # -N: No remote command (blocking mode)
 # -L: [local_port]:[remote_ip]:[remote_port]
-ssh -N -L "$LOCAL_PORT:$DESTINATION" "$SSH_SERVER"
+# -S none: don't use controlmaster
+ssh -N -S none -L "$LOCAL_PORT:$DESTINATION" "$SSH_SERVER"
 
