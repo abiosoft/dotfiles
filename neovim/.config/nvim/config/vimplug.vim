@@ -27,6 +27,9 @@ else
   endif
 endif
 
+" Use shallow clones
+let g:plug_shallow = 1
+
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
 
@@ -40,17 +43,11 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'fatih/vim-go'
-Plug 'LnL7/vim-nix'
-Plug 'fatih/vim-hclfmt'
-Plug 'hashivim/vim-nomadproject'
-Plug 'hashivim/vim-terraform'
 Plug 'ziglang/zig.vim'
-Plug 'github/copilot.vim'
 Plug 'ojroques/vim-oscyank'
 
 if has('nvim')
