@@ -11,7 +11,7 @@ kind: storage-volume
 pool: ${STORAGE_POOL}
 name: ${NAME}-docker
 config:
-  size: 50GB
+  size: 50GiB
   zfs.block_mode: "true"
 ---
 kind: instance
@@ -48,5 +48,5 @@ config:
         encoding: b64
     runcmd:
       - [sudo, -u, abiola, -H, /tmp/brew.sh]
-    timezone: Africa/Lagos # change accordingly if needed
+    timezone: Africa/Lagos
 description: Debian instance
