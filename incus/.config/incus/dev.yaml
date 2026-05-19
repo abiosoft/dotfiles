@@ -23,6 +23,7 @@ devices:
     pool: ${STORAGE_POOL}
     source: ${NAME}-docker
     path: /var/lib/docker
+    dependent: "true"
 config:
   security.nesting: "true"
   cloud-init.user-data:
