@@ -1,7 +1,5 @@
 # ZSH
-if [ -z "$HOMEBREW_PREFIX" ]; then
-  export ZSH="$HOME/.nix-profile/share/oh-my-zsh"
-else
+if [ -n "$HOMEBREW_PREFIX" ]; then
   export ZSH="$HOME/.oh-my-zsh"
   export HOMEBREW_NO_AUTO_UPDATE=1
   export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
@@ -28,8 +26,6 @@ export PATH="$PATH:$HOME/bin"
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
 alias brew-switch='brew bundle install -v --force --cleanup --file ~/.config/brew/Brewfile'
-alias nix-switch='DRV="$(nix build path:$HOME/dotfiles/nix/.config/nix/ --print-out-paths --no-link)" && nix profile remove --all 2>/dev/null && nix profile install "$DRV"'
-alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
@@ -64,11 +60,6 @@ export GPG_TTY=$(tty)
 alias cat='bat'
 export BAT_THEME="tomorrow-night"
 export PAGER="bat"
-
-# nix shell
-if echo $PATH | grep -q "/nix/store"; then
-  export IN_NIX_SHELL="true"
-fi
 
 # mac VMs
 if uname -a | grep VMAPPLE >/dev/null; then
