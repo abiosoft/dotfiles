@@ -4,6 +4,7 @@ if [ -z "$HOMEBREW_PREFIX" ]; then
 else
   export ZSH="$HOME/.oh-my-zsh"
   export HOMEBREW_NO_AUTO_UPDATE=1
+  export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
 fi
 
 ZSH_CUSTOM="$HOME/.config/my-zsh"
@@ -26,7 +27,7 @@ export PATH="$PATH:$HOME/bin"
 # aliases
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
-alias brew-switch='brew bundle install -v --cleanup --file ~/.config/brew/Brewfile'
+alias brew-switch='brew bundle install -v --force --cleanup --file ~/.config/brew/Brewfile'
 alias nix-switch='DRV="$(nix build path:$HOME/dotfiles/nix/.config/nix/ --print-out-paths --no-link)" && nix profile remove --all 2>/dev/null && nix profile install "$DRV"'
 alias colima-shell='nix-shell -p $(nix-build ~/projects/golang/colima)'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
