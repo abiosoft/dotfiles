@@ -49,6 +49,7 @@ Plug 'junegunn/gv.vim'
 Plug 'fatih/vim-go'
 Plug 'ziglang/zig.vim'
 Plug 'ojroques/vim-oscyank'
+Plug 'https://codeberg.org/ziglang/zig.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
