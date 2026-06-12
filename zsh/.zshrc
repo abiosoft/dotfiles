@@ -25,7 +25,7 @@ export PATH="$PATH:$HOME/bin"
 # aliases
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
-alias brew-switch='brew bundle install -v --force --cleanup --file ~/.config/brew/Brewfile'
+alias brew-switch='brew bundle install -v --force --force-cleanup --file ~/.config/brew/Brewfile'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
