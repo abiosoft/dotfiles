@@ -9,10 +9,10 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # clone dotfiles
-git clone https://github.com/abiosoft/dotfiles ~/.dotfiles --depth 1
+git clone https://github.com/abiosoft/dotfiles ~/dotfiles --depth 1
 
 # stow dotfiles
-(cd ~/.dotfiles && stow bat brew bin git ideavim neovim tmux zsh)
+(cd ~/dotfiles && stow bat brew bin git neovim tmux zsh)
 
 # install brew packages
 brew bundle -v --file ~/.config/brew/Brewfile

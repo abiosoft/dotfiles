@@ -1,29 +1,22 @@
-# export SSH_PUBLIC_KEY="$(cat ~/.ssh/id_ed25519.pub)"
 kind: vars
 vars:
-  SSH_PUBLIC_KEY: $SSH_PUBLIC_KEY
+  SSH_PUBLIC_KEY: $SSH_PUBLIC_KEY # export SSH_PUBLIC_KEY="$(cat ~/.ssh/id_ed25519.pub)"
   STORAGE_POOL: ${STORAGE_POOL:-default}
   NAME: ${NAME:-dev}
+  VM: ${VM:-false}
 computed:
   BREW_SCRIPT: { file: brew.sh, format: base64 }
----
-kind: storage-volume
-pool: ${STORAGE_POOL}
-name: ${NAME}-docker
-config:
-  size: 50GiB
-  zfs.block_mode: "true"
 ---
 kind: instance
 name: ${NAME}
 image: images:debian/13/cloud
+vm: "${VM}"
 devices:
-  docker:
+  root:
     type: disk
     pool: ${STORAGE_POOL}
-    source: ${NAME}-docker
-    path: /var/lib/docker
-    dependent: "true"
+    path: /
+    size: 60GiB
 config:
   security.nesting: "true"
   cloud-init.user-data:
@@ -38,7 +31,7 @@ config:
         shell: /bin/bash
         lock_passwd: true
         gecos: Abiola
-        groups: [docker, sudo, wheel]
+        groups: [docker, sudo, wheel, kvm]
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
           - ${SSH_PUBLIC_KEY}
