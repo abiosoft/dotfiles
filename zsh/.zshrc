@@ -11,7 +11,6 @@ CASE_SENSITIVE="true"
 
 plugins=(
   git
-  command-not-found
   docker
   docker-compose
   kubectl
