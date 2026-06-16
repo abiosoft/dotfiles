@@ -50,6 +50,12 @@ brew-switch
 
 ## Apt (Ubuntu/Debian)
 
+### Prerequisite
+
+Ubuntu, Debian or any derivatives of either.
+
+### Installation
+
 Install Stow
 
 ```
