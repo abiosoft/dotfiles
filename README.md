@@ -26,7 +26,7 @@ brew install stow
 Setup dotfiles
 
 ```
-stow bat brew bin git ideavim neovim tmux zsh
+stow bat brew bin git neovim tmux zsh
 ```
 
 Install packages
