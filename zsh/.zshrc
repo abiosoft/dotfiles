@@ -1,8 +1,7 @@
 # ZSH
-if [ -n "$HOMEBREW_PREFIX" ]; then
-  export ZSH="$HOME/.oh-my-zsh"
-  export HOMEBREW_NO_AUTO_UPDATE=1
-  export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
+CUSTOM_ZSH="$HOME/.oh-my-zsh"
+if [ -d "$CUSTOM_ZSH" ]; then
+  export ZSH="$CUSTOM_ZSH"
 fi
 
 ZSH_CUSTOM="$HOME/.config/my-zsh"
@@ -18,6 +17,12 @@ plugins=(
 
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 
+# brew
+if [ -n "$HOMEBREW_PREFIX" ]; then
+  export HOMEBREW_NO_AUTO_UPDATE=1
+  export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
+fi
+
 # personal scripts
 export PATH="$PATH:$HOME/bin"
 
@@ -25,6 +30,7 @@ export PATH="$PATH:$HOME/bin"
 alias vim='nvim'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
 alias brew-switch='brew bundle install -v --force --force-cleanup --file ~/.config/brew/Brewfile'
+alias apt-switch='bash ~/.config/my-apt/core.sh'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 

@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-Dotfiles managed with Stow for Brew
+Dotfiles managed with Stow for Brew (or Apt)
 
 ![Screenshot](screenshots/screenshot.png)
 
@@ -48,3 +48,35 @@ vim ~/.config/brew/packages.rb
 brew-switch
 ```
 
+## Apt (Ubuntu/Debian)
+
+Install Stow
+
+```
+sudo apt install stow
+```
+
+Setup dotfiles
+
+```
+stow apt bat bin git neovim tmux zsh
+```
+
+Install packages
+
+```sh
+bash ~/.config/my-apt/core.sh
+```
+
+### Additional Packages
+
+```sh
+# create a copy of the sample packages file
+cp ~/.config/my-apt/packages.sample.sh ~/.config/my-apt/packages.sh
+
+# edit packages file to add extra packages
+vim ~/.config/my-apt/packages.sh
+
+# run the `apt-switch` alias
+apt-switch
+```
