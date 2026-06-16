@@ -9,25 +9,25 @@ def in_path?(command)
 end
 
 # shell
-brew "bat"
-brew "tmux"
-brew "neovim"
-brew "tree"
+brew "bat" unless in_path? "bat"
+brew "tmux" unless in_path? "tmux"
+brew "neovim" unless in_path? "nvim"
+brew "tree" unless in_path? "tree"
 brew "stow" unless in_path? "stow"
 brew "zsh" unless in_path? "zsh"
 
 # utils
-brew "jq"
-brew "yq"
-brew "tree"
-brew "htop"
-brew "fzf"
-brew "watch"
-brew "ripgrep"
-brew "the_silver_searcher"
+brew "jq" unless in_path? "jq"
+brew "yq" unless in_path? "yq"
+brew "tree" unless in_path? "tree"
+brew "htop" unless in_path? "htop"
+brew "fzf" unless in_path? "fzf"
+brew "watch" unless in_path? "watch"
+brew "ripgrep" unless in_path? "rg"
+brew "the_silver_searcher" unless in_path? "ag"
 brew "git" unless in_path? "git"
-brew "git-delta"
-brew "socat"
+brew "git-delta" unless in_path? "delta"
+brew "socat" unless in_path? "socat"
 
 # internet
 brew "curl" unless in_path? "curl"
