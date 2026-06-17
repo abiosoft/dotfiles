@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-Dotfiles managed with Stow for Brew (or Apt)
+Dotfiles managed with Stow for Brew, Apt, or Dnf
 
 ![Screenshot](screenshots/screenshot.png)
 
@@ -85,4 +85,43 @@ vim ~/.config/my-apt/packages.sh
 
 # run the `apt-switch` alias
 apt-switch
+```
+
+## Dnf (Fedora/RHEL)
+
+### Prerequisite
+
+Fedora, RHEL or any derivatives of either.
+
+### Installation
+
+Install Stow
+
+```
+sudo dnf install stow
+```
+
+Setup dotfiles
+
+```
+stow dnf bat bin git neovim tmux zsh
+```
+
+Install packages
+
+```sh
+bash ~/.config/my-dnf/core.sh
+```
+
+### Additional Packages
+
+```sh
+# create a copy of the sample packages file
+cp ~/.config/my-dnf/packages.sample.sh ~/.config/my-dnf/packages.sh
+
+# edit packages file to add extra packages
+vim ~/.config/my-dnf/packages.sh
+
+# run the `dnf-switch` alias
+dnf-switch
 ```
