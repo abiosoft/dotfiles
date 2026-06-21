@@ -21,6 +21,7 @@ CORE_PACKAGES=(
     jq
     yq
     htop
+    btop
     fzf
     watch
     ripgrep
