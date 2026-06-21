@@ -1,9 +1,7 @@
 dotfiles
 ========
 
-Dotfiles managed with Stow for Brew, Apt, or Dnf
-
-![Screenshot](screenshots/screenshot.png)
+Dotfiles managed with Stow for Brew, Apt or Dnf
 
 ## Brew
 
