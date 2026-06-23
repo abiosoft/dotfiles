@@ -76,7 +76,9 @@ preexec() {
 }
 
 print_host() {
-    # [ "$(hostname)" != "localhost" ] && echo "[$(hostname)] "
+    if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
+        echo "[ssh:$(hostname)] "
+    fi
 }
 
 # Output additional information about paths, repos and exec time
@@ -98,8 +100,8 @@ color() {
 # Define prompts
 #
 PROMPT="%(?.%F{$(color)}.%F{red})$%f " # Display a red prompt char on failure
-#PROMPT="`cprp`❯ " # Display a red prompt char on failure
-RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f" # Display username if connected via SSH
+# PROMPT="`cprp`❯ " # Display a red prompt char on failure
+# RPROMPT="%F{$(color)}${SSH_TTY:+%n@%m}%f" # Display username if connected via SSH
 
 # ------------------------------------------------------------------------------
 #
