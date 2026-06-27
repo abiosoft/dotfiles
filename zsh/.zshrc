@@ -33,6 +33,7 @@ alias brew-switch='brew bundle install -v --force --force-cleanup --file ~/.conf
 alias apt-switch='bash ~/.config/my-apt/core.sh'
 alias dnf-switch='bash ~/.config/my-dnf/core.sh'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
+alias incus-mode="INCUS_MODE=1 $SHELL"
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor

@@ -81,11 +81,17 @@ print_host() {
     fi
 }
 
+print_incus_remote() {
+    if [ -n "$INCUS_MODE" ]; then
+        echo "[incus: $(incus remote get-default)] "
+    fi
+}
+
 # Output additional information about paths, repos and exec time
 #
 precmd() {
     vcs_info # Get version control info before we start outputting stuff
-    print -P "\n$(print_host)$(repo_information) %F{yellow}$(cmd_exec_time)%f"
+    print -P "\n$(print_host)$(print_incus_remote)$(repo_information) %F{yellow}$(cmd_exec_time)%f"
 }
 
 # gnome builder terminal hack
