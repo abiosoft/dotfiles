@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# 1. Create a temporary directory
+INCUS_TMP_DIR=$(mktemp -d)
+
+# 2. Guarantee cleanup
+# This deletes the directory when the script exits, even if it errors or gets interrupted (SIGINT/SIGTERM)
+trap 'rm -rf "$INCUS_TMP_DIR"' EXIT INT TERM
+
+# 3. Copy the incus configuration file to the temporary directory
+# The path on macOS is different from Linux, so we handle both cases
+MACOS_INCUS_DIR="$HOME/Library/Application Support/incus"
+if [ -d "$MACOS_INCUS_DIR" ]; then
+  cp -r "$MACOS_INCUS_DIR/." "$INCUS_TMP_DIR/."
+else
+  cp -r "$HOME/.config/incus/." "$INCUS_TMP_DIR/."
+fi
+
+# 4. Ensure no other user can read the temporary directory
+chown -R "$USER" "$INCUS_TMP_DIR"
+chmod -R 700 "$INCUS_TMP_DIR"
+
+# 5. Pass the path to a subshell via an environment variable
+INCUS_CONF="$INCUS_TMP_DIR" $SHELL
