@@ -3,24 +3,24 @@
 # Usage: ./sshsocks <REMOTE_USER@SERVER> <LOCAL_PORT>
 
 SSH_SERVER=$1
-LOCAL_PORT=${2:-1080}
+LOCAL_ADDRESS=${2:-"127.0.0.1:1080"}
 
 # Check if SSH_SERVER is provided
 if [[ -z "$SSH_SERVER" ]]; then
-    echo "Usage: $0 <ssh_user@server> [local_port]"
-    echo "Example: $0 user@myserver.com 1080"
+    echo "Usage: $0 <ssh_user@server> [local_address]"
+    echo "Example: $0 user@myserver.com 127.0.0.1:1080"
     echo ""
     echo "Sets up a SOCKS5 proxy via SSH tunnel."
-    echo "Default listen port: 1080"
+    echo "Default listen address: 127.0.0.1:1080"
     exit 1
 fi
 
 echo "Connecting to $SSH_SERVER..."
-echo "SOCKS5 Proxy: localhost:$LOCAL_PORT ===> $SSH_SERVER"
+echo "SOCKS5 Proxy: $LOCAL_ADDRESS ===> $SSH_SERVER"
 echo "Press Ctrl+C to terminate the connection."
 
 # -N: No remote command (blocking mode)
 # -D: [bind_address:]local_port (SOCKS5 proxy)
 # -S none: don't use controlmaster
-ssh -N -S none -D "127.0.0.1:$LOCAL_PORT" "$SSH_SERVER"
+ssh -N -S none -D "$LOCAL_ADDRESS" "$SSH_SERVER"
 
