@@ -82,7 +82,7 @@ print_host() {
 }
 
 print_incus_remote() {
-    if [ -n "$INCUS_MODE" ]; then
+    if [ -n "$INCUS_CONF" ]; then
         echo "[incus: $(incus remote get-default)] "
     fi
 }
