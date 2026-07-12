@@ -9,6 +9,7 @@
   {
     "context": "Editor",
     "bindings": {
+      "cmd-g": "outline::Toggle",
       "cmd-d": "editor::MovePageDown",
       "cmd-u": "editor::MovePageUp",
       "cmd-o": "pane::GoBack",
