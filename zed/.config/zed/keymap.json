@@ -9,8 +9,8 @@
   {
     "context": "Editor",
     "bindings": {
-      "cmd-d": "editor::PageDown",
-      "cmd-u": "editor::PageUp",
+      "cmd-d": "editor::MovePageDown",
+      "cmd-u": "editor::MovePageUp",
       "cmd-o": "pane::GoBack",
       "cmd-j": "editor::MoveDown",
       "cmd-k": "editor::MoveUp",
