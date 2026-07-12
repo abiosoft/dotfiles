@@ -1,0 +1,138 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "git_panel": {
+    "dock": "left",
+  },
+  "diff_view_style": "split",
+  "project_panel": {
+    "dock": "left",
+  },
+  "vim_mode": true,
+  "terminal": {
+    "font_size": 14.0,
+    "font_family": "JetBrains Mono",
+    "copy_on_select": true,
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "global_lsp_settings": {
+    "semantic_token_rules": [
+      {
+        "token_type": "*",
+        "token_modifiers": [],
+        "style": [],
+        "foreground_color": null,
+        "background_color": null,
+        "underline": null,
+        "strikethrough": null,
+        "font_weight": "normal",
+        "font_style": null,
+      },
+      {
+        "token_type": "modifier",
+        "token_modifiers": [],
+        "style": [],
+        "foreground_color": null,
+        "background_color": null,
+        "underline": null,
+        "strikethrough": null,
+        "font_weight": "bold",
+        "font_style": null,
+      },
+      {
+        "token_type": "keyword",
+        "token_modifiers": [],
+        "style": [],
+        "foreground_color": null,
+        "background_color": null,
+        "underline": null,
+        "strikethrough": null,
+        "font_weight": "bold",
+        "font_style": null,
+      },
+      {
+        "token_type": "*.static",
+        "token_modifiers": [],
+        "style": [],
+        "foreground_color": null,
+        "background_color": null,
+        "underline": null,
+        "strikethrough": null,
+        "font_weight": "bold",
+        "font_style": null,
+      },
+    ],
+  },
+  "base_keymap": "VSCode",
+  "tab_bar": {
+    "show": true,
+  },
+  "relative_line_numbers": "enabled",
+  "gutter": {
+    "line_numbers": true,
+  },
+  "minimap": {
+    "show": "never",
+  },
+  "cursor_blink": false,
+  "use_system_window_tabs": true,
+  "buffer_font_family": "JetBrains Mono",
+  "ui_font_family": ".SystemUIFont",
+  "colorize_brackets": false,
+  "show_whitespaces": "boundary",
+  "ensure_final_newline_on_save": true,
+  "wrap_guides": [120],
+  "soft_wrap": "none",
+  "agent_servers": {},
+  "ui_font_size": 16,
+  "buffer_font_size": 14,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark",
+  },
+  "languages": {
+    "Zig": {
+      "code_actions_on_format": {
+        // Run code actions that currently supports adding and removing discards.
+        // "source.fixAll": true,
+        // Run code actions that sorts @import declarations.
+        // "source.organizeImports": true,
+      },
+    },
+  },
+  "lsp": {
+    "zls": {
+      "binary": {
+        // omit the following line if `zls` is in your PATH
+        // "path": "/path/to/zls_executable",
+      },
+      // There are two ways to set config options:
+      //   - edit your `zls.json` that applies to any editor that uses ZLS
+      //   - set in-editor config options with the `settings` field below.
+      //
+      // Further information on how to configure ZLS:
+      // https://zigtools.org/zls/configure/
+      "settings": {
+        "zls": {
+          // Whether to enable build-on-save diagnostics
+          //
+          // Further information about build-on save:
+          // https://zigtools.org/zls/guides/build-on-save/
+          // "enable_build_on_save": true,
+          // omit the following line if `zig` is in your PATH
+          // "zig_exe_path": "/path/to/zig_executable",
+        },
+      },
+    },
+  },
+}

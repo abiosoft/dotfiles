@@ -1,0 +1,53 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-d": "editor::PageDown",
+      "cmd-u": "editor::PageUp",
+      "cmd-o": "pane::GoBack",
+      "cmd-j": "editor::MoveDown",
+      "cmd-k": "editor::MoveUp",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "cmd-v": "vim::SwitchToVisualBlockMode",
+    },
+  },
+  {
+    "context": "Editor && autocomplete",
+    "bindings": {
+      "cmd-j": "menu::SelectNext",
+      "cmd-k": "menu::SelectPrevious",
+    },
+  },
+  {
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "cmd-j": "editor::ContextMenuNext",
+      "cmd-k": "editor::ContextMenuPrevious",
+    },
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "shift-cmd-c": "terminal::Copy",
+      "shift-cmd-v": "terminal::Paste",
+      "cmd-c": ["terminal::SendKeystroke", "ctrl-c"],
+      "cmd-d": ["terminal::SendKeystroke", "ctrl-d"],
+      "cmd-a": ["terminal::SendKeystroke", "ctrl-a"],
+      "cmd-e": ["terminal::SendKeystroke", "ctrl-e"],
+      "cmd-l": ["terminal::SendKeystroke", "ctrl-l"],
+      "cmd-r": ["terminal::SendKeystroke", "ctrl-r"],
+      "cmd-s": ["terminal::SendKeystroke", "ctrl-s"],
+    },
+  },
+]
