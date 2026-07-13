@@ -107,6 +107,10 @@
     "light": "One Light",
     "dark": "One Dark",
   },
+  "experimental.theme_overrides": {
+    "editor.background": "#0a0a0a",
+    "editor.gutter.background": "#0a0a0a",
+  },
   "languages": {
     "Zig": {
       "code_actions_on_format": {

@@ -15,6 +15,7 @@
       "cmd-o": "pane::GoBack",
       "cmd-j": "editor::MoveDown",
       "cmd-k": "editor::MoveUp",
+      "cmd-r": "editor::Redo",
     },
   },
   {
