@@ -14,6 +14,9 @@
   "project_panel": {
     "dock": "left",
   },
+  "title_bar": {
+    "show_sign_in": false,
+  },
   "vim_mode": true,
   "terminal": {
     "font_size": 14.0,
