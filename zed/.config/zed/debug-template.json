@@ -1,0 +1,18 @@
+// To be created at <project_root>/.zed/debug.json
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+[
+  {
+    "label": "Debug Zig Application",
+    "adapter": "CodeLLDB",
+    "request": "launch",
+    "program": "${ZED_WORKTREE_ROOT}/zig-out/bin/<binary-name>",
+    "args": [],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "build": {
+      "command": "zig",
+      "args": ["build"]
+    }
+  }
+]
