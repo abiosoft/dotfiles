@@ -114,6 +114,9 @@
       },
     },
   },
+  "inlay_hints": {
+    "enabled": true,
+  },
   "lsp": {
     "zls": {
       "binary": {
