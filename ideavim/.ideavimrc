@@ -1,0 +1,24 @@
+let mapleader = ","
+
+sethandler <Tab> a:vim
+sethandler <C-D> a:vim
+sethandler <C-O> a:vim
+sethandler <C-V> a:vim
+
+" comment
+set commentary
+vmap <leader>cc gcc
+map <leader>cc gcc
+
+map <D-u> <C-u>
+map <D-d> <C-d>
+map <D-v> <C-v>
+map <D-o> <C-o>
+
+" clipboard
+set clipboard+=unnamedplus
+
+" vmap to maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
