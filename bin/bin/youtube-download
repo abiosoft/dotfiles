@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+    echo "usage: youtube-download [--hd] <video-url>"
+    exit 1
+}
+
+if [ $# -eq 0 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    usage
+fi
+
+height=720
+
+if [ "$1" = "--hd" ]; then
+    height=1080
+    shift
+fi
+
+if [ $# -eq 0 ]; then
+    usage
+fi
+
+url=$1
+
+yt-dlp -f "bestvideo[height<=${height}][ext=mp4]+bestaudio[ext=m4a]/best[height<=${height}][ext=mp4]/best" "${url}"
