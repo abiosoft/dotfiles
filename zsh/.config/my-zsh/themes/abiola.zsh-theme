@@ -83,6 +83,8 @@ print_host() {
 
 print_incus_remote() {
     if [ -n "$INCUS_CONF" ]; then
+        echo "[incus-shell: $(incus remote get-default)] "
+    elif [ -n "$INCUS_INFO" ]; then
         echo "[incus: $(incus remote get-default)] "
     fi
 }

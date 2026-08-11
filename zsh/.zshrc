@@ -34,6 +34,7 @@ alias apt-switch='bash ~/.config/my-apt/core.sh'
 alias dnf-switch='bash ~/.config/my-dnf/core.sh'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 alias ffmpegx2='ffmpeg -filter:v "setpts=0.5*PTS" -an'
+alias incus-remote='incus remote switch $(incus remote list -cn -f compact,noheader | fzf)'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor
