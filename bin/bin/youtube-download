@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-    echo "usage: youtube-download [--hd] <video-url>"
+    echo "usage: youtube-download [--hd | --4k] <video-url>"
     exit 1
 }
 
@@ -15,6 +15,9 @@ height=720
 
 if [ "$1" = "--hd" ]; then
     height=1080
+    shift
+elif [ "$1" = "--4k" ]; then
+    height=2160
     shift
 fi
 
