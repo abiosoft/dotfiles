@@ -2,7 +2,7 @@
 draw_bold_text_with_bright_colors = true
 
 [font]
-size = 13.0
+size = 16.0
 
 [font.bold]
 style = "Medium"
@@ -21,7 +21,44 @@ y = 0
 [mouse]
 hide_when_typing = true
 
+# window - uncomment for Linux
 [window]
-decorations = "none"
-startup_mode = "Maximized"
+# decorations = "none"
+# startup_mode = "Maximized"
+
+# keybindings - uncomment for macOS
+[keyboard]
+bindings = [
+  # Native Clipboard Actions
+  { key = "C", mods = "Command|Shift", action = "Copy" },
+  { key = "V", mods = "Command|Shift", action = "Paste" },
+
+  # Cmd+A through Cmd+Z -> Ctrl+A through Ctrl+Z
+  { key = "A", mods = "Command", chars = "\x01" }, # Ctrl+A
+  { key = "B", mods = "Command", chars = "\x02" }, # Ctrl+B
+  { key = "C", mods = "Command", chars = "\x03" }, # Ctrl+C
+  { key = "D", mods = "Command", chars = "\x04" }, # Ctrl+D
+  { key = "E", mods = "Command", chars = "\x05" }, # Ctrl+E
+  { key = "F", mods = "Command", chars = "\x06" }, # Ctrl+F
+  { key = "G", mods = "Command", chars = "\x07" }, # Ctrl+G
+  { key = "H", mods = "Command", chars = "\x08" }, # Ctrl+H
+  { key = "I", mods = "Command", chars = "\x09" }, # Ctrl+I
+  { key = "J", mods = "Command", chars = "\x0a" }, # Ctrl+J
+  { key = "K", mods = "Command", chars = "\x0b" }, # Ctrl+K
+  { key = "L", mods = "Command", chars = "\x0c" }, # Ctrl+L
+  { key = "M", mods = "Command", chars = "\x0d" }, # Ctrl+M
+  { key = "N", mods = "Command", chars = "\x0e" }, # Ctrl+N
+  { key = "O", mods = "Command", chars = "\x0f" }, # Ctrl+O
+  { key = "P", mods = "Command", chars = "\x10" }, # Ctrl+P
+  { key = "Q", mods = "Command", chars = "\x11" }, # Ctrl+Q
+  { key = "R", mods = "Command", chars = "\x12" }, # Ctrl+R
+  { key = "S", mods = "Command", chars = "\x13" }, # Ctrl+S
+  { key = "T", mods = "Command", chars = "\x14" }, # Ctrl+T
+  { key = "U", mods = "Command", chars = "\x15" }, # Ctrl+U
+  { key = "V", mods = "Command", chars = "\x16" }, # Ctrl+V
+  { key = "W", mods = "Command", chars = "\x17" }, # Ctrl+W
+  { key = "X", mods = "Command", chars = "\x18" }, # Ctrl+X
+  { key = "Y", mods = "Command", chars = "\x19" }, # Ctrl+Y
+  { key = "Z", mods = "Command", chars = "\x1a" }, # Ctrl+Z
+]
 
