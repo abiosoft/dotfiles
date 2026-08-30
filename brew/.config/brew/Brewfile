@@ -11,7 +11,7 @@ end
 # shell
 brew "bat" unless in_path? "bat"
 brew "tmux" unless in_path? "tmux"
-brew "neovim" unless in_path? "nvim"
+brew "vim" unless in_path? "vim"
 brew "tree" unless in_path? "tree"
 brew "stow" unless in_path? "stow"
 brew "zsh" unless in_path? "zsh"
