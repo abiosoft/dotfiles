@@ -1,8 +1,8 @@
 vim9script
 
 # Determine the standard Vim plugin paths
-var plug_path = expand('~/.vim/autoload/plug.vim')
-var plugged_dir = expand('~/.vim/plugged')
+var plug_path = expand('~/.config/vim/autoload/plug.vim')
+var plugged_dir = expand('~/.config/vim/plugged')
 
 # Auto-install vim-plug if missing
 if empty(glob(plug_path))
@@ -31,3 +31,4 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 plug#end()
+
