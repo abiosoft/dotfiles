@@ -24,7 +24,7 @@ brew install stow
 Setup dotfiles
 
 ```
-stow bat brew bin git neovim tmux zsh
+stow bat brew bin git vim tmux zsh
 ```
 
 Install packages
@@ -63,7 +63,7 @@ sudo apt install stow
 Setup dotfiles
 
 ```
-stow apt bat bin git neovim tmux zsh
+stow apt bat bin git vim tmux zsh
 ```
 
 Install packages
@@ -102,7 +102,7 @@ sudo dnf install stow
 Setup dotfiles
 
 ```
-stow dnf bat bin git neovim tmux zsh
+stow dnf bat bin git vim tmux zsh
 ```
 
 Install packages
