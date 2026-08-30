@@ -12,7 +12,7 @@ CORE_PACKAGES=(
     # shell
     bat
     tmux
-    neovim
+    vim
     tree
     stow
     zsh
