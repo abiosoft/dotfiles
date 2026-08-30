@@ -37,7 +37,7 @@ alias incus-remote='incus remote switch $(incus remote list -cn -f compact,nohea
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor
-export VISUAL=nvim
+export VISUAL=vim
 export EDITOR="$VISUAL"
 
 # GO
