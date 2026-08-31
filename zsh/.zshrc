@@ -27,6 +27,7 @@ fi
 export PATH="$PATH:$HOME/bin"
 
 # aliases
+alias tmux-root='tmux -L root -f ~/.config/tmux/tmux-root.conf'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
 alias brew-switch='brew bundle install -v --force --force-cleanup --file ~/.config/brew/Brewfile'
 alias apt-switch='bash ~/.config/my-apt/core.sh'
