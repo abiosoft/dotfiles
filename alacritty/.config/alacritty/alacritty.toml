@@ -5,14 +5,14 @@ draw_bold_text_with_bright_colors = true
 size = 16.0
 
 [font.bold]
-style = "Medium"
+style = "Regular"
 
 [font.bold_italic]
-style = "Medium Italic"
+style = "Regular Italic"
 
 [font.normal]
 family = "JetBrains Mono"
-style = "Medium"
+style = "Regular"
 
 [font.offset]
 x = 0
