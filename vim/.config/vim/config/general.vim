@@ -53,6 +53,10 @@ endif
 
 # Built-in Vim9 Commenting
 packadd! comment
+# Toggle comment on current line (Normal mode)
+nmap <leader>cc gcc
+# Toggle comment on selected block (Visual mode)
+xmap <leader>cc gc
 
 # Mode-based Cursor Shapes (Native Escape Sequences)
 set ttimeout
@@ -110,7 +114,7 @@ augroup Vim9Defaults
     autocmd FileType html,sh setlocal ts=2 sw=2 expandtab
 
     # Fix Quickfix window height
-    autocmd FileType qf 6wincmd_
+    autocmd FileType qf :6wincmd _
 
     # Fix current working directory
     autocmd VimEnter * if isdirectory(expand('%:p')) | execute 'lcd ' .. expand('%:p') | endif
@@ -153,6 +157,13 @@ noremap <leader>q :bp<CR>
 noremap <leader>x :bn<CR>
 noremap <leader>w :bn<CR>
 noremap <leader>bd :bp<bar>bd #<CR>
+
+# Open/Close Quickfix window
+nnoremap <leader>q :copen<CR>
+
+# Jump back & forth through results with ]q and [q
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprev<CR>
 
 # Sudo Write (save read-only files)
 cmap w!! w !sudo tee % >/dev/null
