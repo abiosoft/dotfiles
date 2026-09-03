@@ -165,6 +165,10 @@ nnoremap <leader>q :copen<CR>
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprev<CR>
 
+# Navigate completion
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
 # Sudo Write (save read-only files)
 cmap w!! w !sudo tee % >/dev/null
 
