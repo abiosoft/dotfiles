@@ -1,2 +1,4 @@
 --theme='tomorrow-night'
 --style=plain
+--pager="less -RF --mouse"
+
