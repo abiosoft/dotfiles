@@ -16,14 +16,14 @@ command! Gcheckout GitCheckoutFzf()
 
 # Better Git log browsing
 autocmd FileType git SetupFugitiveLogMappings()
+autocmd FileType fugitive SetupFugitiveLogMappings()
 
 def SetupFugitiveLogMappings(): void
-  nnoremap <buffer> o    <ScriptCmd>OpenCommitDiff()<CR>
   nnoremap <buffer> <CR> <ScriptCmd>OpenCommitDiff()<CR>
 enddef
 
 def OpenCommitDiff(): void
-  const hash = matchstr(getline('.'), '^commit\s\+\zs\x\{7,40}\ze\>')
+  const hash = matchstr(getline('.'), '\<[0-9a-fA-F]\{7,40}\>')
 
   if empty(hash)
     echohl WarningMsg
