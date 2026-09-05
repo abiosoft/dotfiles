@@ -11,10 +11,17 @@ def GitCheckoutFzf()
         'options': '--reverse --prompt="Checkout Branch> "'
     }))
 enddef
-
 command! Gcheckout GitCheckoutFzf()
 
+# Better diff colors
+highlight DiffAdd    guifg=NONE guibg=#29422f gui=NONE
+highlight DiffDelete guifg=NONE guibg=#4a2b2b gui=NONE
+highlight DiffChange guifg=NONE guibg=#333b4d gui=NONE
+highlight DiffText   guifg=NONE guibg=#465775 gui=underline
+
+#
 # Better Git log browsing
+#
 autocmd FileType git SetupFugitiveLogMappings()
 autocmd FileType fugitive SetupFugitiveLogMappings()
 
@@ -22,8 +29,40 @@ def SetupFugitiveLogMappings(): void
   nnoremap <buffer> <CR> <ScriptCmd>OpenCommitDiff()<CR>
 enddef
 
+def CommitAtCursor(): string
+  const line = getline('.')
+  const cursor_col = col('.') - 1
+  const pattern = '\<[0-9a-fA-F]\{7,40}\>'
+
+  var search_col = 0
+  var first_hash = ''
+
+  while true
+    const result = matchstrpos(line, pattern, search_col)
+
+    if result[1] < 0
+      break
+    endif
+
+    if empty(first_hash)
+      first_hash = result[0]
+    endif
+
+    const match_start = result[1]
+    const match_end = result[2]
+
+    if cursor_col >= match_start && cursor_col < match_end
+      return result[0]
+    endif
+
+    search_col = match_end
+  endwhile
+
+  return first_hash
+enddef
+
 def OpenCommitDiff(): void
-  const hash = matchstr(getline('.'), '\<[0-9a-fA-F]\{7,40}\>')
+  const hash = CommitAtCursor()
 
   if empty(hash)
     echohl WarningMsg
@@ -34,12 +73,4 @@ def OpenCommitDiff(): void
 
   execute 'rightbelow Gvsplit ' .. hash
 enddef
-
-# Better diff colors
-highlight DiffAdd    guifg=#b5bd68 guibg=#29422f gui=NONE
-highlight DiffDelete guifg=#cc6666 guibg=#4a2b2b gui=NONE
-highlight DiffChange guifg=#c5c8c6 guibg=#333b4d gui=NONE
-highlight DiffText   guifg=#c5c8c6 guibg=#465775 gui=underline
-
-
 
