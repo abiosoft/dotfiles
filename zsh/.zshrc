@@ -35,8 +35,7 @@ alias dnf-switch='bash ~/.config/my-dnf/core.sh'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 alias ffmpegx2='ffmpeg -filter:v "setpts=0.5*PTS" -an'
 alias incus-remote='incus remote switch $(incus remote list -cn -f compact,noheader | fzf)'
-alias git-status='vim +"0G"'
-alias git-log='vim +"0G log"'
+alias git='mygit'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor
