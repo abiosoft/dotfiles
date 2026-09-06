@@ -48,7 +48,7 @@ set termguicolors
 
 # Native Grep (Uses ripgrep if installed)
 if executable('rg')
-    set grepprg=rg\ --vimgrep
+    set grepprg=rg\ --vimgrep\ --hidden\ --glob\ "!.git"\ --smart-case
     set grepformat=%f:%l:%c:%m
 endif
 
