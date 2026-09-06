@@ -2,7 +2,7 @@
 draw_bold_text_with_bright_colors = true
 
 [font]
-size = 16.0
+size = 15.0
 
 [font.bold]
 style = "Regular"
