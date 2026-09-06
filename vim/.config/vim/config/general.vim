@@ -17,6 +17,7 @@ set scrolloff=3
 set cursorline
 set autoread
 set mouse=a
+set ttymouse=sgr
 
 # Search Settings
 set hlsearch
