@@ -18,6 +18,9 @@ highlight DiffAdd    guifg=NONE guibg=#29422f gui=NONE
 highlight DiffDelete guifg=NONE guibg=#4a2b2b gui=NONE
 highlight DiffChange guifg=NONE guibg=#333b4d gui=NONE
 highlight DiffText   guifg=NONE guibg=#465775 gui=underline
+highlight diffAdded    guifg=#4fa66a guibg=NONE gui=NONE
+highlight diffRemoved  guifg=#c65b5b guibg=NONE gui=NONE
+highlight diffChanged  guifg=#5f86ad guibg=NONE gui=NONE
 
 # Better navigation
 autocmd FileType git setlocal splitbelow splitright
