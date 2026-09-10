@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-    echo "usage: youtube-download [--hd | --4k] <video-url>"
+    echo "usage: youtube-download [--hd | --4k] [--mp4] <video-url>"
     exit 1
 }
 
@@ -12,14 +12,29 @@ if [ $# -eq 0 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 fi
 
 height=720
+ext=webm
+audio_ext=webm
 
-if [ "$1" = "--hd" ]; then
-    height=1080
-    shift
-elif [ "$1" = "--4k" ]; then
-    height=2160
-    shift
-fi
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --hd)
+            height=1080
+            shift
+            ;;
+        --4k)
+            height=2160
+            shift
+            ;;
+        --mp4)
+            ext=mp4
+            audio_ext=m4a
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
 
 if [ $# -eq 0 ]; then
     usage
@@ -27,4 +42,4 @@ fi
 
 url=$1
 
-yt-dlp -f "bestvideo[height<=${height}][ext=mp4]+bestaudio[ext=m4a]/best[height<=${height}][ext=mp4]/best" "${url}"
+yt-dlp -f "bestvideo[height<=${height}][ext=${ext}]+bestaudio[ext=${audio_ext}]/best[height<=${height}][ext=${ext}]/best" --merge-output-format "${ext}" "${url}"
