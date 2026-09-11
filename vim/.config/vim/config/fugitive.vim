@@ -23,6 +23,7 @@ highlight diffRemoved  guifg=#c65b5b guibg=NONE gui=NONE
 highlight diffChanged  guifg=#5f86ad guibg=NONE gui=NONE
 
 # Better navigation
-autocmd FileType git setlocal splitbelow splitright
-autocmd FileType fugitive setlocal splitbelow splitright
+autocmd FileType diff,git,fugitive setlocal splitbelow splitright
+autocmd FileType diff,git nnoremap <buffer> = za
+autocmd FileType diff,git setlocal foldmethod=syntax
 
