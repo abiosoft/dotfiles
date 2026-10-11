@@ -42,4 +42,16 @@ fi
 
 url=$1
 
-yt-dlp -f "bestvideo[height<=${height}][ext=${ext}]+bestaudio[ext=${audio_ext}]/best[height<=${height}][ext=${ext}]/best" --merge-output-format "${ext}" "${url}"
+format="bestvideo[height<=${height}][ext=${ext}]+bestaudio[ext=${audio_ext}]/best[height<=${height}][ext=${ext}]"
+merge_format=$ext
+
+if [ "$ext" = webm ]; then
+    webm_at_quality="bestvideo[height=${height}][ext=webm]+bestaudio[ext=webm]/best[height=${height}][ext=webm]"
+    mp4_at_quality="bestvideo[height=${height}][ext=mp4]+bestaudio[ext=m4a]/best[height=${height}][ext=mp4]"
+    mp4_fallback="bestvideo[height<=${height}][ext=mp4]+bestaudio[ext=m4a]/best[height<=${height}][ext=mp4]"
+    # Prefer the requested resolution before falling back to lower resolutions.
+    format="${webm_at_quality}/${mp4_at_quality}/${format}/${mp4_fallback}"
+    merge_format="webm/mp4"
+fi
+
+yt-dlp -f "${format}/best" --merge-output-format "$merge_format" "$url"
