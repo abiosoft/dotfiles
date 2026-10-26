@@ -1,0 +1,5 @@
+# Keep runtime files out of Git.
+/*
+!/.gitignore
+!/init.el
+!/early-init.el
