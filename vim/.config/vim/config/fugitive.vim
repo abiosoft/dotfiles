@@ -26,4 +26,5 @@ highlight diffChanged  guifg=#5f86ad guibg=NONE gui=NONE
 autocmd FileType diff,git,fugitive setlocal splitbelow splitright
 autocmd FileType diff,git nnoremap <buffer> = za
 autocmd FileType diff,git setlocal foldmethod=syntax
+autocmd FileType fugitive nnoremap <buffer> dd <Plug>fugitive:O:Gvdiffsplit<CR>
 
