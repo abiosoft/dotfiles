@@ -59,6 +59,10 @@
   (set-face-attribute face nil :family "JetBrains Mono" :height 150
                       :weight 'normal :width 'normal))
 
+;; Render Ghostel's bold text at normal weight.
+(custom-set-faces
+ '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
+
 ;;; Completion
 
 (fido-vertical-mode 1)
