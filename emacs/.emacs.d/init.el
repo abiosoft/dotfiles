@@ -1,7 +1,7 @@
 ;;; init.el --- Minimal Emacs 31 configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Vanilla Emacs, custom Modus colours, macOS modifiers, Magit and Ghostel.
+;; Vanilla Emacs with custom colours, frame-scoped buffers, Magit and Ghostel.
 
 ;;; Code:
 
@@ -77,6 +77,7 @@
 (require 'package)
 ;; Use MELPA for Ghostel and NonGNU ELPA for Magit.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-pinned-packages '(beframe . "gnu"))
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
@@ -84,7 +85,7 @@
 ;; Download Ghostel's native module on first use.
 (setq ghostel-module-auto-install 'download)
 
-(dolist (pkg '(magit ghostel))
+(dolist (pkg '(beframe magit ghostel))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -97,6 +98,11 @@
         'init
         (format "%s installation failed: %s. Retry with M-x package-refresh-contents, then M-x package-install RET %s."
                 pkg (error-message-string err) pkg))))))
+
+;;; Frame buffers
+
+(when (require 'beframe nil t)
+  (beframe-mode 1))
 
 ;;; Key bindings
 
