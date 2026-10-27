@@ -12,6 +12,8 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
+(which-key-mode 1)
+
 ;; Command as Control and Option as Meta for both macOS ports.
 (when (eq system-type 'darwin)
   (setq ns-command-modifier 'control
