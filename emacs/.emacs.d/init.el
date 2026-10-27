@@ -59,6 +59,10 @@
   (set-face-attribute face nil :family "JetBrains Mono" :height 150
                       :weight 'normal :width 'normal))
 
+;;; Completion
+
+(fido-vertical-mode 1)
+
 ;;; Languages
 
 ;; Install missing tree-sitter grammars on first use.
