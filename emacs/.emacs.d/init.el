@@ -82,6 +82,15 @@
 ;;; Completion
 
 (fido-vertical-mode 1)
+;;; Indentation
+
+(setq-default tab-width 4
+              indent-tabs-mode nil)
+(setq go-ts-indent-offset 4)
+
+;; Go modes prefer tabs by default; use spaces while editing.
+(dolist (hook '(go-mode-hook go-ts-mode-hook go-mod-ts-mode-hook go-work-ts-mode-hook))
+  (add-hook hook (lambda () (setq-local indent-tabs-mode nil))))
 
 ;;; Languages
 
