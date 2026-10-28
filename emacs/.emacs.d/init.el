@@ -14,6 +14,11 @@
 
 (which-key-mode 1)
 
+;; Relative line numbers in text and code buffers.
+(setq-default display-line-numbers-type 'relative)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 ;; Command as Control and Option as Meta for both macOS ports.
 (when (eq system-type 'darwin)
   (setq ns-command-modifier 'control
