@@ -91,6 +91,17 @@
   (setopt treesit-auto-install-grammar 'always
           treesit-enabled-modes t))
 
+;; Built-in LSP client; start once per project with M-x eglot.
+(require 'eglot)
+
+(defun ab/eglot-format-on-save ()
+  "Format Eglot buffers when the server supports it."
+  (when (and (eglot-managed-p)
+             (eglot-server-capable :documentFormattingProvider))
+    (eglot-format-buffer)))
+
+(add-hook 'before-save-hook #'ab/eglot-format-on-save)
+
 ;;; Packages
 
 ;; Language-aware Magit diffs.
