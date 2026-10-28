@@ -164,6 +164,18 @@
   (diff-hl-flydiff-mode 1)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
+;;; Shell environment
+
+;; Import PATH and exec-path from the interactive login shell.
+(when (require 'exec-path-from-shell nil t)
+  (exec-path-from-shell-initialize))
+
+;; Include the remote login PATH and common user-installed tools.
+(with-eval-after-load 'tramp
+  (dolist (path '(tramp-own-remote-path "~/go/bin" "~/.cargo/bin"
+                 "~/.local/bin" "~/bin"))
+    (add-to-list 'tramp-remote-path path t)))
+
 ;;; Frame buffers
 
 (when (require 'beframe nil t)
