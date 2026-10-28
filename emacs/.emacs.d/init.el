@@ -82,6 +82,9 @@
 ;;; Completion
 
 (fido-vertical-mode 1)
+(global-completion-preview-mode -1)
+(setq-default tab-always-indent 'complete)
+
 ;;; Indentation
 
 (setq-default tab-width 4
@@ -122,6 +125,8 @@
 ;; Use MELPA for Ghostel and NonGNU ELPA for Magit.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-pinned-packages '(beframe . "gnu"))
+(add-to-list 'package-pinned-packages '(corfu . "gnu"))
+(add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
@@ -129,7 +134,7 @@
 ;; Download Ghostel's native module on first use.
 (setq ghostel-module-auto-install 'download)
 
-(dolist (pkg '(beframe magit ghostel))
+(dolist (pkg '(beframe corfu diff-hl exec-path-from-shell magit ghostel))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -142,6 +147,22 @@
         'init
         (format "%s installation failed: %s. Retry with M-x package-refresh-contents, then M-x package-install RET %s."
                 pkg (error-message-string err) pkg))))))
+
+;;; Completion popup
+
+(when (require 'corfu nil t)
+  (setq corfu-auto t
+        corfu-auto-trigger ".:>"
+        corfu-preselect 'first
+        corfu-preview-current nil)
+  (global-corfu-mode 1))
+
+;;; Change indicators
+
+(when (require 'diff-hl nil t)
+  (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 ;;; Frame buffers
 
