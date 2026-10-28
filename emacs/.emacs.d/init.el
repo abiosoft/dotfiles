@@ -150,6 +150,10 @@
       magit-diff-specify-hunk-foreground nil
       magit-diff-use-indicator-faces t)
 
+;; Open Magit in same window
+(setq magit-display-buffer-function
+      #'magit-display-buffer-same-window-except-diff-v1)
+
 ;; Show changed lines in the gutter, including unsaved local edits.
 (when (require 'diff-hl nil t)
   (global-diff-hl-mode 1)
