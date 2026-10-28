@@ -65,6 +65,15 @@
 (custom-set-faces
  '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
 
+;;; Mode line
+
+;; Identify remote buffers
+(add-to-list
+ 'mode-line-misc-info
+ '(:eval
+   (when-let* ((remote (file-remote-p default-directory)))
+     (concat " (T " (substring remote 1 -1) ")"))))
+
 ;;; Completion
 
 (fido-vertical-mode 1)
