@@ -154,6 +154,12 @@
 (setq magit-display-buffer-function
       #'magit-display-buffer-same-window-except-diff-v1)
 
+;; Show horizontal splits for ediff
+(setq ediff-split-window-function #'split-window-horizontally)
+
+;; Use same frame for ediff
+(setq ediff-window-setup-function #'ediff-setup-windows-plain)
+
 ;; Show changed lines in the gutter, including unsaved local edits.
 (when (require 'diff-hl nil t)
   (global-diff-hl-mode 1)
