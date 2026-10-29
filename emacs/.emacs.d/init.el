@@ -68,6 +68,10 @@
 
 ;;; Mode line
 
+(setq display-time-format "%I:%M %p"
+      display-time-default-load-average nil)
+(display-time-mode 1)
+
 ;; Identify remote buffers.
 (add-to-list
  'mode-line-misc-info
