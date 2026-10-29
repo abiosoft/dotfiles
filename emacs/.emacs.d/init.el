@@ -108,6 +108,27 @@
 
 (add-hook 'before-save-hook #'ab/eglot-format-on-save)
 
+;;; Code navigation
+
+(require 'xref)
+
+;; Ctrl-click follows definitions; clicking a definition shows references.
+(defun ab/xref-at-mouse (event)
+  "Find the clicked symbol's definition, or references when already there."
+  (interactive "e")
+  (mouse-set-point event)
+  (let ((buffer (current-buffer))
+        (bounds (bounds-of-thing-at-point 'symbol)))
+    (xref-find-definitions-at-mouse event)
+    (when (and bounds
+               (eq buffer (current-buffer))
+               (<= (car bounds) (point))
+               (< (point) (cdr bounds)))
+      (xref-find-references-at-mouse event))))
+
+(keymap-set xref-mouse-mode-map "C-<mouse-1>" #'ab/xref-at-mouse)
+(add-hook 'prog-mode-hook #'xref-mouse-mode)
+
 ;;; Packages
 
 (require 'package)
