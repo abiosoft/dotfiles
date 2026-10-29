@@ -77,7 +77,7 @@
  'mode-line-misc-info
  '(:eval
    (when-let* ((remote (file-remote-p default-directory)))
-     (concat " (T " (substring remote 1 -1) ")"))))
+     (concat " (T " (substring remote 1 -1) ") "))))
 
 ;;; Indentation
 
