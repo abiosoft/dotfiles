@@ -1,7 +1,7 @@
 ;;; init.el --- Minimal Emacs 31 configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Vanilla Emacs with custom colours, frame-scoped buffers, Magit and Ghostel.
+;; Vanilla Emacs with custom colours, Org, frame-scoped buffers, Magit and Ghostel.
 
 ;;; Code:
 
@@ -160,7 +160,6 @@
 (fido-vertical-mode 1)
 (setq completion-ignore-case t)
 (global-completion-preview-mode -1)
-(setq-default tab-always-indent 'complete)
 (setq-default tab-always-indent t)
 
 ;; Reserve Tab completion for programming buffers.
@@ -174,8 +173,74 @@
   (setq corfu-auto t
         corfu-preselect 'first
         corfu-preview-current nil)
-  (global-corfu-mode 1))
   (add-hook 'prog-mode-hook #'corfu-mode))
+
+;;; Org
+
+(require 'org)
+;; Expand structure shortcuts such as <s TAB into source blocks.
+(require 'org-tempo)
+
+;; Indent headings and body text visually as the outline level changes.
+(setq org-startup-indented t
+      org-indent-indentation-per-level 2
+      org-cycle-level-faces nil)
+
+(defun ab/org-setup ()
+  "Keep Org buffers free of line numbers."
+  (display-line-numbers-mode -1))
+
+(add-hook 'org-mode-hook #'ab/org-setup)
+
+;; Scale heading sizes while keeping the theme's colours and other attributes.
+(dolist (heading '((org-level-1 . 1.35)
+                   (org-level-2 . 1.3)
+                   (org-level-3 . 1.25)
+                   (org-level-4 . 1.2)
+                   (org-level-5 . 1.15)
+                   (org-level-6 . 1.1)
+                   (org-level-7 . 1.05)
+                   (org-level-8 . 1.0)))
+  (set-face-attribute (car heading) nil :height (cdr heading)))
+
+(setq org-directory (expand-file-name "~/org/"))
+
+(defvar ab/org-notes-inbox (expand-file-name "notes/inbox.org" org-directory)
+  "File for captured notes.")
+
+(defvar ab/org-tasks-inbox (expand-file-name "tasks/inbox.org" org-directory)
+  "File for captured tasks.")
+
+;; Create the inbox directories and files without changing existing contents.
+(dolist (file (list ab/org-notes-inbox ab/org-tasks-inbox))
+  (make-directory (file-name-directory file) t)
+  (unless (file-exists-p file)
+    (with-temp-file file)))
+
+(setq org-default-notes-file ab/org-notes-inbox
+      ;; Include .org files directly inside notes/ and tasks/.
+      org-agenda-files (list (expand-file-name "notes/" org-directory)
+                             (expand-file-name "tasks/" org-directory))
+      org-capture-templates
+      `(("n" "Note" entry (file ,ab/org-notes-inbox)
+         "* %?\n  %U\n  %a\n")
+        ("t" "Task" entry (file ,ab/org-tasks-inbox)
+         "* TODO %?\n  %U\n  %a\n")))
+
+(defun ab/org-open-notes-inbox ()
+  "Open the notes inbox."
+  (interactive)
+  (find-file ab/org-notes-inbox))
+
+(defun ab/org-open-tasks-inbox ()
+  "Open the tasks inbox."
+  (interactive)
+  (find-file ab/org-tasks-inbox))
+
+(defun ab/org-open-directory ()
+  "Open the Org directory in Dired."
+  (interactive)
+  (dired org-directory))
 
 ;;; Git
 
@@ -227,6 +292,12 @@
  '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
 
 ;;; Key bindings
+
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c o") #'ab/org-open-notes-inbox)
+(global-set-key (kbd "C-c i") #'ab/org-open-tasks-inbox)
+(global-set-key (kbd "C-c d") #'ab/org-open-directory)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c t") #'ghostel-project)
