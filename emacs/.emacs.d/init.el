@@ -161,12 +161,21 @@
 (setq completion-ignore-case t)
 (global-completion-preview-mode -1)
 (setq-default tab-always-indent 'complete)
+(setq-default tab-always-indent t)
+
+;; Reserve Tab completion for programming buffers.
+(defun ab/prog-completion-setup ()
+  "Allow Tab to complete after indenting in programming buffers."
+  (setq-local tab-always-indent 'complete))
+
+(add-hook 'prog-mode-hook #'ab/prog-completion-setup)
 
 (when (require 'corfu nil t)
   (setq corfu-auto t
         corfu-preselect 'first
         corfu-preview-current nil)
   (global-corfu-mode 1))
+  (add-hook 'prog-mode-hook #'corfu-mode))
 
 ;;; Git
 
