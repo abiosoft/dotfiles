@@ -189,6 +189,7 @@
 ;;; Key bindings
 
 (global-set-key (kbd "C-x g") #'magit-status)
-(global-set-key (kbd "C-c t") #'ghostel)
+(global-set-key (kbd "C-c t") #'ghostel-project)
+(global-set-key (kbd "C-c T") #'ghostel-project-new)
 
 ;;; init.el ends here
