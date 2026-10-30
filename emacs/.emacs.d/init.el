@@ -178,30 +178,18 @@
 ;;; Org
 
 (require 'org)
-;; Expand structure shortcuts such as <s TAB into source blocks.
+;; Expand <s TAB into source blocks.
 (require 'org-tempo)
 
 ;; Indent headings and body text visually as the outline level changes.
 (setq org-startup-indented t
-      org-indent-indentation-per-level 2
-      org-cycle-level-faces nil)
+      org-indent-indentation-per-level 2)
 
 (defun ab/org-setup ()
-  "Keep Org buffers free of line numbers."
+  "Hide line numbers in Org buffers."
   (display-line-numbers-mode -1))
 
 (add-hook 'org-mode-hook #'ab/org-setup)
-
-;; Scale heading sizes while keeping the theme's colours and other attributes.
-(dolist (heading '((org-level-1 . 1.35)
-                   (org-level-2 . 1.3)
-                   (org-level-3 . 1.25)
-                   (org-level-4 . 1.2)
-                   (org-level-5 . 1.15)
-                   (org-level-6 . 1.1)
-                   (org-level-7 . 1.05)
-                   (org-level-8 . 1.0)))
-  (set-face-attribute (car heading) nil :height (cdr heading)))
 
 (setq org-directory (expand-file-name "~/org/"))
 
