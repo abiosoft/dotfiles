@@ -58,13 +58,18 @@
         (variable cyan-faint)
         (rx-construct gold)
         (rx-backslash olive)))
+;; Keep code, tables and other spacing-sensitive text monospaced in Org.
+(setq modus-themes-mixed-fonts t)
 (load-theme 'modus-vivendi t)
 
-;;; Fonts: JetBrains Mono, 15 pt
+;;; Fonts: JetBrains Mono and Source Code Pro, 15 pt
 
 (dolist (face '(default fixed-pitch))
   (set-face-attribute face nil :family "JetBrains Mono" :height 150
                       :weight 'normal :width 'normal))
+
+(set-face-attribute 'variable-pitch nil :family "Source Code Pro" :height 150
+                    :weight 'normal :width 'normal)
 
 ;;; Mode line
 
@@ -189,7 +194,8 @@
 ;; A spacious outline with the screenshot's circles and stars.
 (setq org-startup-indented t
       org-indent-indentation-per-level 2
-      org-hide-emphasis-markers t
+      org-hide-emphasis-markers nil
+      org-ellipsis " ⤵"
       org-pretty-entities t
       org-fontify-whole-heading-line t
       org-fontify-quote-and-verse-blocks t
@@ -207,25 +213,26 @@
   "Give Org buffers a spacious appearance using the current theme's colours."
   (display-line-numbers-mode -1)
   (visual-line-mode 1)
+  ;; Set Org's font and absolute size once, without changing other buffers.
+  (buffer-face-set '(:family "Source Code Pro" :height 200))
   (setq-local line-spacing 0.18)
   ;; Buffer-local typography preserves the theme's colours and other modes.
-  (dolist (spec '((org-level-1 :weight bold :height 1.15)
-                  (org-level-2 :weight bold :height 1.08)
-                  (org-level-3 :weight bold :height 1.05)
-                  (org-level-4 :weight bold :height 1.0)
-                  (org-level-5 :weight bold :height 1.0)
-                  (org-level-6 :weight bold :height 1.0)
-                  (org-level-7 :weight bold :height 1.0)
-                  (org-level-8 :weight bold :height 1.0)
-                  (org-document-title :weight bold :height 1.3)))
-    (apply #'face-remap-add-relative (car spec) (cdr spec)))
-  ;; Keep task keywords and planning metadata smaller.
-  ;; Agenda warning and overdue faces retain their emphasis.
-  (dolist (face '(org-todo org-done))
-    (face-remap-add-relative face :height 0.8))
+  ;; Pitch-specific faces inherit Org's buffer font instead of choosing another.
+  (dolist (face '(variable-pitch fixed-pitch))
+    (face-remap-set-base face 'default))
+  ;; Cancel theme-specific scaling: 1.0 means the buffer's normal size.
+  (dolist (face '(org-ellipsis org-document-title org-document-info
+                 org-level-1 org-level-2 org-level-3 org-level-4
+                 org-level-5 org-level-6 org-level-7 org-level-8
+                 org-block org-block-begin-line org-block-end-line
+                 org-todo org-done org-special-keyword org-date))
+    (face-remap-add-relative face :height 1.0))
+  (face-remap-add-relative 'org-document-title :weight 'bold)
+  (dolist (face '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5
+                 org-level-6 org-level-7 org-level-8))
+    (face-remap-add-relative face :weight 'normal))
   (dolist (face '(org-special-keyword org-date))
-    (face-remap-add-relative face :height 0.8
-                             :weight 'normal :underline nil :box nil)))
+    (face-remap-add-relative face :weight 'normal :underline nil :box nil)))
 
 (add-hook 'org-mode-hook #'ab/org-setup)
 
