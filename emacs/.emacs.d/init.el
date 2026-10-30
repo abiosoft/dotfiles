@@ -140,6 +140,7 @@
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
 (add-to-list 'package-pinned-packages '(htmlize . "nongnu"))
 (add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
+(add-to-list 'package-pinned-packages '(org-roam . "melpa"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
 
@@ -288,6 +289,17 @@
   (interactive)
   (dired org-directory))
 
+;;; Org-roam
+
+(when (require 'org-roam nil t)
+  (setq org-roam-directory (expand-file-name "roam/" org-directory)
+        org-roam-completion-everywhere t)
+  (make-directory org-roam-directory t)
+  ;; Org expects this cache on first capture; nil is a valid empty cache.
+  (unless (file-exists-p org-id-locations-file)
+    (with-temp-file org-id-locations-file (insert "nil\n")))
+  (org-roam-db-autosync-mode 1))
+
 ;;; Git
 
 ;; Language-aware Magit diffs.
@@ -344,6 +356,11 @@
 (global-set-key (kbd "C-c o") #'ab/org-open-notes-inbox)
 (global-set-key (kbd "C-c i") #'ab/org-open-tasks-inbox)
 (global-set-key (kbd "C-c d") #'ab/org-open-directory)
+
+(global-set-key (kbd "C-c n f") #'org-roam-node-find)
+(global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+(global-set-key (kbd "C-c n c") #'org-roam-capture)
+(global-set-key (kbd "C-c n b") #'org-roam-buffer-toggle)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c t") #'ghostel-project)
