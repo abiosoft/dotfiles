@@ -35,6 +35,7 @@ alias dnf-switch='bash ~/.config/my-dnf/core.sh'
 alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 alias ffmpegx2='ffmpeg -filter:v "setpts=0.5*PTS" -an'
 alias incus-remote='incus remote switch $(incus remote list -cn -f compact,noheader | fzf)'
+alias find-file='ghostel_cmd find-file-other-window'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # git commit editor
