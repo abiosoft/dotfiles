@@ -138,10 +138,12 @@
 (add-to-list 'package-pinned-packages '(corfu . "gnu"))
 (add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
+(add-to-list 'package-pinned-packages '(htmlize . "nongnu"))
+(add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
 
-(dolist (pkg '(beframe corfu diff-hl exec-path-from-shell magit ghostel))
+(dolist (pkg '(beframe corfu diff-hl exec-path-from-shell magit ghostel org-superstar htmlize org-roam))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -183,15 +185,69 @@
 ;; Expand <s TAB into source blocks.
 (require 'org-tempo)
 
-;; Indent headings and body text visually as the outline level changes.
+;; A spacious outline with the screenshot's circles and stars.
 (setq org-startup-indented t
-      org-indent-indentation-per-level 2)
+      org-indent-indentation-per-level 2
+      org-hide-emphasis-markers t
+      org-pretty-entities t
+      org-fontify-whole-heading-line t
+      org-fontify-quote-and-verse-blocks t
+      org-src-fontify-natively t)
+
+(when (require 'org-superstar nil t)
+  (setq org-superstar-headline-bullets-list '(?◉ ?○ ?✸ ?✿ ?◆ ?▸)
+        org-superstar-item-bullet-alist '((?+ . ?◦) (?- . ?•) (?* . ?✦))
+        ;; Org Indent supplies the spacing before each heading's final star.
+        org-superstar-leading-bullet ?\s
+        org-superstar-special-todo-items nil)
+  (add-hook 'org-mode-hook #'org-superstar-mode))
 
 (defun ab/org-setup ()
-  "Hide line numbers in Org buffers."
-  (display-line-numbers-mode -1))
+  "Give Org buffers a spacious appearance using the current theme's colours."
+  (display-line-numbers-mode -1)
+  (visual-line-mode 1)
+  (setq-local line-spacing 0.18)
+  ;; Buffer-local typography preserves the theme's colours and other modes.
+  (dolist (spec '((org-level-1 :weight bold :height 1.15)
+                  (org-level-2 :weight bold :height 1.08)
+                  (org-level-3 :weight bold :height 1.05)
+                  (org-level-4 :weight bold :height 1.0)
+                  (org-level-5 :weight bold :height 1.0)
+                  (org-level-6 :weight bold :height 1.0)
+                  (org-level-7 :weight bold :height 1.0)
+                  (org-level-8 :weight bold :height 1.0)
+                  (org-document-title :weight bold :height 1.3)))
+    (apply #'face-remap-add-relative (car spec) (cdr spec)))
+  ;; Keep task keywords and planning metadata smaller.
+  ;; Agenda warning and overdue faces retain their emphasis.
+  (dolist (face '(org-todo org-done))
+    (face-remap-add-relative face :height 0.8))
+  (dolist (face '(org-special-keyword org-date))
+    (face-remap-add-relative face :height 0.8
+                             :weight 'normal :underline nil :box nil)))
 
 (add-hook 'org-mode-hook #'ab/org-setup)
+
+;;; Org export
+
+(setq org-export-with-section-numbers nil)
+
+(with-eval-after-load 'ox-html
+  ;; Inline syntax colours come from the active Emacs theme via htmlize.
+  (setq org-html-htmlize-output-type 'inline-css
+        org-html-doctype "html5"
+        org-html-html5-fancy t
+        org-html-head-include-default-style nil
+        org-html-head-include-scripts nil
+        org-html-validation-link nil
+        ;; Embed the stylesheet so exported documents can be shared directly.
+        org-html-head-extra
+        (concat "<style>\n"
+                (with-temp-buffer
+                  (insert-file-contents
+                   (expand-file-name "org-html.css" user-emacs-directory))
+                  (buffer-string))
+                "\n</style>")))
 
 (setq org-directory (expand-file-name "~/org/"))
 

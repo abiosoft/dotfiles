@@ -3,3 +3,4 @@
 !/.gitignore
 !/init.el
 !/early-init.el
+!/org-html.css
