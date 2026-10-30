@@ -178,6 +178,8 @@
 ;;; Org
 
 (require 'org)
+;; Babel uses Org's default language support (Emacs Lisp).
+(require 'ob)
 ;; Expand <s TAB into source blocks.
 (require 'org-tempo)
 
