@@ -245,6 +245,8 @@
   (setq org-html-htmlize-output-type 'inline-css
         org-html-doctype "html5"
         org-html-html5-fancy t
+        ;; Clicking a heading updates the URL with its section anchor.
+        org-html-self-link-headlines t
         org-html-head-include-default-style nil
         org-html-head-include-scripts nil
         org-html-validation-link nil
