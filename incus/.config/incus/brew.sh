@@ -12,7 +12,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 git clone https://github.com/abiosoft/dotfiles ~/dotfiles --depth 1
 
 # stow dotfiles
-(cd ~/dotfiles && stow bat brew bin git vim tmux zsh)
+(cd ~/dotfiles && stow bat brew bin emacs git zsh)
 
 # install brew packages
 brew bundle -v --file ~/.config/brew/Brewfile
