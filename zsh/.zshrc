@@ -26,6 +26,9 @@ fi
 # personal scripts
 export PATH="$PATH:$HOME/bin"
 
+# emacs
+EMACS_MACOS_PATH="/Applications/Emacs.app/Contents/MacOS/bin-arm64-11/emacsclient"
+
 # aliases
 alias tmux-root='tmux -L root -f ~/.config/tmux/tmux-root.conf'
 alias krun='kubectl run --namespace default --restart=Never -it --rm tmpbox --image'
@@ -36,13 +39,15 @@ alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 alias ffmpegx2='ffmpeg -filter:v "setpts=0.5*PTS" -an'
 alias incus-remote='incus remote switch $(incus remote list -cn -f compact,noheader | fzf)'
 alias find-file='ghostel_cmd find-file-other-window'
-alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin-arm64-11/emacsclient'
+[[ "$OSTYPE" == "darwin"* ]] && [ -z "${commands[emacsclient]}" ] && [ -f "$EMACS_MACOS_PATH" ] && alias emacsclient="$EMACS_MACOS_PATH"
+[[ "$OSTYPE" == "darwin"* ]] && [ -z "${commands[emacs]}" ] && alias emacs='emacsclient -r'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
 # cli editor
-EMACS_PATH="/Applications/Emacs.app/Contents/MacOS/bin-arm64-11/emacsclient"
-if [ -f "$EMACS_PATH" ]; then
-  export VISUAL="$EMACS_PATH -r"
+if [ -n "${commands[emacsclient]}" ]; then
+  export VISUAL="emacsclient -r"
+elif [[ "$OSTYPE" == "darwin"* ]] && [ -f "$EMACS_MACOS_PATH" ]; then
+  export VISUAL="$EMACS_MACOS_PATH -r"
 else
   export VISUAL=emacs
 fi
