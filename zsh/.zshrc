@@ -36,10 +36,16 @@ alias hugo-new='hugo new content "content/posts/$(date +%s)_newpost.md"'
 alias ffmpegx2='ffmpeg -filter:v "setpts=0.5*PTS" -an'
 alias incus-remote='incus remote switch $(incus remote list -cn -f compact,noheader | fzf)'
 alias find-file='ghostel_cmd find-file-other-window'
+alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin-arm64-11/emacsclient'
 [[ "$OSTYPE" == "darwin"* ]] && alias c='container'
 
-# git commit editor
-export VISUAL=vim
+# cli editor
+EMACS_PATH="/Applications/Emacs.app/Contents/MacOS/bin-arm64-11/emacsclient"
+if [ -f "$EMACS_PATH" ]; then
+  export VISUAL="$EMACS_PATH -r"
+else
+  export VISUAL=emacs
+fi
 export EDITOR="$VISUAL"
 
 # GO
