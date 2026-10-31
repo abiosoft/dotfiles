@@ -1,125 +1,124 @@
-dotfiles
-========
+#+title: dotfiles
 
 Dotfiles managed with Stow for Brew, Apt or Dnf
 
-## Brew
+* Brew
 
-### Prerequisite
+** Prerequisite
 
 Homebrew
 
-```sh
+#+begin_src sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+#+end_src
 
-### Installation
+** Installation
 
 Install Stow
 
-```
+#+begin_src sh
 brew install stow
-```
+#+end_src
 
 Setup dotfiles
 
-```
-stow bat brew bin git vim tmux zsh
-```
+#+begin_src sh
+stow bat brew bin git zsh
+#+end_src
 
 Install packages
 
-```
+#+begin_src sh
 brew bundle -v --file ~/.config/brew/Brewfile
-```
+#+end_src
 
-### Declarative Brew packages
+** Declarative Brew packages
 
-```sh
+#+begin_src sh
 # create a copy of the sample packages file
 cp ~/.config/brew/packages.sample.rb ~/.config/brew/packages.rb
 
 # edit packages file to add extra packages
-vim ~/.config/brew/packages.rb
+emacs ~/.config/brew/packages.rb
 
 # run the `brew-switch` alias
 brew-switch
-```
+#+end_src
 
-## Apt (Ubuntu/Debian)
+* Apt (Ubuntu/Debian)
 
-### Prerequisite
+** Prerequisite
 
 Ubuntu, Debian or any derivatives of either.
 
-### Installation
+** Installation
 
 Install Stow
 
-```
+#+begin_src sh
 sudo apt install stow
-```
+#+end_src
 
 Setup dotfiles
 
-```
-stow apt bat bin git vim tmux zsh
-```
+#+begin_src sh
+stow apt bat bin git emacs zsh
+#+end_src
 
 Install packages
 
-```sh
+#+begin_src sh
 bash ~/.config/my-apt/core.sh
-```
+#+end_src
 
-### Additional Packages
+** Additional Packages
 
-```sh
+#+begin_src sh
 # create a copy of the sample packages file
 cp ~/.config/my-apt/packages.sample.sh ~/.config/my-apt/packages.sh
 
 # edit packages file to add extra packages
-vim ~/.config/my-apt/packages.sh
+emacs ~/.config/my-apt/packages.sh
 
 # run the `apt-switch` alias
 apt-switch
-```
+#+end_src
 
-## Dnf (Fedora/RHEL)
+* Dnf (Fedora/RHEL)
 
-### Prerequisite
+** Prerequisite
 
 Fedora, RHEL or any derivatives of either.
 
-### Installation
+** Installation
 
 Install Stow
 
-```
+#+begin_src sh
 sudo dnf install stow
-```
+#+end_src
 
 Setup dotfiles
 
-```
-stow dnf bat bin git vim tmux zsh
-```
+#+begin_src sh
+stow dnf bat bin git emacs zsh
+#+end_src
 
 Install packages
 
-```sh
+#+begin_src sh
 bash ~/.config/my-dnf/core.sh
-```
+#+end_src
 
-### Additional Packages
+** Additional Packages
 
-```sh
+#+begin_src sh
 # create a copy of the sample packages file
 cp ~/.config/my-dnf/packages.sample.sh ~/.config/my-dnf/packages.sh
 
 # edit packages file to add extra packages
-vim ~/.config/my-dnf/packages.sh
+emacs ~/.config/my-dnf/packages.sh
 
 # run the `dnf-switch` alias
 dnf-switch
-```
+#+end_src
