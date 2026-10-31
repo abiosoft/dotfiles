@@ -3,9 +3,7 @@
 Dotfiles managed with Stow for Brew, Apt or Dnf
 
 * Brew
-
 ** Prerequisite
-
 Homebrew
 
 #+begin_src sh
@@ -13,7 +11,6 @@ Homebrew
 #+end_src
 
 ** Installation
-
 *** Install Stow
 
 #+begin_src sh
@@ -52,13 +49,10 @@ brew-switch
 #+end_src
 
 * Apt (Ubuntu/Debian)
-
 ** Prerequisite
-
 Ubuntu, Debian or any derivatives of either.
 
 ** Installation
-
 *** Install Stow
 
 #+begin_src sh
@@ -78,7 +72,6 @@ bash ~/.config/my-apt/core.sh
 #+end_src
 
 ** Additional Packages
-
 *** Create a copy of the sample packages file
 
 #+begin_src 
@@ -98,13 +91,10 @@ apt-switch
 #+end_src
 
 * Dnf (Fedora/RHEL)
-
 ** Prerequisite
-
 Fedora, RHEL or any derivatives of either.
 
 ** Installation
-
 *** Install Stow
 
 #+begin_src sh
@@ -124,7 +114,6 @@ bash ~/.config/my-dnf/core.sh
 #+end_src
 
 ** Additional Packages
-
 *** Create a copy of the sample packages file
 
 #+begin_src 
