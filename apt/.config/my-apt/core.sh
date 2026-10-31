@@ -11,8 +11,7 @@ set -e
 CORE_PACKAGES=(
     # shell
     bat
-    tmux
-    vim
+    emacs
     tree
     stow
     zsh
@@ -24,8 +23,6 @@ CORE_PACKAGES=(
     btop
     fzf
     watch
-    ripgrep
-    silversearcher-ag
     git
     git-delta
     socat
