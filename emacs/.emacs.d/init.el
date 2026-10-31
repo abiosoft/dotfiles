@@ -214,7 +214,7 @@
   (display-line-numbers-mode -1)
   (visual-line-mode 1)
   ;; Set Org's font and absolute size once, without changing other buffers.
-  (buffer-face-set '(:family "Source Code Pro" :height 200))
+  (buffer-face-set '(:family "Source Code Pro" :height 180))
   (setq-local line-spacing 0.18)
   ;; Buffer-local typography preserves the theme's colours and other modes.
   ;; Pitch-specific faces inherit Org's buffer font instead of choosing another.
