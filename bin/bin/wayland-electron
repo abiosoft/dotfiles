@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-"$@" --enable-features=UseOzonePlatform,WaylandWindowDecorations,WebRTCPipeWireCapturer --ozone-platform=wayland 
-

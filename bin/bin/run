@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# change directory to the script's directory.
-script_dir="$(dirname "$0")" || { log "fatal shell error, 'dirname' failed" && exit 1; }
-
-(cd $script_dir && go build -o /tmp/envrun "./envrun/main.go") && /tmp/envrun "$@"
-
