@@ -10,8 +10,6 @@ end
 
 # shell
 brew "bat" unless in_path? "bat"
-brew "tmux" unless in_path? "tmux"
-brew "vim" unless in_path? "vim"
 brew "tree" unless in_path? "tree"
 brew "stow" unless in_path? "stow"
 brew "zsh" unless in_path? "zsh"
@@ -24,8 +22,6 @@ brew "htop" unless in_path? "htop"
 brew "btop" unless in_path? "btop"
 brew "fzf" unless in_path? "fzf"
 brew "watch" unless in_path? "watch"
-brew "ripgrep" unless in_path? "rg"
-brew "the_silver_searcher" unless in_path? "ag"
 brew "git" unless in_path? "git"
 brew "git-delta" unless in_path? "delta"
 brew "socat" unless in_path? "socat"
