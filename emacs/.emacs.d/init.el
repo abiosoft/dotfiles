@@ -375,4 +375,10 @@
 (global-set-key (kbd "C-c t") #'ghostel-project)
 (global-set-key (kbd "C-c T") #'ghostel-project-new)
 
+;;; Server
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;;; init.el ends here
