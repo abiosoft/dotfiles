@@ -238,6 +238,8 @@
 
 ;;; Org export
 
+(require 'ox-md)
+
 (setq org-export-with-section-numbers nil)
 
 (with-eval-after-load 'ox-html
