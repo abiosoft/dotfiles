@@ -1,7 +1,7 @@
 ;;; init.el --- Minimal Emacs 31 configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Vanilla Emacs with custom colours, Org, frame-scoped buffers, Magit and Ghostel.
+;; Vanilla Emacs with custom colours, Org, frame/tab-local buffers, Magit and Ghostel.
 
 ;;; Code:
 
@@ -136,7 +136,7 @@
 (require 'package)
 ;; Use MELPA for Ghostel and NonGNU ELPA for Magit.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-pinned-packages '(beframe . "gnu"))
+(add-to-list 'package-pinned-packages '(bufferlo . "gnu"))
 (add-to-list 'package-pinned-packages '(corfu . "gnu"))
 (add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
@@ -146,7 +146,7 @@
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
 
-(dolist (pkg '(beframe corfu diff-hl exec-path-from-shell magit ghostel org-superstar htmlize org-roam))
+(dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell magit ghostel org-superstar htmlize org-roam))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -346,10 +346,15 @@
                  "~/.local/bin" "~/bin"))
     (add-to-list 'tramp-remote-path path t)))
 
-;;; Frame buffers
+;;; Frame and tab buffers
 
-(when (require 'beframe nil t)
-  (beframe-mode 1))
+(when (require 'bufferlo nil t)
+  (bufferlo-mode 1)
+  ;; Let the built-in switch-to-buffer use local completion too.
+  (setq bufferlo-anywhere-filter
+        (remq 'switch-to-buffer bufferlo-anywhere-filter))
+  ;; Use local buffers by default in commands that read buffer names.
+  (bufferlo-anywhere-mode 1))
 
 ;;; Terminal
 
