@@ -22,7 +22,7 @@
 (package-initialize)
 
 (dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell ghostel htmlize
-               magit multiple-cursors org-roam org-superstar))
+               magit multiple-cursors org-roam org-superstar with-editor))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -369,6 +369,9 @@
 
 ;; Download Ghostel's native module on first use.
 (setq ghostel-module-auto-install 'download)
+(setq ghostel-tramp-shell-integration t)
+
+(add-hook 'ghostel-pre-spawn-hook #'with-editor-export-editor)
 
 ;; Render Ghostel's bold text at normal weight.
 (custom-set-faces
