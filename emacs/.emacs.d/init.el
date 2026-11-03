@@ -141,13 +141,14 @@
 (add-to-list 'package-pinned-packages '(corfu . "gnu"))
 (add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
 (add-to-list 'package-pinned-packages '(magit . "nongnu"))
+(add-to-list 'package-pinned-packages '(multiple-cursors . "nongnu"))
 (add-to-list 'package-pinned-packages '(htmlize . "nongnu"))
 (add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
 (add-to-list 'package-pinned-packages '(org-roam . "melpa"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
 (package-initialize)
 
-(dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell magit ghostel org-superstar htmlize org-roam))
+(dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell magit ghostel multiple-cursors org-superstar htmlize org-roam))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -386,6 +387,11 @@ With prefix argument NEW, always create a new project terminal."
       (call-interactively #'ghostel-project-new))))
 
 ;;; Key bindings
+
+;; Suggested multiple-cursors bindings; C-c C-< is reserved by Org.
+(global-set-key (kbd "C->") #'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") #'mc/mark-previous-like-this)
+(global-set-key (kbd "C-S-c C-S-c") #'mc/edit-lines)
 
 (global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-c a") #'org-agenda)
