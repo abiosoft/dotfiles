@@ -348,6 +348,8 @@
 
 ;;; Frame and tab buffers
 
+(tab-bar-mode 1)
+
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
   ;; Start each new tab with its own local scratch buffer.
