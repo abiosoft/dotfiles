@@ -5,6 +5,49 @@
 
 ;;; Code:
 
+;;; Packages
+
+(require 'package)
+;; Prefer GNU and NonGNU ELPA; use MELPA for Ghostel and Org-roam.
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-pinned-packages '(bufferlo . "gnu"))
+(add-to-list 'package-pinned-packages '(corfu . "gnu"))
+(add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
+(add-to-list 'package-pinned-packages '(htmlize . "nongnu"))
+(add-to-list 'package-pinned-packages '(magit . "nongnu"))
+(add-to-list 'package-pinned-packages '(multiple-cursors . "nongnu"))
+(add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
+(add-to-list 'package-pinned-packages '(ghostel . "melpa"))
+(add-to-list 'package-pinned-packages '(org-roam . "melpa"))
+(package-initialize)
+
+(dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell ghostel htmlize
+               magit multiple-cursors org-roam org-superstar))
+  (add-to-list 'package-selected-packages pkg)
+  (unless (package-installed-p pkg)
+    (condition-case err
+        (progn
+          (unless (assq pkg package-archive-contents)
+            (package-refresh-contents))
+          (package-install pkg))
+      (error
+       (display-warning
+        'init
+        (format "%s: %s. Refresh archives, then M-x package-install RET %s."
+                pkg (error-message-string err) pkg))))))
+
+;;; Shell environment
+
+;; Import PATH and exec-path from the interactive login shell.
+(when (require 'exec-path-from-shell nil t)
+  (exec-path-from-shell-initialize))
+
+;; Include the remote login PATH and common user-installed tools.
+(with-eval-after-load 'tramp
+  (dolist (path '(tramp-own-remote-path "~/go/bin" "~/.cargo/bin"
+                 "~/.local/bin" "~/bin"))
+    (add-to-list 'tramp-remote-path path t)))
+
 ;;; Interface
 
 (menu-bar-mode -1)
@@ -132,36 +175,6 @@
 (keymap-set xref-mouse-mode-map "C-<mouse-1>" #'ab/xref-at-mouse)
 (add-hook 'prog-mode-hook #'xref-mouse-mode)
 
-;;; Packages
-
-(require 'package)
-;; Use MELPA for Ghostel and NonGNU ELPA for Magit.
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-pinned-packages '(bufferlo . "gnu"))
-(add-to-list 'package-pinned-packages '(corfu . "gnu"))
-(add-to-list 'package-pinned-packages '(diff-hl . "gnu"))
-(add-to-list 'package-pinned-packages '(magit . "nongnu"))
-(add-to-list 'package-pinned-packages '(multiple-cursors . "nongnu"))
-(add-to-list 'package-pinned-packages '(htmlize . "nongnu"))
-(add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
-(add-to-list 'package-pinned-packages '(org-roam . "melpa"))
-(add-to-list 'package-pinned-packages '(ghostel . "melpa"))
-(package-initialize)
-
-(dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell magit ghostel multiple-cursors org-superstar htmlize org-roam))
-  (add-to-list 'package-selected-packages pkg)
-  (unless (package-installed-p pkg)
-    (condition-case err
-        (progn
-          (unless (assq pkg package-archive-contents)
-            (package-refresh-contents))
-          (package-install pkg))
-      (error
-       (display-warning
-        'init
-        (format "%s: %s. Refresh archives, then M-x package-install RET %s."
-                pkg (error-message-string err) pkg))))))
-
 ;;; Completion
 
 (fido-vertical-mode 1)
@@ -190,7 +203,7 @@
 ;; Expand <s TAB into source blocks.
 (require 'org-tempo)
 
-;; A spacious outline with the screenshot's circles and stars.
+;; A spacious outline with circles and stars.
 (setq org-startup-indented t
       org-indent-indentation-per-level 2
       org-hide-emphasis-markers nil
@@ -262,6 +275,8 @@
                    (expand-file-name "org-html.css" user-emacs-directory))
                   (buffer-string))
                 "\n</style>")))
+
+;;; Org capture and agenda
 
 (setq org-directory (expand-file-name "~/org/"))
 
@@ -335,18 +350,6 @@
   (global-diff-hl-mode 1)
   (diff-hl-flydiff-mode 1)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
-
-;;; Shell environment
-
-;; Import PATH and exec-path from the interactive login shell.
-(when (require 'exec-path-from-shell nil t)
-  (exec-path-from-shell-initialize))
-
-;; Include the remote login PATH and common user-installed tools.
-(with-eval-after-load 'tramp
-  (dolist (path '(tramp-own-remote-path "~/go/bin" "~/.cargo/bin"
-                 "~/.local/bin" "~/bin"))
-    (add-to-list 'tramp-remote-path path t)))
 
 ;;; Frame and tab buffers
 
