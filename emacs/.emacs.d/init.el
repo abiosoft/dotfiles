@@ -350,6 +350,8 @@
 
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
+  ;; Start each new tab with its own local scratch buffer.
+  (setq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
   ;; Let the built-in switch-to-buffer use local completion too.
   (setq bufferlo-anywhere-filter
         (remq 'switch-to-buffer bufferlo-anywhere-filter))
