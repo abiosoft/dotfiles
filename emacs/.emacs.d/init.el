@@ -369,6 +369,21 @@
 (custom-set-faces
  '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
 
+(defun ab/ghostel-tab (&optional new)
+  "Switch to this tab's most recent Ghostel terminal, or create one.
+With prefix argument NEW, always create a new project terminal."
+  (interactive "P")
+  (require 'bufferlo)
+  (require 'seq)
+  (let ((buffer (unless new
+                  (seq-find (lambda (buffer)
+                              (with-current-buffer buffer
+                                (derived-mode-p 'ghostel-mode)))
+                            (bufferlo-buffer-list)))))
+    (if buffer
+        (switch-to-buffer buffer)
+      (call-interactively #'ghostel-project-new))))
+
 ;;; Key bindings
 
 (global-set-key (kbd "C-c c") #'org-capture)
@@ -383,7 +398,7 @@
 (global-set-key (kbd "C-c n b") #'org-roam-buffer-toggle)
 
 (global-set-key (kbd "C-x g") #'magit-status)
-(global-set-key (kbd "C-c t") #'ghostel-project)
+(global-set-key (kbd "C-c t") #'ab/ghostel-tab)
 (global-set-key (kbd "C-c T") #'ghostel-project-new)
 
 ;;; Server
