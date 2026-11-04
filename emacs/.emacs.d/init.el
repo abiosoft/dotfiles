@@ -360,12 +360,12 @@
 
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
-  ;; Keep a local scratch buffer, but show the home directory in new tabs.
+  ;; Keep a local scratch buffer, but show a new terminal at home in new tabs.
   (setq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
   (defun ab/new-tab-home-directory (_tab)
-    "Show Dired for home after Bufferlo initializes a new tab."
+    "Start Ghostel at home after Bufferlo initializes a new tab."
     (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
-      (dired (expand-file-name "~/"))))
+      (ab/ghostel-home)))
   (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
   ;; Let the built-in switch-to-buffer use local completion too.
   (setq bufferlo-anywhere-filter
