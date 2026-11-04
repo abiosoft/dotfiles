@@ -367,6 +367,13 @@
     (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
       (ab/ghostel-home)))
   (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
+  ;; Clean up the closing tab, preserving buffers shared with other tabs.
+  (add-hook 'tab-bar-tab-pre-close-functions
+            (lambda (tab only-tab-p)
+              (unless (and only-tab-p (null tab-bar-close-last-tab-choice))
+                (bufferlo-kill-buffers
+                 nil nil (seq-position (funcall tab-bar-tabs-function) tab #'eq))))
+            t)
   ;; Let the built-in switch-to-buffer use local completion too.
   (setq bufferlo-anywhere-filter
         (remq 'switch-to-buffer bufferlo-anywhere-filter))
