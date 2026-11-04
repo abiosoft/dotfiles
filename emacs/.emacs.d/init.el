@@ -353,38 +353,6 @@
   (diff-hl-flydiff-mode 1)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
-;;; Frame and tab buffers
-
-(setq tab-bar-new-tab-to 'rightmost)
-(tab-bar-mode 1)
-
-;; Open a new terminal in a chosen directory from the tab line's + button.
-(setq tab-line-new-tab-choice
-      (lambda () (call-interactively #'ab/ghostel-directory)))
-(global-tab-line-mode 1)
-
-(when (require 'bufferlo nil t)
-  (bufferlo-mode 1)
-  ;; Keep a local scratch buffer, but show a new terminal at home in new tabs.
-  (setq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
-  (defun ab/new-tab-home-directory (_tab)
-    "Start Ghostel at home after Bufferlo initializes a new tab."
-    (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
-      (ab/ghostel-home)))
-  (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
-  ;; Clean up the closing tab, preserving buffers shared with other tabs.
-  (add-hook 'tab-bar-tab-pre-close-functions
-            (lambda (tab only-tab-p)
-              (unless (and only-tab-p (null tab-bar-close-last-tab-choice))
-                (bufferlo-kill-buffers
-                 nil nil (seq-position (funcall tab-bar-tabs-function) tab #'eq))))
-            t)
-  ;; Let the built-in switch-to-buffer use local completion too.
-  (setq bufferlo-anywhere-filter
-        (remq 'switch-to-buffer bufferlo-anywhere-filter))
-  ;; Use local buffers by default in commands that read buffer names.
-  (bufferlo-anywhere-mode 1))
-
 ;;; Terminal
 
 ;; Download Ghostel's native module on first use.
@@ -409,6 +377,38 @@
 ;; Render Ghostel's bold text at normal weight.
 (custom-set-faces
  '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
+
+;;; Frame and tab buffers
+
+(setq tab-bar-new-tab-to 'rightmost)
+(tab-bar-mode 1)
+
+(when (require 'bufferlo nil t)
+  (bufferlo-mode 1)
+  ;; Keep a local scratch buffer, but show a new terminal at home in new tabs.
+  (setq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
+  (defun ab/new-tab-home-directory (_tab)
+    "Start Ghostel at home after Bufferlo initializes a new tab."
+    (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
+      (ab/ghostel-home)))
+  (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
+  ;; Clean up the closing tab, preserving buffers shared with other tabs.
+  (add-hook 'tab-bar-tab-pre-close-functions
+            (lambda (tab only-tab-p)
+              (unless (and only-tab-p (null tab-bar-close-last-tab-choice))
+                (bufferlo-kill-buffers
+                 nil nil (seq-position (funcall tab-bar-tabs-function) tab #'eq))))
+            t)
+  ;; Let the built-in switch-to-buffer use local completion too.
+  (setq bufferlo-anywhere-filter
+        (remq 'switch-to-buffer bufferlo-anywhere-filter))
+  ;; Use local buffers by default in commands that read buffer names.
+  (bufferlo-anywhere-mode 1))
+
+;; Open a new terminal in a chosen directory from the tab line's + button.
+(setq tab-line-new-tab-choice
+      (lambda () (call-interactively #'ab/ghostel-directory)))
+(global-tab-line-mode 1)
 
 ;;; Key bindings
 
