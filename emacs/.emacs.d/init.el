@@ -114,6 +114,8 @@
 
 ;;; Mode line
 
+(set-face-attribute 'mode-line-buffer-id nil :weight 'normal)
+
 (setq display-time-format " %I:%M %p"
       display-time-default-load-average nil)
 (display-time-mode 1)
