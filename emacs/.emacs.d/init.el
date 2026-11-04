@@ -381,6 +381,19 @@
 
 (add-hook 'ghostel-pre-spawn-hook #'with-editor-export-editor)
 
+(defun ab/ghostel-home ()
+  "Create a new Ghostel terminal in the home directory."
+  (interactive)
+  (let ((default-directory (expand-file-name "~/")))
+    (ghostel-new)))
+
+(defun ab/ghostel-directory (directory)
+  "Create a new Ghostel terminal in DIRECTORY."
+  (interactive (list (read-directory-name "Ghostel directory: " nil nil t)))
+  (let ((default-directory (file-name-as-directory
+                            (expand-file-name directory))))
+    (ghostel-new)))
+
 ;; Render Ghostel's bold text at normal weight.
 (custom-set-faces
  '(ghostel-bold ((t (:inherit ansi-color-bold :weight normal)))))
@@ -404,7 +417,8 @@
 (global-set-key (kbd "C-c n b") #'org-roam-buffer-toggle)
 
 (global-set-key (kbd "C-x g") #'magit-status)
-(global-set-key (kbd "C-c t") #'ghostel-project-new)
+(global-set-key (kbd "C-c t") #'ab/ghostel-home)
+(global-set-key (kbd "C-c T") #'ab/ghostel-directory)
 
 ;;; Server
 
