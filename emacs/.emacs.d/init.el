@@ -355,12 +355,18 @@
 
 ;;; Frame and tab buffers
 
+(setq tab-bar-new-tab-to 'rightmost)
 (tab-bar-mode 1)
 
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
-  ;; Start each new tab with its own local scratch buffer.
+  ;; Keep a local scratch buffer, but show the home directory in new tabs.
   (setq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
+  (defun ab/new-tab-home-directory (_tab)
+    "Show Dired for home after Bufferlo initializes a new tab."
+    (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
+      (dired (expand-file-name "~/"))))
+  (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
   ;; Let the built-in switch-to-buffer use local completion too.
   (setq bufferlo-anywhere-filter
         (remq 'switch-to-buffer bufferlo-anywhere-filter))
