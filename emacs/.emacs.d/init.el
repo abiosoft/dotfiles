@@ -396,6 +396,10 @@
   (defun ab/new-tab-home-directory (_tab)
     "Start Ghostel at home after Bufferlo initializes a new tab."
     (when (eq tab-bar-new-tab-choice #'bufferlo-create-local-scratch-buffer)
+      ;; The new window remembers the previous tab's active buffer even
+      ;; though Bufferlo excludes it.  Keep it out of the tab line too.
+      (set-window-prev-buffers nil nil)
+      (set-window-next-buffers nil nil)
       (ab/ghostel-home)))
   (add-hook 'tab-bar-tab-post-open-functions #'ab/new-tab-home-directory t)
   ;; Clean up the closing tab, preserving buffers shared with other tabs.
