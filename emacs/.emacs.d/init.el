@@ -55,6 +55,11 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
+;; Enable mouse wheel scrolls
+(setq mouse-wheel-tilt-scroll t)
+(setq mouse-wheel-flip-direction t)
+
+;; Enable which key
 (which-key-mode 1)
 
 ;; Relative line numbers in text and code buffers.
