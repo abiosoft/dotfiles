@@ -387,6 +387,7 @@
 
 (setq tab-bar-new-tab-to 'rightmost)
 (tab-bar-mode 1)
+(tab-bar-history-mode 1)
 
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
