@@ -114,7 +114,7 @@
 
 ;;; Mode line
 
-(setq display-time-format "%I:%M %p"
+(setq display-time-format " %I:%M %p"
       display-time-default-load-average nil)
 (display-time-mode 1)
 
