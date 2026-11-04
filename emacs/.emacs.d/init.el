@@ -358,6 +358,11 @@
 (setq tab-bar-new-tab-to 'rightmost)
 (tab-bar-mode 1)
 
+;; Open a new terminal in a chosen directory from the tab line's + button.
+(setq tab-line-new-tab-choice
+      (lambda () (call-interactively #'ab/ghostel-directory)))
+(global-tab-line-mode 1)
+
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
   ;; Keep a local scratch buffer, but show a new terminal at home in new tabs.
