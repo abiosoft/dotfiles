@@ -27,9 +27,10 @@ fi
 export PATH="$PATH:$HOME/bin"
 
 # emacs ghostel's integration
-if [[ "${${INSIDE_EMACS-}%%,*}" = ghostel &&
-      -r "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh" ]]; then
-  source "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh"
+if [[ "${${INSIDE_EMACS-}%%,*}" = ghostel ]]; then
+  if [[ -r "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh" ]]; then
+    source "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh"
+  fi
   alias emacs='ghostel_cmd find-file'
   alias find-file='ghostel_cmd find-file'
 fi
