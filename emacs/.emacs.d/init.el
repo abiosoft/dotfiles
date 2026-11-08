@@ -187,8 +187,10 @@
                (< (point) (cdr bounds)))
       (xref-find-references-at-mouse event))))
 
-(keymap-set xref-mouse-mode-map "C-<mouse-1>" #'ab/xref-at-mouse)
-(add-hook 'prog-mode-hook #'xref-mouse-mode)
+(when (and (boundp 'xref-mouse-mode-map)
+           (fboundp 'xref-mouse-mode))
+  (keymap-set xref-mouse-mode-map "C-<mouse-1>" #'ab/xref-at-mouse)
+  (add-hook 'prog-mode-hook #'xref-mouse-mode))
 
 ;;; Completion
 
