@@ -55,9 +55,17 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
-;; Enable mouse wheel scrolls
-(setq mouse-wheel-tilt-scroll t)
-(setq mouse-wheel-flip-direction t)
+;; Configure mouse support for the initial frame and later emacsclient frames.
+(defun ab/setup-frame-mouse (frame)
+  "Configure mouse support for FRAME's display."
+  (with-selected-frame frame
+    (if (display-graphic-p)
+        (setq mouse-wheel-tilt-scroll t
+              mouse-wheel-flip-direction t)
+      (xterm-mouse-mode 1))))
+
+(ab/setup-frame-mouse (selected-frame))
+(add-hook 'after-make-frame-functions #'ab/setup-frame-mouse)
 
 ;; Enable which key
 (which-key-mode 1)
