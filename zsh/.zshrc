@@ -31,8 +31,10 @@ if [[ "${${INSIDE_EMACS-}%%,*}" = ghostel ]]; then
   if [[ -r "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh" ]]; then
     source "$HOME/.local/share/ghostel/etc/shell/ghostel.zsh"
   fi
-  alias emacs='ghostel_cmd find-file'
-  alias find-file='ghostel_cmd find-file'
+  if command -v ghostel_cmd >/dev/null 2>&1; then
+    alias emacs='ghostel_cmd find-file'
+    alias find-file='ghostel_cmd find-file'
+  fi
 fi
 
 # aliases
