@@ -10,6 +10,7 @@ end
 
 # shell
 brew "bat" unless in_path? "bat"
+brew "emacs" unless in_path? "emacs"
 brew "tree" unless in_path? "tree"
 brew "stow" unless in_path? "stow"
 brew "zsh" unless in_path? "zsh"
