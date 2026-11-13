@@ -395,9 +395,34 @@
 
 ;;; Frame and tab buffers
 
-(setq tab-bar-new-tab-to 'rightmost)
+(setq tab-bar-show nil)
 (tab-bar-mode 1)
 (tab-bar-history-mode 1)
+
+;; Show tabs in the mode line while the tab bar is hidden.
+(defun ab/mode-line-switch-tab (event)
+  "Select the frame clicked in EVENT and prompt for a tab."
+  (interactive "e")
+  (with-selected-window (posn-window (event-start event))
+    (call-interactively #'tab-switch)))
+
+(defvar ab/mode-line-tab-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mode-line mouse-1] #'ab/mode-line-switch-tab)
+    map)
+  "Mouse bindings for the mode line tab indicator.")
+
+(defun ab/mode-line-tabs ()
+  "Show the current frame's tab index and total tab count."
+  (let* ((tabs (funcall tab-bar-tabs-function))
+         (index (1+ (seq-position tabs 'current-tab
+                                  (lambda (tab type) (eq (car tab) type))))))
+    (propertize (format " T%d/%d " index (length tabs))
+                'local-map ab/mode-line-tab-map
+                'mouse-face 'mode-line-highlight
+                'help-echo "mouse-1: Switch tab (C-x t RET)")))
+
+(add-to-list 'mode-line-misc-info '(:eval (ab/mode-line-tabs)))
 
 (when (require 'bufferlo nil t)
   (bufferlo-mode 1)
@@ -424,11 +449,6 @@
         (remq 'switch-to-buffer bufferlo-anywhere-filter))
   ;; Use local buffers by default in commands that read buffer names.
   (bufferlo-anywhere-mode 1))
-
-;; Open a new terminal in a chosen directory from the tab line's + button.
-(setq tab-line-new-tab-choice
-      (lambda () (call-interactively #'ab/ghostel-directory)))
-(global-tab-line-mode 1)
 
 ;;; Key bindings
 
