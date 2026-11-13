@@ -12,8 +12,9 @@ CORE_PACKAGES=(
     # shell
     bat
     emacs
-    tree
+    screen
     stow
+    tree
     zsh
 
     # utils
