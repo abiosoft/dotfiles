@@ -1,1 +1,5 @@
 escape ^Zz
+term screen-256color
+truecolor on
+setenv COLORTERM truecolor
+altscreen on
