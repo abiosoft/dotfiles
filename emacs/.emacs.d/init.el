@@ -66,6 +66,18 @@
 (ab/setup-frame-mouse (selected-frame))
 (add-hook 'after-make-frame-functions #'ab/setup-frame-mouse)
 
+;; Configure clipboard support
+(defun ab/setup-frame-clipboard (frame)
+  "Configure clipboard support for FRAME's terminal inside GNU Screen."
+  (with-selected-frame frame
+    (when (and (not (display-graphic-p))
+               (getenv "STY"))
+      (require 'term/xterm)
+      (set-terminal-parameter nil 'xterm--set-selection t))))
+
+(ab/setup-frame-clipboard (selected-frame))
+(add-hook 'after-make-frame-functions #'ab/setup-frame-clipboard)
+
 ;; Enable which key
 (which-key-mode 1)
 
