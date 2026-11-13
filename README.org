@@ -20,7 +20,7 @@ brew install stow
 *** Setup dotfiles
 
 #+begin_src sh
-stow bat brew bin emacs git zsh
+stow bat brew bin emacs git screen zsh
 #+end_src
 
 *** Install packages
@@ -62,7 +62,7 @@ sudo apt install stow
 *** Setup dotfiles
 
 #+begin_src sh
-stow apt bat bin emacs git zsh
+stow apt bat bin emacs git screen zsh
 #+end_src
 
 *** Install packages
@@ -104,7 +104,7 @@ sudo dnf install stow
 *** Setup dotfiles
 
 #+begin_src sh
-stow dnf bat bin emacs git zsh
+stow dnf bat bin emacs git screen zsh
 #+end_src
 
 *** Install packages
