@@ -8,7 +8,7 @@
 ;;; Packages
 
 (require 'package)
-;; Prefer GNU and NonGNU ELPA; use MELPA for Ghostel and Org-roam.
+;; Prefer GNU and NonGNU ELPA; use MELPA for Ghostel.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-pinned-packages '(bufferlo . "gnu"))
 (add-to-list 'package-pinned-packages '(corfu . "gnu"))
@@ -18,11 +18,10 @@
 (add-to-list 'package-pinned-packages '(multiple-cursors . "nongnu"))
 (add-to-list 'package-pinned-packages '(org-superstar . "nongnu"))
 (add-to-list 'package-pinned-packages '(ghostel . "melpa"))
-(add-to-list 'package-pinned-packages '(org-roam . "melpa"))
 (package-initialize)
 
 (dolist (pkg '(bufferlo corfu diff-hl exec-path-from-shell ghostel htmlize
-               magit multiple-cursors org-roam org-superstar with-editor))
+               magit multiple-cursors org-superstar with-editor))
   (add-to-list 'package-selected-packages pkg)
   (unless (package-installed-p pkg)
     (condition-case err
@@ -334,17 +333,6 @@
   (interactive)
   (dired org-directory))
 
-;;; Org-roam
-
-(when (require 'org-roam nil t)
-  (setq org-roam-directory (expand-file-name "roam/" org-directory)
-        org-roam-completion-everywhere t)
-  (make-directory org-roam-directory t)
-  ;; Org expects this cache on first capture; nil is a valid empty cache.
-  (unless (file-exists-p org-id-locations-file)
-    (with-temp-file org-id-locations-file (insert "nil\n")))
-  (org-roam-db-autosync-mode 1))
-
 ;;; Git
 
 ;; Language-aware Magit diffs.
@@ -462,11 +450,6 @@
 (global-set-key (kbd "C-c o") #'ab/org-open-notes-inbox)
 (global-set-key (kbd "C-c i") #'ab/org-open-tasks-inbox)
 (global-set-key (kbd "C-c d") #'ab/org-open-directory)
-
-(global-set-key (kbd "C-c n f") #'org-roam-node-find)
-(global-set-key (kbd "C-c n i") #'org-roam-node-insert)
-(global-set-key (kbd "C-c n c") #'org-roam-capture)
-(global-set-key (kbd "C-c n b") #'org-roam-buffer-toggle)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c t") #'ab/ghostel-home)
