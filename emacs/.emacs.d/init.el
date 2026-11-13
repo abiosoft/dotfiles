@@ -132,12 +132,13 @@
       display-time-default-load-average nil)
 (display-time-mode 1)
 
-;; Identify remote buffers.
-(add-to-list
- 'mode-line-misc-info
- '(:eval
-   (when-let* ((remote (file-remote-p default-directory)))
-     (concat " (T " (substring remote 1 -1) ") "))))
+;; Identify an SSH session inherited from the shell that launched Emacs.
+(defun ab/mode-line-remote ()
+  "Show the hostname when Emacs inherited an SSH session."
+  (when (or (getenv "SSH_CONNECTION") (getenv "SSH_CLIENT"))
+    (concat " ssh:" (system-name) " ")))
+
+(add-to-list 'mode-line-misc-info '(:eval (ab/mode-line-remote)))
 
 ;;; Indentation
 
