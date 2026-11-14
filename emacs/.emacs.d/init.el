@@ -411,10 +411,10 @@
 
 ;; Show tabs in the mode line while the tab bar is hidden.
 (defun ab/mode-line-switch-tab (event)
-  "Select the frame clicked in EVENT and prompt for a tab."
+  "Select the frame clicked in EVENT and cycle to its next tab."
   (interactive "e")
   (with-selected-window (posn-window (event-start event))
-    (call-interactively #'tab-switch)))
+    (tab-bar-switch-to-next-tab)))
 
 (defvar ab/mode-line-tab-map
   (let ((map (make-sparse-keymap)))
@@ -430,7 +430,7 @@
     (propertize (format " T%d/%d " index (length tabs))
                 'local-map ab/mode-line-tab-map
                 'mouse-face 'mode-line-highlight
-                'help-echo "mouse-1: Switch tab (C-x t RET)")))
+                'help-echo "mouse-1: Next tab")))
 
 (add-to-list 'mode-line-misc-info '(:eval (ab/mode-line-tabs)))
 
