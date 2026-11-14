@@ -138,6 +138,15 @@
 
 ;;; Mode line
 
+;; Remove box and underline.
+(dolist (face '(mode-line mode-line-active mode-line-inactive))
+  (when (facep face)
+    (set-face-attribute face nil :box nil :underline nil)))
+
+(dolist (face '(mode-line mode-line-active))
+  (when (facep face)
+    (set-face-attribute face nil :foreground "#cecece")))
+
 (set-face-attribute 'mode-line-buffer-id nil :weight 'normal)
 
 (setq display-time-format " %I:%M %p"
